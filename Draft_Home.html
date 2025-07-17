@@ -1,0 +1,874 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+      body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #112b3c;
+    padding: 0 20px; /* Use padding for horizontal spacing only */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 70px; /* Set a fixed height for the header */
+}
+
+.logo {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white !important;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.logo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-left: 8px;
+}
+
+.navbar {
+  display: flex;
+  align-items: stretch; /* This makes nav items fill the height */
+  margin-right: 20px;
+  height: 100%; /* Navbar takes full height of its container */
+}
+
+.navbar a, .dropbtn {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.3s, color 0.3s;
+  white-space: nowrap;
+}
+
+.dropbtn {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+}
+
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: #f0f0f0;
+  color: #112b3c;
+}
+
+/* --- Dropdown Styles --- */
+.dropdown {
+    position: relative;
+    display: flex; /* Ensures dropdown behaves as a flex item */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 0 0 0.5rem 0.5rem;
+    overflow: hidden;
+    top: 100%; /* Positions dropdown below the parent */
+    left: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+    color: #112b3c;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/* --- End Dropdown Styles --- */
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: #112B3C;
+    opacity: 0.9;
+    z-index: 1;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center;    /* Center horizontally */
+    height: 400px;
+    color: white;
+    text-align: center;
+    padding: 40px 20px 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 40px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.hero-content p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+.button {
+  padding: 15px 70px;
+  background-color: #F66B0E;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ff9f0a;
+}
+
+.map {
+  flex: 1;
+  color: #333;
+  text-align: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  background-color: #e0e0e0;
+  margin-left: 5px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color-scheme: #0D3B66, #8D99AE;
+}
+
+.Bodytwo {
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center; /* Center the cards */
+  gap: 20px; /* Slightly increased gap */
+  padding: 10px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  margin-bottom: 30px;
+}
+
+.cardw {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  height: auto;
+  width: 380px; /* Slightly smaller width to fit text */
+  display: flex; /* Flex layout for image and text */
+  gap: 10px; /* Reduced gap between image and text */
+  transition: transform 0.3s ease;
+  align-items: center; /* Vertically center content */
+  overflow-wrap: break-word; /* Ensure text wraps within box */
+}
+
+.cardw-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  gap: 5px;
+}
+
+.cardw:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.cardw img {
+  width: 120px; /* Square image */
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0; /* Remove bottom margin for flex layout */
+}
+
+.cardw h2 {
+  font-size: 18px;
+  margin: 0 0 10px;
+  color: #222;
+}
+
+.cardw p {
+  font-size: 12px;
+  color: #444;
+  line-height: 1.5;
+  margin: 0; /* Remove default margin */
+  flex: 1; /* Allow text to fill remaining space */
+}
+
+.Header2 {
+  text-align: center;
+  background-color: #8D99AE;
+}
+
+.car-container {
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  padding: 40px 0;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex: 1;
+  max-width: 300px;
+  min-height: 400px;
+}
+
+.dark-blue {
+  background-color: #2c3e50;
+}
+
+.orange {
+  background-color: #ff7f00;
+}
+
+.icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+  background-color: white;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.icon img {
+  max-width: 200%;
+  max-height: 100%;
+}
+
+.activity-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.location-needed {
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-bottom: 15px;
+}
+
+.date {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.container::before {
+  top: calc(50% - 40px);
+}
+
+.container::after {
+  bottom: calc(50% - 40px);
+  display: none;
+}
+
+.container::before {
+  top: 50%;
+  transform: translateY(-50%);
+  height: 80px;
+  z-index: 0;
+}
+
+.card-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .card-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 80%;
+    max-width: 350px;
+  }
+
+  .container::before {
+    display: none;
+  }
+}
+.about-us-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 0 20px;
+}
+
+.header h1 {
+  color: #0056b3;
+  margin-bottom: 30px;
+}
+
+.content-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.text-block {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.text-block:last-child {
+  padding-right: 0;
+  padding-left: 20px;
+}
+
+.image-block {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-block img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.content-row:nth-child(3) .text-block:first-child {
+  padding-right: 20px;
+  padding-left: 0;
+}
+.content-row:nth-child(3) .image-block:first-child {
+  padding-right: 20px;
+}
+
+.team-section {
+  background-color: #2c3e50;
+  padding: 50px 0;
+  color: #fff;
+  text-align: center;
+}
+
+.team-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h2 {
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+.team-members {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.team-member {
+  flex-basis: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.team-member-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #ecf0f1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.member-name {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.member-role {
+  font-size: 0.9em;
+  color: #bdc3c7;
+}
+
+.impact-stories-section {
+ margin-top: -40px;
+  background-color: #fff;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 60px;
+}
+
+.story-container {
+  max-width: 1100px;
+margin: auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-size: 2.2em;
+  color: #2c3e50;
+  margin-bottom: 50px;
+}
+
+.stories-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 30px;
+}
+
+.story-card {
+  background-color: #fff;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  overflow: hidden;
+  padding-bottom: 20px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.story-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+}
+
+.story-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 15px;
+  background-color: #dbe0e3;
+}
+
+.story-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.orange-overlay {
+  width: 60px;
+  height: 60px;
+  background-color: #f38f00;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.story-content {
+  padding: 0 20px;
+}
+
+.story-content h3 {
+  font-size: 1.3em;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.by-volunteer {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.story-text {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+}
+
+.author-profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.author-name {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.container-FOOTER1 {
+  background-color: #205375;
+  padding: 20px;
+}
+
+.Footertxt {
+  color: white;
+  margin-left: 40px;
+  text-decoration: none;
+}
+
+.footer2 {
+  color: white;
+  background-color: #F66B0E;
+  text-align: center;
+  padding: 10px;
+}
+
+    </style>
+</head>
+<body>
+  <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">Login</button>
+        <div class="dropdown-content">
+          <a href="auth.html">Login</a>
+          <a href="auth.html">Signup</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+    
+  </div>
+    <div class="hero-section">
+    <img src="https://images.pexels.com/photos/27180835/pexels-photo-27180835.jpeg" alt="Background Image" class="hero-background">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 style="color: white; font-size: 30px; margin-bottom: 20px;">Join us in illuminating <br> communities without <br> electricity in the Philippines</h1>
+      <p style="font-size: 30px; color: white; font-size: 12px; margin-bottom: 40px;" >Powering Communities. Illuminating the Nation, one pin at a time.</p>
+      <a href="InteractiveMap.html"><button class="button"><strong>Explore Map </strong></button></a>
+    </div>
+  </div>
+
+  <div class="Bodytwo">
+    <h1 style="color: #112B3C;">
+        Support Our Cause
+    </h1>
+    <p>Learn More About the Impact of Your Donation</p>
+    <br>
+  </div>
+    <div class="cards-container">
+      <div class="cardw">
+        <img src="https://i.ibb.co/JRNbZ9XT/group-children-lying-reading-grass-field.jpg" alt="Education Programs">
+        <div class="cardw-text">
+          <h2>Education Programs</h2>
+          <p style="color: black;">Your donations help fund educational initiatives for...</p>
+        </div>
+      </div>
+
+      <div class="cardw">
+        <img src="https://i.ibb.co/C5c3P1jT/bottom-view-women-protesting-outdoors.jpg" alt="Community Development">
+        <div class="cardw-text">
+        <h2>Community Development</h2>
+        <p style="color: black;">Support our efforts in building sustainable com...</p>
+      </div>
+    </div>
+
+
+      <div class="cardw">
+        <img src="https://i.ibb.co/ZRvp79n9/kids-holding-their-hands-clover.jpg" alt="Environmental Conservation">
+        <div class="cardw-text">
+        <h2>Environmental Conservation</h2>
+        <p style="color: black;">Contribute to preserving our planet for future gene...</p>
+      </div>
+    </div>
+    <br>
+  </div>
+    <div class="card-container">
+        <div class="card-wrapper">
+            <div class="card dark-blue">
+                <div class="icon"><img src="https://images.pexels.com/photos/1254997/pexels-photo-1254997.jpeg" alt="solarpanel"></div>
+                <p class="activity-title" style="color: white;">Solar Panel Installation</p>
+                <p class="location-needed" style="color: white;">Sitios Magata and Manggahan, Brgy. Laiban, Tanay, Rizal</p>
+                <p class="date" style="color: white;">August 28, 2025</p>
+            </div>
+            <div class="card orange">
+                <div class="icon"><img src="	https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?q=80&w=1974&auto=format&fit=crop" alt="fundraising"></div>
+                <p class="activity-title" style="color: white;">Fundraising & Donor Relations</p>
+                <p class="location-needed" style="color: white;">Paquibato District, Davao City</p>
+                <p class="date" style="color: white;">September 17, 2025</p>
+            </div>
+            <div class="card dark-blue">
+                <div class="icon"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" alt="community outreach"></div>
+                <p class="activity-title" style="color: white;">Community Outreach</p>
+                <p class="location-needed" style="color: white;">Barangay Magsaysay, Palawan</p>
+                <p class="date" style="color: white;">October 23, 2025</p>
+            </div>
+        </div>
+    </div>
+    
+
+ 
+ <div class="about-us-container">
+        <div class="header">
+            <h1>About Us</h1>
+        </div>
+
+        <div class="content-row">
+            <div class="text-block">
+                <p>IllumiNation PH is an interactive platform dedicated to mapping unelectrified communities across the Philippines. We connect donors, volunteers, and organizations to areas in need, providing solutions like solar technology and infrastructure support to bring sustainable light and energy to every Filipino household.</p>
+                <p>By leveraging crowdsourced data, satellite imagery, and field assessments, IllumiNation PH identifies remote and underserved barangays that still lack access to electricity. These communities often face significant challenges in education, healthcare, and economic development due to their isolation and limited infrastructure. Our platform visualizes these gaps through a dynamic digital map, helping stakeholders prioritize and direct their efforts to the areas that need them most.</p>
+            </div>
+            <div class="image-block">
+                <img src="https://i.ibb.co/SwxgQDGF/solar-panel-241903-1920.jpg" alt="House with solar panel">
+            </div>
+        </div>
+
+        <div class="content-row">
+            <div class="image-block">
+                <img src="https://i.ibb.co/ZqyhdFn/vertical-shot-batad-rice-terraces-luzon-philippines.jpg" alt="Rice terraces village">
+            </div>
+            <div class="text-block">
+                <p>IllumiNation PH also serves as a bridge between various sectors, encouraging collaboration among local governments, non-profits, private companies, and citizen volunteers. We facilitate not only the delivery of solar energy systems and infrastructure but also provide training programs to ensure that communities can manage and sustain these solutions independently. This approach promotes resilience and empowers local leaders to take charge of their community’s progress.</p>
+                <p>At its heart, IllumiNation PH is about more than just providing electricity. It is about creating opportunities for growth, learning, and safety. When a household gains access to light, children can study after sunset, families can feel more secure, and small businesses can extend their hours. Through every solar panel installed and every partnership formed, we move closer to a future where every Filipino can live with dignity and hope.</p>
+            </div>
+        </div>
+    </div>
+</div>
+ <section class="team-section">
+        <div class="team-container">
+            <h2>Meet Our Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="https://i.ibb.co/YTTRgsWL/495267461-1222252916012452-1282489872555126286-n.jpg" alt="Angelo Kacey Pineda" class="team-member-photo">
+                    <p class="member-name">Angelo Kacey Pineda</p>
+                    <p class="member-role">Project Manager</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.ibb.co/JRGGhryB/494866602-688510860463338-7222750928275298236-n.jpg" alt="Paulo Delas Armas" class="team-member-photo">
+                    <p class="member-name">Paulo Delas Armas</p>
+                    <p class="member-role">Developer</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.ibb.co/5W39qNzF/resume-pic.jpg" alt="Sherm James Caayon" class="team-member-photo">
+                    <p class="member-name">Shem James Caayon</p>
+                    <p class="member-role">Quality Analyst</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://i.ibb.co/yBQLf4Y1/494356407-2114369469037742-4866050008096185305-n.jpg" alt="Joby Mae M. Miranda" class="team-member-photo">
+                    <p class="member-name">Joby Mae M. Miranda</p>
+                    <p class="member-role">Data Management Lead</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br><br><br>
+<section class="impact-stories-section">
+        <div class="story-container">
+            <h2 class="section-title">Impact Stories</h2>
+
+            <div class="stories-grid">
+                <div class="story-card">
+                    <div class="story-image-wrapper">
+                        <img src="https://i.ibb.co/vxdMLjJy/image.png" alt="Story image description" class="story-main-image">
+                        <div class="orange-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <h3>Cultivating Community Through Sustainable Farming</h3>
+                        <p class="by-volunteer">By Volunteer</p>
+                        <p class="story-text">Volunteers collaborated with local farmers to implement sustainable practices, boosting crop yields and enhancing food security in rural communities.</p>
+                        <div class="author-info">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author profile picture" class="author-profile-pic">
+                            <span class="author-name">Emily Clark</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-image-wrapper">
+                        <img src="https://i.ibb.co/pv6VwfmG/picture-tree-tv-antenna-silhouettes-roof-sunset-zagreb-croatia.jpg" alt="Story image description" class="story-main-image">
+                        <div class="orange-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <h3>Illuminating Lives with Renewable Energy</h3>
+                        <p class="by-volunteer">By Volunteer</p>
+                        <p class="story-text">Our team brought solar power to off-grid villages, providing electricity that transformed daily life and opened new opportunities.</p>
+                        <div class="author-info">
+                            <img src="	https://randomuser.me/api/portraits/women/60.jpg" alt="Author profile picture" class="author-profile-pic">
+                            <span class="author-name">Sarah Johnson</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-image-wrapper">
+                        <img src="https://i.ibb.co/chrYV90Y/low-angle-view-telegraph-poles.jpg" alt="Story image description" class="story-main-image">
+                        <div class="orange-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <h3>Building Bridges, Connecting Communities</h3>
+                        <p class="by-volunteer">By Volunteer</p>
+                        <p class="story-text">Volunteers rebuilt a vital community bridge, fostering greater connectivity and access to essential services for residents.</p>
+                        <div class="author-info">
+                            <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Author profile picture" class="author-profile-pic">
+                            <span class="author-name">Michael Ray</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+</body>
+<footer>
+    <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+          &nbsp; &nbsp;Contact us: info@illuminatioph.com
+    </div>
+</footer>
+</html>

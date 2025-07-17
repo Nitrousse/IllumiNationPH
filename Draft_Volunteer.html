@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer - IllumiNation PH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+          margin: 0;
+          font-family: Arial, sans-serif;
+        }
+
+        /* --- STYLES COPIED FROM style-home.css FOR CONSISTENCY --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #112b3c;
+            padding: 0 20px; /* Use padding for horizontal spacing only */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px; /* Set a fixed height for the header */
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch; /* This makes nav items fill the height */
+          margin-right: 20px;
+          height: 100%; /* Navbar takes full height of its container */
+        }
+
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem;
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: #112b3c;
+        }
+        
+        /* --- Dropdown Styles --- */
+        .dropdown {
+            position: relative;
+            display: flex; /* Ensures dropdown behaves as a flex item */
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%; /* Positions dropdown below the parent */
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #112b3c;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* --- END OF COPIED STYLES --- */
+
+
+        .hero-section {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 400px;
+            background: #112B3C;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            color: white;
+            text-align: center;
+            padding: 40px 20px 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .hero-content p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .button {
+            width: 250px;
+            height: 50px;
+            padding: 8px 20px;
+            background-color: #F66B0E;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .button2 {
+            width: 250px;
+            height: 50px;
+            padding: 8px 20px;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 
+                background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .button2:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: #fff;
+            box-shadow: 0 0 12px 2px rgba(255,255,255,0.7);
+        }
+
+
+        .button:hover {
+            background-color: #ff9f0a;
+        }
+        
+        /* --- INTERACTIVE STEPS STYLES START --- */
+        .steps-container {
+            background-color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .steps-header {
+            background-color: #F66B0E;
+            color: white;
+            padding: 10px 20px;
+            max-width: 1100px;
+            margin: 0 auto 40px auto;
+            border-radius: 8px;
+        }
+        .steps-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .steps-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        .steps-timeline {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .steps-timeline::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 12.5%; 
+            width: 75%; 
+            height: 4px;
+            background-color: #e0e0e0;
+            z-index: 0;
+            border-radius: 2px;
+        }
+         .steps-timeline::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 12.5%;
+            width: var(--progress-width, 0%); /* Controlled by JS */
+            height: 4px;
+            background-color: #F66B0E;
+            z-index: 1;
+            border-radius: 2px;
+            transition: width 0.4s ease-in-out;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+            position: relative;
+            z-index: 2;
+        }
+        .step-icon-wrapper {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #112b3c;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+            border: 4px solid #fff;
+        }
+        .step-content h3 {
+            margin: 10px 0 5px 0;
+            color: #333;
+            font-size: 18px;
+        }
+        .step-content p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+        /* Active and Completed States */
+        .step.active .step-icon {
+            background-color: #F66B0E;
+            color: white;
+            border-color: #ffc99c;
+        }
+        .step.completed .step-icon {
+            background-color: #F66B0E;
+            color: white;
+            border-color: #F66B0E;
+        }
+        /* --- INTERACTIVE STEPS STYLES END --- */
+
+        .illumination-section {
+            max-width: 1400px;
+            margin: 60px auto;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        /* --- CAROUSEL STYLES START --- */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(17, 43, 60, 0.85), transparent);
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        .carousel-caption h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        .carousel-caption p {
+            margin: 0;
+            font-size: 1rem;
+            max-width: 80%;
+        }
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .carousel-container:hover .carousel-nav {
+            opacity: 1;
+        }
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #112b3c;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 1rem;
+            transition: background-color 0.2s;
+        }
+        .carousel-nav button:hover {
+            background-color: white;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+        }
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .carousel-dot.active {
+            background-color: white;
+        }
+        /* --- CAROUSEL STYLES END --- */
+
+        .Volunteer-Container
+        {
+          text-align: center;
+          padding: 20px;
+        }
+        .card-container {
+          display: flex;
+          justify-content: center;
+          gap: 25px; /* Reduced gap for better fit */
+          padding: 20px;
+          flex-wrap: wrap;
+          max-width: 1400px; /* Limit max width */
+          margin: 0 auto; /* Center the container */
+        }
+
+        .card {
+          background-color: #f8f8f8;
+          border-radius: 8px;
+          width: 350px; /* Slightly smaller width for more cards */
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          transition: 
+            box-shadow 0.3s ease,
+            transform 0.3s ease;
+        }
+
+        .card:hover {
+          box-shadow: 0 8px 24px rgba(32, 83, 117, 0.25), 0 2px 8px rgba(0,0,0,0.10);
+          transform: translateY(-8px);
+          z-index: 2;
+        }
+
+        .tag {
+          background-color: #ff9800;
+          color: white;
+          padding: 6px 12px;
+          border-top-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          font-weight: bold;
+          font-size: 0.8em;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+        }
+
+        .card-content {
+          background-color: white;
+          padding: 20px;
+          text-align: left;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .card-title {
+          font-size: 1.2em; /* Increased title size */
+          font-weight: bold; /* Bolder title */
+          color: #112B3C;
+          margin-bottom: 10px; /* Space below title */
+        }
+
+        .card-category-heading {
+          font-size: 0.9em;
+          font-weight: bold;
+          color: #555;
+          margin-top: auto;
+          margin-bottom: 5px;
+        }
+
+        .card-description {
+          font-size: 0.95em; /* Slightly larger description */
+          color: #555;
+          line-height: 1.5;
+          margin-bottom: 20px; /* More space at the bottom */
+          flex-grow: 1;
+        }
+        .card-footer {
+            margin-top: auto;
+            text-align: right;
+        }
+        .card-footer a {
+            color: #F66B0E;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .card-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .card-image {
+          height: 200px; /* Standardized image height */
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .card-image img 
+        {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .line
+        {
+          padding: 40px;
+        }
+        .testimonials-section {
+          padding: 40px 20px;
+          background-color: #fff;
+        }
+        .importance-points {
+    padding: 30px;
+}
+        .testimonials-content {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          align-items: flex-start;
+          gap: 40px; /* Increased gap */
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .left-column {
+          flex: 1 1 300px; /* Flex properties for responsiveness */
+        }
+
+        .left-column h2 {
+          font-size: 28px;
+          color: #1b2a41;
+          font-weight: bold;
+        }
+
+        .left-column p {
+          color: #3e4a5a;
+          margin-top: 8px;
+          font-size: 14px;
+        }
+
+        .right-column {
+          flex: 2 1 500px; /* Flex properties for responsiveness */
+          display: grid;
+          gap: 20px;
+          grid-template-columns: 1fr; /* Single column on mobile */
+        }
+        
+        @media (min-width: 768px) {
+            .right-column {
+                grid-template-columns: repeat(2, 1fr); /* 2x2 grid on larger screens */
+            }
+        }
+
+        /* --- TESTIMONIAL CARD STYLES START --- */
+        .testimonial-card {
+          background: #f5f5f5;
+          padding: 20px;
+          border-radius: 8px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .testimonial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .testimonial-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .testimonial-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-card .name {
+          font-weight: bold;
+          margin: 0;
+        }
+
+        .testimonial-card .stars {
+          color: #f4b400;
+          font-size: 14px;
+          margin: 0;
+        }
+
+        .testimonial-card .message {
+          font-size: 14px;
+          color: #333;
+          margin: 0;
+          line-height: 1.5;
+        }
+        /* --- TESTIMONIAL CARD STYLES END --- */
+
+        .testimonials-cta {
+          text-align: center;
+          margin-top: 30px;
+        }
+
+        .get-started-btn {
+          background-color: #ff6b00;
+          color: white;
+          padding: 10px 80px;
+          border: none;
+          border-radius: 6px;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          margin-top: 40px;
+        }
+
+        .get-started-btn:hover {
+          background-color: #e85e00;
+        }
+        .container-FOOTER1 {
+          background-color: #205375;
+          padding: 20px;
+        }
+
+        .Footertxt {
+          color: white;
+          margin-left: 40px;
+          text-decoration: none;
+        }
+
+        .footer2 {
+          color: white;
+          background-color: #F66B0E;
+          text-align: center;
+          padding: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background-color: #F66B0E;
+            color: white;
+            padding: 20px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .success-message .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .success-message h2 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        .success-message p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .importance-section {
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .importance-section h2 {
+            font-size: 28px;
+            color: #112b3c;
+            margin-bottom: 15px;
+        }
+        .importance-section p {
+            font-size: 16px;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+        .importance-points {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .importance-point {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 250px;
+            text-align: center;
+        }
+        .importance-point .icon {
+            font-size: 30px;
+            color: #F66B0E;
+            margin-bottom: 10px;
+        }
+        .importance-point h3 {
+            font-size: 18px;
+            color: #112b3c;
+            margin: 0 0 10px 0;
+        }
+        .importance-point p {
+            font-size: 14px;
+            color: #777;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+   <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">Login</button>
+        <div class="dropdown-content">
+          <a href="auth.html">Login</a>
+          <a href="auth.html">Signup</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+    <div class="hero-section">
+    <img src="https://images.pexels.com/photos/6647026/pexels-photo-6647026.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1200x400';" alt="A group of volunteers working together in a community." class="hero-background">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 style="color: white; font-size: 40pxpx;">Volunteer Opportunities</h1>
+      <p style="font-size: 30px; color: white; font-size: medium;" >Join the mission to light up communities.</p>
+      <div class="hero-buttons">
+        <a href="InteractiveMap.html" id="explore-map-btn"><button class="button"><strong>Explore Map</strong></button></a>
+        <a href="Discussion.html" id="learn-more-btn"><button class="button2" onclick="window.location.href='/DISCUSSION/Discussion.html'"><strong>Learn more</strong></button></a>
+      </div>
+    </div>
+  </div>
+  <br>
+ 
+  <div class="steps-container">
+      <div class="steps-header" id="steps-header">
+          <h2>Steps to Volunteer</h2>
+          <p>Follow these steps to get started.</p>
+      </div>
+      <div class="steps-timeline" id="steps-timeline">
+          <div class="step" data-step="1">
+              <div class="step-icon-wrapper">
+                  <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+              </div>
+              <div class="step-content">
+                  <h3>Sign Up</h3>
+                  <p>Create an account.</p>
+              </div>
+          </div>
+          <div class="step" data-step="2">
+              <div class="step-icon-wrapper">
+                  <div class="step-icon"><i class="fas fa-search-location"></i></div>
+              </div>
+              <div class="step-content">
+                  <h3>Choose Opportunities</h3>
+                  <p>Browse Volunteering Opportunities.</p>
+              </div>
+          </div>
+          <div class="step" data-step="3">
+              <div class="step-icon-wrapper">
+                  <div class="step-icon"><i class="fas fa-file-signature"></i></div>
+              </div>
+              <div class="step-content">
+                  <h3>Apply</h3>
+                  <p>Submit your Application.</p>
+              </div>
+          </div>
+          <div class="step" data-step="4">
+              <div class="step-icon-wrapper">
+                  <div class="step-icon"><i class="fas fa-hands-helping"></i></div>
+              </div>
+              <div class="step-content">
+                  <h3>Start Volunteering</h3>
+                  <p>Make a Difference!</p>
+              </div>
+          </div>
+      </div>
+      <div id="success-message" class="success-message hidden">
+        <div class="icon"><i class="fas fa-check-circle"></i></div>
+        <h2>Congratulations!</h2>
+        <p>You've successfully become a volunteer!</p>
+    </div>
+  </div>
+
+
+<section class="illumination-section">
+    <div class="carousel-container" id="info-carousel">
+        <div class="carousel-slides">
+            <div class="carousel-slide">
+                <img src="https://images.pexels.com/photos/6564821/pexels-photo-6564821.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/112b3c/ffffff?text=Community';" alt="A vibrant Filipino community with children playing.">
+                <div class="carousel-caption">
+                    <h3>IllumiNation PH: Our Mission</h3>
+                    <p>IllumiNation PH is an interactive platform dedicated to mapping unelectrified communities across the Philippines. We connect donors, volunteers, and organizations to areas in need, providing solutions like solar technology and infrastructure support to bring sustainable light and energy to every Filipino household.</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://images.pexels.com/photos/2516406/pexels-photo-2516406.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/F66B0E/ffffff?text=Energy+Poverty';" alt="A single lightbulb glowing in a dark, rural home.">
+                <div class="carousel-caption">
+                    <h3>The Challenge of Energy Poverty</h3>
+                    <p>A significant portion of the Philippine population lacks access to electricity, which hinders overall development and well-being. As of 2024, data suggests that nearly 30% of Filipinos do not have access to electricity or experience frequent brownouts, an issue often underreported and unnoticed.</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://images.pexels.com/photos/8853499/pexels-photo-8853499.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/205375/ffffff?text=Solar+Power';" alt="Solar panels being installed on a rooftop in a sunny, rural area.">
+                <div class="carousel-caption">
+                    <h3>Our Solution: A Central Hub for Change</h3>
+                    <p>Our website acts as a central hub to bridge the gap between communities in need and those willing to help. By providing accessible information, facilitating direct communication, and offering resources, we aim to accelerate the goal of universal electricity access in the Philippines.</p>
+                </div>
+            </div>
+             <div class="carousel-slide">
+                <img src="https://images.pexels.com/photos/461049/pexels-photo-461049.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/333333/ffffff?text=Get+Involved';" alt="A diverse group of volunteers working together happily on a community project.">
+                <div class="carousel-caption">
+                    <h3>Empowering Action Through Information</h3>
+                    <p>We empower individuals and organizations to take concrete action. Whether it's through volunteering, exploring off-grid solutions, or advocating for policy changes, our platform equips you with the knowledge and connections to contribute meaningfully to the cause.</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-nav">
+            <button id="prevBtn">&lt;</button>
+            <button id="nextBtn">&gt;</button>
+        </div>
+        <div class="carousel-dots" id="carousel-dots-container"></div>
+    </div>
+</section>
+
+<section class="importance-section">
+    <h2>The Importance of Volunteering</h2>
+    <p>Volunteering is a powerful way to make a difference in the world. It's about giving your time and skills to help others without expecting payment. Your contribution, no matter how small, can have a huge impact on communities and individuals in need.</p>
+    <div class="importance-points">
+        <div class="importance-point">
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <h3>Community Impact</h3>
+            <p>Help build stronger, more resilient communities by addressing local needs directly.</p>
+        </div>
+        <div class="importance-point">
+            <div class="icon"><i class="fas fa-seedling"></i></div>
+            <h3>Personal Growth</h3>
+            <p>Develop new skills, gain valuable experience, and build confidence and self-esteem.</p>
+        </div>
+        <div class="importance-point">
+            <div class="icon"><i class="fas fa-heart"></i></div>
+            <h3>Sense of Purpose</h3>
+            <p>Experience a deep sense of fulfillment by contributing to a cause you care about.</p>
+        </div>
+    </div>
+</section>
+
+<div class="Volunteer-Container">
+<h1 style="margin-top: 20px;">Volunteer Opportunities</h1>
+Explore various ways to contribute and help your community.
+</div>
+<div class="card-container">
+  <div class="card">
+    <div class="tag">Education</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop" alt="Teaching community members about solar power." />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Teaching and Awareness</h3>
+      <p class="card-description">Help inform people and spread awareness about the benefits of renewable energy and sustainable practices in communities.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag">Volunteer</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=1964&auto=format&fit=crop" alt="A volunteer assisting with a community project." />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Participate for a Greater Cause</h3>
+      <p class="card-description">Engage in hands-on projects, from installing solar panels to organizing community events that promote sustainable living.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag">Charity</div>
+    <div class="card-image">
+        <img src="https://images.pexels.com/photos/442152/pexels-photo-442152.jpeg" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Support Electrification Projects</h3>
+      <p class="card-description">Assist in our mission to electrify homes by supporting fundraising, logistics, and on-the-ground implementation.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag">Field Technician</div>
+    <div class="card-image">
+        <img src="https://images.pexels.com/photos/1254997/pexels-photo-1254997.jpeg" alt="Solar panels on a roof" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Solar Panel Installation</h3>
+      <p class="card-description">Join a team to install solar panels on homes and schools, bringing clean, renewable energy where it's needed most.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag">Licensed Professional</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop" alt="Electrician working on a circuit breaker" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Community Wiring & Repair</h3>
+      <p class="card-description">Use your professional certification to safely wire homes and install essential electrical systems in off-grid areas.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tag">Support & Coordination</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" alt="Team planning around a table" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Project Coordination</h3>
+      <p class="card-description">Lead a team of volunteers on the ground. Manage schedules, tasks, and ensure projects run smoothly from start to finish.</p>
+    </div>
+  </div>
+    <div class="card">
+    <div class="tag">Community & Admin</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" alt="People talking in a community meeting" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Community Outreach</h3>
+      <p class="card-description">Be the bridge between our organization and the communities we serve. Conduct needs assessments and build lasting relationships.</p>
+    </div>
+  </div>
+    <div class="card">
+    <div class="tag">Community & Admin</div>
+    <div class="card-image">
+        <img src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?q=80&w=1974&auto=format&fit=crop" alt="Person working on a laptop for a non-profit" />
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">Fundraising & Donor Relations</h3>
+      <p class="card-description">Help secure funding to power our projects. Engage with donors and create campaigns to support our mission. (Remote)</p>
+    </div>
+  </div>
+</div>
+<div class="line">
+<hr>
+</div>
+
+<section class="testimonials-section">
+  <div class="testimonials-content">
+    <div class="left-column">
+      <h2 style="margin-top: 0px; font-size: 40px;">Volunteer Testimonials</h2>
+      <p style="margin-left: 0px;">Hear from those who have volunteered with us.</p>
+    </div>
+
+    <div class="right-column">
+      <div class="testimonial-card">
+        <div class="testimonial-header">
+            <div class="testimonial-user">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Emily Clark">
+                <p class="name">Emily Clark</p>
+            </div>
+            <p class="stars">★★★★★</p>
+        </div>
+        <p class="message">Volunteering was an eye-opening experience!</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-header">
+            <div class="testimonial-user">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith">
+                <p class="name">John Smith</p>
+            </div>
+            <p class="stars">★★★★★</p>
+        </div>
+        <p class="message">I loved making a difference in my community.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-header">
+            <div class="testimonial-user">
+                <img src="https://randomuser.me/api/portraits/women/60.jpg" alt="Sarah Johnson">
+                <p class="name">Sarah Johnson</p>
+            </div>
+            <p class="stars">★★★★★</p>
+        </div>
+        <p class="message">The team was supportive and inspiring.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-header">
+            <div class="testimonial-user">
+                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Michael Ray">
+                <p class="name">Michael Ray</p>
+            </div>
+            <p class="stars">★★★★★</p>
+        </div>
+        <p class="message">I gained valuable skills while helping others.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="testimonials-cta">
+    <button class="get-started-btn" onclick="window.location.href='/VOLUNTEER/VOLUNTEER_SIGNUP-DONE/volunteer-signup.html'">Get Started</button>
+  </div>
+</section>
+<div class="line">
+<hr>
+</div>
+
+<footer>
+    <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+          &nbsp; &nbsp;Contact us: info@illuminatioph.com
+    </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressKey = 'volunteerProgress';
+        const steps = document.querySelectorAll('.step');
+        const timeline = document.querySelector('.steps-timeline');
+        const stepsHeader = document.getElementById('steps-header');
+        const stepsTimeline = document.getElementById('steps-timeline');
+        const successMessage = document.getElementById('success-message');
+
+        const getInitialProgress = () => ({
+            signedUp: false,
+            choseOpportunities: false,
+            applied: false,
+        });
+
+        const loadProgress = () => {
+            const savedProgress = sessionStorage.getItem(progressKey);
+            return savedProgress ? JSON.parse(savedProgress) : getInitialProgress();
+        };
+
+        const saveProgress = (progress) => {
+            sessionStorage.setItem(progressKey, JSON.stringify(progress));
+        };
+
+        const updateProgressVisuals = () => {
+            const progress = loadProgress();
+            steps.forEach(step => step.classList.remove('completed', 'active'));
+
+            let completedCount = 0;
+            if (progress.signedUp) {
+                steps[0].classList.add('completed');
+                completedCount = 1;
+                if (progress.choseOpportunities) {
+                    steps[1].classList.add('completed');
+                    completedCount = 2;
+                    if (progress.applied) {
+                        steps[2].classList.add('completed');
+                        completedCount = 3;
+                    }
+                }
+            }
+
+            if (completedCount < steps.length) {
+                steps[completedCount].classList.add('active');
+            }
+            
+            if (completedCount === 3) {
+                 steps[3].classList.add('completed');
+                 steps[3].classList.remove('active');
+                 
+                 if(stepsHeader) stepsHeader.classList.add('hidden');
+                 if(stepsTimeline) stepsTimeline.classList.add('hidden');
+                 if(successMessage) successMessage.classList.remove('hidden');
+
+            } else {
+                 if(stepsHeader) stepsHeader.classList.remove('hidden');
+                 if(stepsTimeline) stepsTimeline.classList.remove('hidden');
+                 if(successMessage) successMessage.classList.add('hidden');
+            }
+
+            const progressPercentage = completedCount * (100 / (steps.length - 1) * 0.75);
+            if(timeline) {
+                timeline.style.setProperty('--progress-width', `${progressPercentage}%`);
+            }
+        };
+        
+        const setProgress = (key) => {
+            const progress = loadProgress();
+            let canProceed = false;
+
+            switch (key) {
+                case 'signedUp':
+                    canProceed = true;
+                    break;
+                case 'choseOpportunities':
+                    if (progress.signedUp) canProceed = true;
+                    break;
+                case 'applied':
+                    if (progress.choseOpportunities) canProceed = true;
+                    break;
+            }
+
+            if (canProceed && !progress[key]) {
+                progress[key] = true;
+                saveProgress(progress);
+                updateProgressVisuals();
+            }
+        };
+
+        // Add event listeners
+        const loginLink = document.getElementById('login-link');
+        if (loginLink) {
+            loginLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                setProgress('signedUp');
+            });
+        }
+        
+        const signupLink = document.getElementById('signup-link');
+        if (signupLink) {
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                setProgress('signedUp');
+            });
+        }
+        
+        const registrationLink = document.getElementById('registration-link');
+        if (registrationLink) {
+            registrationLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                setProgress('applied');
+            });
+        }
+
+        const learnMoreBtn = document.getElementById('learn-more-btn');
+        if(learnMoreBtn) {
+            learnMoreBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setProgress('applied');
+            });
+        }
+        
+        const getStartedBtn = document.getElementById('get-started-btn');
+        if (getStartedBtn) {
+            getStartedBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setProgress('applied');
+            });
+        }
+        
+        const handleScroll = () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+                setProgress('choseOpportunities');
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+
+
+        // --- Carousel Logic ---
+        const carousel = document.getElementById('info-carousel');
+        if (carousel) {
+            const slides = carousel.querySelector('.carousel-slides');
+            const slideCount = slides.children.length;
+            const dotsContainer = document.getElementById('carousel-dots-container');
+            let currentIndex = 0;
+            let intervalId;
+
+            for (let i = 0; i < slideCount; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('carousel-dot');
+                dot.addEventListener('click', () => {
+                    goToSlide(i);
+                    resetInterval();
+                });
+                dotsContainer.appendChild(dot);
+            }
+            const dots = dotsContainer.children;
+
+            const updateCarousel = () => {
+                slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                Array.from(dots).forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            };
+            
+            const goToSlide = (index) => {
+                currentIndex = (index + slideCount) % slideCount;
+                updateCarousel();
+            };
+
+            const nextBtn = document.getElementById('nextBtn');
+            if(nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    goToSlide(currentIndex + 1);
+                    resetInterval();
+                });
+            }
+
+            const prevBtn = document.getElementById('prevBtn');
+            if(prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    goToSlide(currentIndex - 1);
+                    resetInterval();
+                });
+            }
+            
+            const startInterval = () => {
+                intervalId = setInterval(() => {
+                    goToSlide(currentIndex + 1);
+                }, 5000);
+            };
+
+            const resetInterval = () => {
+                clearInterval(intervalId);
+                startInterval();
+            };
+
+            updateCarousel();
+            startInterval();
+        }
+        
+        // **FIXED**: Check if user is logged in to auto-complete the first step
+        const currentUser = Session.getCurrentUser();
+        if (currentUser) {
+            const progress = loadProgress();
+            if (!progress.signedUp) {
+                progress.signedUp = true;
+                saveProgress(progress);
+            }
+        }
+        
+        // Initial load of progress visuals
+        updateProgressVisuals();
+    });
+</script>
+
+</body>
+</html>

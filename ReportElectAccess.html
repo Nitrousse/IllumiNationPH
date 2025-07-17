@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IllumiNation PH - Report Electricity Access</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+<link rel="stylesheet" href="InteractiveMapDesign.css" />
+  <style>
+    /* Universal Box-Sizing */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* CSS Variables for better theme management */
+    :root {
+        /* Colors */
+        --primary-color: #F66B0E; /* Orange */
+        --secondary-color: #112B3C; /* Dark Blue */
+        --text-color: #112B3C;
+        --light-gray: #f9f9f9;
+        --border-color: #ccc;
+        --success-color: #28a745;
+        --error-color: #dc3545;
+
+        /* Spacing */
+        --spacing-sm: 10px;
+        --spacing-md: 20px;
+        --spacing-lg: 40px;
+
+        /* Border Radii */
+        --border-radius-sm: 4px;
+        --border-radius-md: 8px;
+        --border-radius-lg: 12px;
+    }
+
+    /* Base styles using variables and original font */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f6ff;
+        color: var(--text-color);
+    }
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    button {
+        cursor: pointer;
+        font-family: inherit;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+        transform: scale(1.03);
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* UTILITY CLASSES */
+    .hidden {
+        display: none !important;
+    }
+
+    /* --- Navbar Styles (Standardized) --- */
+    .top-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #112b3c;
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        height: 70px;
+        flex-shrink: 0;
+    }
+    .logo {
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white !important;
+    }
+    .logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+    .logo-text {
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-left: 8px;
+    }
+    .navbar {
+      display: flex;
+      align-items: stretch;
+      margin-right: 20px;
+      height: 100%;
+    }
+    .navbar a, .dropbtn {
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 500;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.3s, color 0.3s;
+      white-space: nowrap;
+    }
+    .dropbtn {
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+    }
+    .navbar a:hover, .dropdown:hover .dropbtn {
+      background-color: #f0f0f0;
+      color: #112b3c;
+    }
+    .dropdown {
+        position: relative;
+        display: flex;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 0 0 0.5rem 0.5rem;
+        overflow: hidden;
+        top: 100%;
+        left: 0;
+    }
+    .dropdown-content a {
+        color: black;
+        padding: 12px 20px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        font-size: 1.05rem;
+        font-weight: 500;
+        line-height: normal;
+    }
+    .dropdown-content a:hover {
+        background-color: #ddd;
+        color: #112b3c;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    /* --- End Navbar Styles --- */
+
+
+    /* Hero Section - Refinements */
+    .hero-section {
+        position: relative;
+        width: 100%;
+        min-height: 350px; /* Adjusted height */
+        height: auto; /* Allow content to dictate height */
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--secondary-color);
+        opacity: 0.8; /* Slightly less opaque */
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: var(--spacing-lg) var(--spacing-md);
+        max-width: 1000px;
+    }
+
+    .hero-content h1 {
+        font-size: 3rem; /* Larger font for hero title */
+        margin-bottom: var(--spacing-sm);
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: var(--spacing-md);
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* === UPDATED PROGRESS BAR SECTION === */
+    .progress-bar-container {
+        padding: var(--spacing-md) 0 var(--spacing-lg);
+        background-color: var(--light-gray);
+        margin-top: -50px;
+        position: relative;
+        z-index: 50;
+        border-bottom-left-radius: var(--border-radius-md);
+        border-bottom-right-radius: var(--border-radius-md);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .progress-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        /* Padding makes the container's effective width match the distance between circle centers */
+        padding: var(--spacing-md) 17.5px 0 17.5px;
+        --progress-width: 0%;
+    }
+
+    /* The gray background line */
+    .progress-bar::before {
+        content: '';
+        position: absolute;
+        /* Vertically center the line with the circles */
+        top: calc(var(--spacing-md) + 17.5px - 2px); /* 20px padding + 17.5px half-circle - 2px half-line-height */
+        height: 4px;
+        background-color: var(--border-color);
+        width: 100%;
+        left: 0;
+        z-index: 1; /* Behind steps and fill line */
+    }
+
+    /* The orange progress fill line */
+    .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: calc(var(--spacing-md) + 17.5px - 2px); /* Same vertical position */
+        height: 4px;
+        background-color: var(--primary-color);
+        width: var(--progress-width); /* Controlled by JavaScript */
+        left: 0;
+        z-index: 2; /* Above background line, below steps */
+        transition: width 0.5s ease-in-out;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 3; /* On top of the lines */
+        text-align: center;
+        color: var(--text-color);
+        font-weight: 500;
+        width: 100px; /* Give labels some breathing room */
+    }
+
+    .step-circle {
+        width: 35px;
+        height: 35px;
+        /* This background is crucial to hide the line passing 'through' the circle */
+        background-color: #fff;
+        border: 3px solid var(--border-color);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: var(--text-color);
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .progress-step.active .step-circle {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+    }
+
+    .progress-step.completed .step-circle {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        color: white;
+    }
+    
+    /* Style for the success checkmark step */
+    .progress-step.success .step-circle {
+        background-color: var(--success-color);
+        border-color: var(--success-color);
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.9em;
+        color: #555;
+        white-space: nowrap;
+        transition: color 0.3s, font-weight 0.3s;
+    }
+
+    .progress-step.completed .step-label,
+    .progress-step.success .step-label {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .progress-step.active .step-label {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+    /* === END OF PROGRESS BAR UPDATES === */
+
+    /* Main Form Sections */
+    main.container {
+        padding-top: var(--spacing-lg); /* Add padding to the top of main content */
+        padding-bottom: var(--spacing-lg);
+    }
+
+    .form-section {
+        background-color: #fff;
+        padding: var(--spacing-lg) var(--spacing-md);
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: var(--spacing-md);
+        font-weight: 700;
+        color: var(--secondary-color);
+    }
+    .form-section > p {
+        text-align: center;
+        margin-bottom: var(--spacing-lg);
+        color: #555;
+        font-size: 1.1rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        max-width: 800px; /* Limit form width */
+        margin: 0 auto;
+    }
+    .form-row {
+        display: flex;
+        gap: var(--spacing-md);
+        flex-wrap: wrap;
+    }
+    label {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    input, select, textarea {
+        margin-top: 8px;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(246, 107, 14, 0.2);
+    }
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    small {
+        font-size: 0.75rem;
+        color: #777;
+        margin-top: 4px;
+    }
+    .error-message {
+        color: var(--error-color);
+        font-size: 0.85rem;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        text-align: left; /* Align error messages left */
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        padding: 8px;
+        border-radius: var(--border-radius-sm);
+    }
+
+    /* Buttons */
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: var(--spacing-md);
+    }
+    .btn {
+        padding: 12px 30px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+        user-select: none;
+        min-width: 120px; /* Ensure buttons have a minimum width */
+        display: flex; /* For spinner alignment */
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn:hover:not(.loading) {
+        background: #e65a00;
+    }
+    .btn-secondary {
+        background: #fff;
+        color: var(--secondary-color);
+        border: 1px solid var(--border-color);
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .btn-secondary:hover:not(.active) {
+        background: #f0f0f0;
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    .btn-secondary.active {
+        background: var(--secondary-color);
+        color: white;
+        border-color: var(--secondary-color);
+    }
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .btn-group label {
+        margin-right: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* Checkbox styling */
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: var(--spacing-md);
+        font-size: 0.95rem;
+        font-weight: normal; /* Override label font-weight */
+    }
+    .checkbox-container input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin: 0; /* Reset default margin */
+        flex-shrink: 0;
+        accent-color: var(--primary-color); /* For a consistent look */
+    }
+    .checkbox-container label {
+        margin: 0;
+        font-weight: normal;
+        flex-direction: row; /* Keep label text inline with checkbox */
+        align-items: center;
+    }
+    .checkbox-container label a {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+    .checkbox-container label a:hover {
+        color: #e65a00;
+    }
+
+    /* Styling for the loading spinner */
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-left-color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    /* Styles for review summary */
+    .review-summary p {
+        margin-bottom: 5px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+    .review-summary strong {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        display: block;
+        margin-bottom: 8px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .review-item {
+        background-color: var(--light-gray);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
+    .review-item-content {
+        flex: 1;
+        min-width: 70%;
+    }
+    .review-item-edit {
+        flex: none;
+        margin-left: var(--spacing-md);
+    }
+    .review-item-edit .edit-btn {
+        background: none;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 5px 10px;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .review-item-edit .edit-btn:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    /* Success Message Modal */
+    .success-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .success-box {
+        background: #fff;
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius-lg);
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .success-icon {
+        font-size: 50px;
+        color: #fff;
+        background-color: var(--success-color);
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        border-radius: 50%;
+        margin: 0 auto var(--spacing-md);
+    }
+    .success-box h2 {
+        color: var(--success-color);
+        font-size: 2rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    #successSummary {
+        margin: var(--spacing-md) 0;
+        text-align: left;
+        color: #555;
+        max-height: 250px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+    #successSummary p {
+        margin-bottom: 8px;
+    }
+    #successSummary strong {
+        color: var(--text-color);
+    }
+    #resetButton {
+        background-color: var(--primary-color);
+        color: white;
+        margin-top: var(--spacing-md);
+    }
+    #resetButton:hover {
+        background-color: #d85b0c;
+    }
+
+    /* Footer */
+    .footer2 {
+        color: white;
+        background-color: var(--primary-color);
+        text-align: center;
+        padding: var(--spacing-sm);
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+        .top-container {
+            flex-direction: column;
+            padding: 15px var(--spacing-sm);
+            gap: var(--spacing-md);
+            height: auto;
+        }
+        .navbar {
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
+            gap: var(--spacing-sm);
+            height: auto;
+        }
+        .navbar a {
+            padding: 10px;
+            width: 100%;
+            display: block;
+        }
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+        .hero-content p {
+            font-size: 1rem;
+        }
+        .progress-bar-container {
+            padding-left: var(--spacing-sm);
+            padding-right: var(--spacing-sm);
+        }
+        .progress-bar {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .progress-step {
+            flex: none;
+            width: 33%;
+            margin-bottom: var(--spacing-sm);
+        }
+        .progress-bar::before, .progress-bar::after {
+            display: none;
+        }
+        .form-row, .action-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        .btn, .btn-secondary {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .review-item {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .review-item-edit {
+            margin-left: 0;
+            margin-top: var(--spacing-sm);
+        }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-container">
+      <div class="logo">
+        <a href="Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+            <span class="logo-text">IllumiNation PH</span>
+        </a>
+      </div>
+      <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">About Us</button>
+        <div class="dropdown-content">
+          <a href="auth.html">Our Mission</a>
+          <a href="auth.html">Contact Us</a>
+        </div>
+      </div>
+    </nav>
+    </header>
+
+  <section class="hero-section">
+    <img src="https://images.pexels.com/photos/27180835/pexels-photo-27180835.jpeg" alt="Electricity Access Background" class="hero-background">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Report Electricity Access Status</h1>
+        <p>Help us keep electricity data up to date by submitting recent updates from your region.</p>
+    </div>
+  </section>
+
+  <div class="container progress-bar-container">
+    <div class="progress-bar" id="reportProgressBar">
+      <div class="progress-step active" data-step="1">
+        <span class="step-circle">1</span>
+        <span class="step-label">Location</span>
+      </div>
+      <div class="progress-step" data-step="2">
+        <span class="step-circle">2</span>
+        <span class="step-label">Access</span>
+      </div>
+      <div class="progress-step" data-step="3">
+        <span class="step-circle">3</span>
+        <span class="step-label">Notes</span>
+      </div>
+      <div class="progress-step" data-step="4">
+        <span class="step-circle">4</span>
+        <span class="step-label">Your Info</span>
+      </div>
+      <div class="progress-step" data-step="5">
+        <span class="step-circle">5</span>
+        <span class="step-label">Review</span>
+      </div>
+      <div class="progress-step" data-step="6">
+        <span class="step-circle">&#10004;</span>
+        <span class="step-label">Success</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <div id="errorMessage" class="error-message hidden"></div>
+
+    <section id="locationDetailsSection" class="form-section">
+      <h2 class="section-title">Location Details</h2>
+      <p>Provide the details of the location you are reporting on.</p>
+      <form id="locationForm">
+        <label>Region:
+          <select id="regionInput" required title="Select the region.">
+            <option value="">Select a Region</option>
+            <option value="Region I – Ilocos Region">Region I – Ilocos Region</option>
+            <option value="Region II – Cagayan Valley">Region II – Cagayan Valley</option>
+            <option value="Region III – Central Luzon">Region III – Central Luzon</option>
+            <option value="Region IV‑A – CALABARZON">Region IV‑A – CALABARZON</option>
+            <option value="MIMAROPA Region">MIMAROPA Region</option>
+            <option value="Region V – Bicol Region">Region V – Bicol Region</option>
+            <option value="Region VI – Western Visayas">Region VI – Western Visayas</option>
+            <option value="Region VII – Central Visayas">Region VII – Central Visayas</option>
+            <option value="Region VIII – Eastern Visayas">Region VIII – Eastern Visayas</option>
+            <option value="Region IX – Zamboanga Peninsula">Region IX – Zamboanga Peninsula</option>
+            <option value="Region X – Northern Mindanao">Region X – Northern Mindanao</option>
+            <option value="Region XI – Davao Region">Region XI – Davao Region</option>
+            <option value="Region XII – SOCCSKSARGEN">Region XII – SOCCSKSARGEN</option>
+            <option value="Region XIII – Caraga">Region XIII – Caraga</option>
+            <option value="NCR – National Capital Region">NCR – National Capital Region</option>
+            <option value="CAR – Cordillera Administrative Region">CAR – Cordillera Administrative Region</option>
+            <option value="BARMM – Bangsamoro Autonomous Region in Muslim Mindanao">BARMM – Bangsamoro Autonomous Region in Muslim Mindanao</option>
+            <option value="NIR – Negros Island Region">NIR – Negros Island Region</option>
+          </select>
+        </label>
+        <label>Province:
+          <input type="text" id="provinceInput" placeholder="e.g., Rizal" required title="Enter the province (required)"/>
+        </label>
+        <label>City/Municipality:
+          <input type="text" id="cityMunicipalityInput" placeholder="e.g., Antipolo City" required title="Enter the city or municipality (required)"/>
+        </label>
+        <label>Barangay:
+          <input type="text" id="barangayInput" placeholder="e.g., Barangay San Jose" required title="Enter the specific barangay (required)"/>
+        </label>
+        <label>GPS Coordinates (Optional):
+          <input type="text" id="gpsInput" placeholder="e.g., 14.5995, 120.9842" title="Enter latitude and longitude if available. You can find this on Google Maps."/>
+          <small>Enter latitude, longitude or click on the map to set coordinates.</small>
+        </label>
+        <div style="margin-top: 20px; height: 400px; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div id="mapid" style="height: 100%; width: 100%;"></div>
+        </div>
+        <div class="form-row action-buttons" style="margin-top: 20px;">
+            <button type="button" id="nextButton1" class="btn">Next</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="accessStatusSection" class="form-section hidden">
+      <h2 class="section-title">Electricity Access Status</h2>
+      <p>Describe the current electricity access situation in the area.</p>
+      <form id="statusForm">
+        <label>Current Status: <small class="error-message hidden" id="statusError">Please select a status.</small></label>
+        <div class="btn-group" id="currentStatusOptions">
+          <button type="button" class="btn-secondary" data-value="Has Access" title="The area consistently has access to electricity.">Has Access</button>
+          <button type="button" class="btn-secondary" data-value="No Access" title="The area has no access to electricity.">No Access</button>
+          <button type="button" class="btn-secondary" data-value="Intermittent Access" title="The area experiences frequent or inconsistent power supply.">Intermittent Access</button>
+        </div>
+
+        <label>Date of Observation:
+            <input type="date" id="observationDateInput" required title="The date you observed the current electricity access status."/>
+        </label>
+
+        <label>Number of Households Affected (Approx.):
+          <input type="number" id="householdsInput" placeholder="e.g., 50" min="0" title="Estimate the number of households impacted by this status."/>
+        </label>
+
+        <label>Primary Power Source(s) (Select all that apply): <small class="error-message hidden" id="powerSourceError">Please select at least one power source.</small></label>
+        <div class="btn-group" id="powerSourceOptions">
+          <button type="button" class="btn-secondary" data-value="Grid" title="Connected to the national power grid.">Grid</button>
+          <button type="button" class="btn-secondary" data-value="Solar" title="Uses solar panels for electricity.">Solar</button>
+          <button type="button" class="btn-secondary" data-value="Generator" title="Relies on fossil fuel generators.">Generator</button>
+          <button type="button" class="btn-secondary" data-value="None" title="No electricity source.">None</button>
+          <button type="button" class="btn-secondary" data-value="Other" title="Any other source not listed.">Other</button>
+        </div>
+        <div id="otherPowerSourceContainer" class="hidden" style="margin-top: 15px;">
+            <label>Please specify other power source:
+                <input type="text" id="otherPowerSourceInput" placeholder="e.g., battery, micro-hydro" title="Please specify the alternative power source." />
+                <small class="error-message hidden" id="otherPowerSourceError">Please specify the "Other" power source.</small>
+            </label>
+        </div>
+
+        <label>Estimated Hours of Electricity (per day, if applicable):
+          <input type="number" id="hoursInput" placeholder="e.g., 8" min="0" max="24" title="Average hours of electricity supply per day. Enter 0 if no access."/>
+        </label>
+        <div class="form-row action-buttons">
+            <button type="button" id="backButton1" class="btn btn-secondary">Back</button>
+            <button type="button" id="nextButton2" class="btn">Next</button>
+        </div>
+      </form>
+    </section>
+    
+    <section id="additionalNotesSection" class="form-section hidden">
+      <h2 class="section-title">Additional Notes</h2>
+      <p>Include any additional information or observations that might be helpful.</p>
+      <form id="notesForm">
+        <label>Detailed Description of Situation (Optional):
+          <textarea id="descriptionTextarea" placeholder="Describe specific challenges, ongoing efforts, or other relevant details." title="Provide more context on the situation."></textarea>
+        </label>
+        <label>Challenges Faced (Optional):
+          <input type="text" id="challengesInput" placeholder="e.g., frequent blackouts, high cost" title="List any specific difficulties related to electricity access."/>
+        </label>
+        <label>Proposed Solutions (Optional):
+          <input type="text" id="solutionsInput" placeholder="e.g., need for solar microgrids" title="Suggest potential solutions or improvements."/>
+        </label>
+        <label>Upload Image Proof (Optional):
+            <input type="file" id="imageProofInput" name="imageProof" accept="image/*" multiple title="Upload images to support your report (e.g., photos of the community, power sources)."/>
+            <small>Upload photos of the unelectrified community (Max 5 images, up to 5MB each).</small>
+        </label>
+        <div class="form-row action-buttons">
+            <button type="button" id="backButton2" class="btn btn-secondary">Back</button>
+            <button type="button" id="nextButton3" class="btn">Next</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="reporterInfoSection" class="form-section hidden">
+      <h2 class="section-title">Reporter Information</h2>
+      <p>Please provide your contact information. This helps us verify the report.</p>
+      <form id="reporterForm">
+        <div class="form-row">
+          <label>Name:
+            <input type="text" id="reporterNameInput" placeholder="Enter your full name" required title="Your full name (required for verification)."/>
+          </label>
+          <label>Email:
+            <input type="email" id="reporterEmailInput" placeholder="Enter your email" required title="Your email address (required for verification and updates)."/>
+          </label>
+        </div>
+        <label>Role:
+          <input type="text" id="reporterRoleInput" placeholder="e.g., resident, field worker" required title="Your role or affiliation (e.g., resident, volunteer, NGO worker)."/>
+        </label>
+        <label>Anonymous Submission:</label>
+        <div class="btn-group" id="anonymousOptions">
+          <button type="button" class="btn-secondary" data-value="yes">Yes</button>
+          <button type="button" class="btn-secondary active" data-value="no">No</button> </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="privacyConsent" required>
+           <label for="privacyConsent">
+            I confirm this information is accurate to the best of my knowledge and I have read and agree to the&nbsp; <a href="PrivacyPolicy.html" target="_blank">Privacy Policy</a>.
+           </label>
+        </div>
+        <div class="form-row action-buttons">
+            <button type="button" id="backButton3" class="btn btn-secondary">Back</button>
+            <button type="button" id="nextButton4" class="btn">Review Report</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="reviewConfirmSection" class="form-section hidden">
+        <h2 class="section-title">Review Your Report</h2>
+        <p>Please review the information you have provided before submitting.</p>
+        <div class="review-summary" id="reviewSummaryContent">
+            </div>
+        <div class="form-row action-buttons">
+            <button type="button" id="backButton4" class="btn btn-secondary">Back</button>
+            <button type="button" id="submitReportButton" class="btn">
+                Submit Report <span class="spinner hidden"></span>
+            </button>
+        </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+          &nbsp; &nbsp;Contact us: info@illuminatioph.com
+    </div>
+</footer>
+
+  <section id="successMessageSection" class="success-overlay hidden">
+    <div class="success-box">
+      <div class="success-icon">&#10004;</div>
+      <h2>Report Submitted!</h2>
+      <p>Thank you for helping us keep our data up-to-date. Your report has been successfully submitted.</p>
+      <div id="successSummary">
+          </div>
+      <button id="resetButton" class="btn">Make Another Report</button>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- State Management ---
+        let reportData = { step1: {}, step2: {}, step3: {}, step4: {} };
+        let currentStep = 1;
+
+        // --- DOM Element References ---
+        const sections = {
+            1: document.getElementById('locationDetailsSection'),
+            2: document.getElementById('accessStatusSection'),
+            3: document.getElementById('additionalNotesSection'),
+            4: document.getElementById('reporterInfoSection'),
+            5: document.getElementById('reviewConfirmSection'),
+            6: document.getElementById('successMessageSection')
+        };
+        const progressBar = document.getElementById('reportProgressBar');
+        const progressSteps = progressBar.querySelectorAll('.progress-step');
+        const errorMessageDiv = document.getElementById('errorMessage');
+
+        // --- Map Initialization ---
+        let map = null;
+        let marker = null;
+        const gpsInput = document.getElementById('gpsInput');
+
+        function initializeMap() {
+            if (document.getElementById('mapid') && !map) {
+                map = L.map('mapid').setView([12.8797, 121.7740], 5.5);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                map.on('click', function(e) {
+                    const { lat, lng } = e.latlng;
+                    gpsInput.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                    updateMapMarker(lat, lng);
+                });
+            }
+        }
+
+        function updateMapMarker(lat, lng) {
+            if (!map) return;
+            const position = [lat, lng];
+            if (marker) {
+                marker.setLatLng(position);
+            } else {
+                marker = L.marker(position).addTo(map);
+            }
+            map.flyTo(position, 12);
+        }
+        
+        gpsInput.addEventListener('input', (e) => {
+            const parts = e.target.value.split(',').map(s => parseFloat(s.trim()));
+            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                 updateMapMarker(parts[0], parts[1]);
+            }
+        });
+
+        // --- Form Logic ---
+        function showSection(step) {
+            Object.values(sections).forEach(s => s.classList.add('hidden'));
+            if (sections[step]) {
+                sections[step].classList.remove('hidden');
+                if(step === 1 && !map) initializeMap();
+                if(step === 1 && map) map.invalidateSize();
+            }
+            updateProgressBar(step);
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgressBar(step) {
+            progressSteps.forEach((s, index) => {
+                const stepNum = index + 1;
+                s.classList.remove('active', 'completed', 'success');
+                if (stepNum < step) s.classList.add('completed');
+                else if (stepNum === step) {
+                    if (step === progressSteps.length) s.classList.add('success');
+                    else s.classList.add('active');
+                }
+            });
+            const progressPercentage = step > 1 ? ((step - 1) / (progressSteps.length - 1)) * 100 : 0;
+            progressBar.style.setProperty('--progress-width', `${progressPercentage}%`);
+        }
+
+        function gatherData() {
+            reportData.step1 = {
+                region: document.getElementById('regionInput').value,
+                province: document.getElementById('provinceInput').value,
+                cityMunicipality: document.getElementById('cityMunicipalityInput').value,
+                barangay: document.getElementById('barangayInput').value,
+                gps: gpsInput.value
+            };
+            const activeStatusBtn = document.querySelector('#currentStatusOptions .active');
+            const powerSourceBtns = document.querySelectorAll('#powerSourceOptions .active');
+            reportData.step2 = {
+                status: activeStatusBtn ? activeStatusBtn.dataset.value : '',
+                observationDate: document.getElementById('observationDateInput').value,
+                households: document.getElementById('householdsInput').value,
+                powerSources: Array.from(powerSourceBtns).map(b => b.dataset.value),
+                otherPowerSource: document.getElementById('otherPowerSourceInput').value,
+                hours: document.getElementById('hoursInput').value
+            };
+            reportData.step3 = {
+                description: document.getElementById('descriptionTextarea').value,
+                challenges: document.getElementById('challengesInput').value,
+                solutions: document.getElementById('solutionsInput').value,
+                imageProof: document.getElementById('imageProofInput').files
+            };
+            const anonymousBtn = document.querySelector('#anonymousOptions .active');
+            reportData.step4 = {
+                reporterName: document.getElementById('reporterNameInput').value,
+                reporterEmail: document.getElementById('reporterEmailInput').value,
+                reporterRole: document.getElementById('reporterRoleInput').value,
+                isAnonymous: anonymousBtn ? anonymousBtn.dataset.value === 'yes' : false,
+                privacyConsent: document.getElementById('privacyConsent').checked
+            };
+        }
+
+        function validateStep(step) {
+            gatherData();
+            const data = reportData[`step${step}`];
+            let isValid = true;
+            
+            const requiredFields = {
+                1: ['region', 'province', 'cityMunicipality', 'barangay'],
+                2: ['status', 'observationDate'],
+                4: ['reporterName', 'reporterEmail', 'reporterRole', 'privacyConsent']
+            };
+
+            if (requiredFields[step]) {
+                for (const field of requiredFields[step]) {
+                    if (!data[field]) {
+                        alert(`Please complete all required fields in Step ${step}.`);
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            return isValid;
+        }
+
+        function populateReview() {
+            gatherData();
+            const reviewDiv = document.getElementById('reviewSummaryContent');
+            reviewDiv.innerHTML = `
+                <div class="review-item">
+                    <div class="review-item-content">
+                        <strong>Location Details</strong>
+                        <p>Location: ${reportData.step1.barangay}, ${reportData.step1.cityMunicipality}, ${reportData.step1.province}, ${reportData.step1.region}</p>
+                        <p>GPS: ${reportData.step1.gps || 'N/A'}</p>
+                    </div>
+                    <div class="review-item-edit"><button type="button" class="edit-btn" onclick="window.goToStep(1)">Edit</button></div>
+                </div>
+                <div class="review-item">
+                     <div class="review-item-content">
+                        <strong>Access Status</strong>
+                        <p>Status: ${reportData.step2.status}</p>
+                        <p>Date: ${reportData.step2.observationDate}</p>
+                        <p>Households Affected: ${reportData.step2.households || 'N/A'}</p>
+                        <p>Power Sources: ${reportData.step2.powerSources.join(', ')} ${reportData.step2.otherPowerSource ? `(${reportData.step2.otherPowerSource})` : ''}</p>
+                        <p>Hours/Day: ${reportData.step2.hours || 'N/A'}</p>
+                    </div>
+                    <div class="review-item-edit"><button type="button" class="edit-btn" onclick="window.goToStep(2)">Edit</button></div>
+                </div>
+                 <div class="review-item">
+                     <div class="review-item-content">
+                        <strong>Reporter Info</strong>
+                        <p>Name: ${reportData.step4.isAnonymous ? 'Anonymous' : reportData.step4.reporterName}</p>
+                        <p>Email: ${reportData.step4.isAnonymous ? 'Anonymous' : reportData.step4.reporterEmail}</p>
+                        <p>Role: ${reportData.step4.reporterRole}</p>
+                    </div>
+                    <div class="review-item-edit"><button type="button" class="edit-btn" onclick="window.goToStep(4)">Edit</button></div>
+                </div>
+            `;
+        }
+        
+        function submitReport() {
+            const submitButton = document.getElementById('submitReportButton');
+            const spinner = submitButton.querySelector('.spinner');
+            
+            submitButton.classList.add('loading');
+            spinner.classList.remove('hidden');
+            submitButton.disabled = true;
+
+            setTimeout(() => {
+                const finalReport = { 
+                    id: 'R' + Date.now().toString().slice(-6),
+                    ...reportData.step1, 
+                    ...reportData.step2, 
+                    ...reportData.step3, 
+                    ...reportData.step4 
+                };
+                finalReport.imageProof = Array.from(finalReport.imageProof).map(f => f.name);
+
+                const reports = DB.get('reports') || [];
+                reports.push(finalReport);
+                DB.set('reports', reports);
+                
+                const currentUser = Session.getCurrentUser();
+                if(currentUser && !finalReport.isAnonymous) {
+                    const allUsers = DB.get('users');
+                    const userIndex = allUsers.findIndex(u => u.email === currentUser.email);
+                    if(userIndex !== -1) {
+                        if(!allUsers[userIndex].reports) allUsers[userIndex].reports = [];
+                        allUsers[userIndex].reports.push(`${finalReport.barangay}, ${finalReport.cityMunicipality}`);
+                        DB.set('users', allUsers);
+                        DB.set('currentUser', allUsers[userIndex]);
+                    }
+                }
+
+                document.getElementById('successSummary').innerHTML = `<p>Your report for <strong>${finalReport.barangay}, ${finalReport.cityMunicipality}</strong> has been received.</p>`;
+                showSection(6);
+
+                submitButton.classList.remove('loading');
+                spinner.classList.add('hidden');
+                submitButton.disabled = false;
+
+            }, 1500); // Simulate network delay
+        }
+        
+        window.goToStep = showSection;
+
+        // --- Event Listeners ---
+        document.querySelectorAll('.btn-group').forEach(group => {
+            group.addEventListener('click', e => {
+                if (e.target.tagName === 'BUTTON') {
+                    const isMultiSelect = group.id === 'powerSourceOptions';
+                    if (!isMultiSelect) {
+                        group.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                    }
+                    e.target.classList.toggle('active');
+                    
+                    if (group.id === 'powerSourceOptions' && e.target.dataset.value === 'other') {
+                        document.getElementById('otherPowerSourceContainer').classList.toggle('hidden', !e.target.classList.contains('active'));
+                    }
+                }
+            });
+        });
+        
+        document.getElementById('nextButton1').addEventListener('click', () => validateStep(1) && showSection(2));
+        document.getElementById('backButton1').addEventListener('click', () => showSection(1));
+        document.getElementById('nextButton2').addEventListener('click', () => validateStep(2) && showSection(3));
+        document.getElementById('backButton2').addEventListener('click', () => showSection(2));
+        document.getElementById('nextButton3').addEventListener('click', () => validateStep(3) && showSection(4));
+        document.getElementById('backButton3').addEventListener('click', () => showSection(3));
+        document.getElementById('nextButton4').addEventListener('click', () => {
+            if (validateStep(4)) {
+                populateReview();
+                showSection(5);
+            }
+        });
+        document.getElementById('backButton4').addEventListener('click', () => showSection(4));
+        document.getElementById('submitReportButton').addEventListener('click', submitReport);
+        document.getElementById('resetButton').addEventListener('click', () => {
+            reportData = { step1: {}, step2: {}, step3: {}, step4: {} };
+            document.querySelectorAll('form').forEach(form => form.reset());
+            document.querySelectorAll('.btn-group button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('#anonymousOptions [data-value="no"]').classList.add('active');
+            showSection(1);
+        });
+        
+        const loggedInUser = Session.getCurrentUser();
+        if (loggedInUser) {
+            document.getElementById('reporterNameInput').value = loggedInUser.username;
+            document.getElementById('reporterEmailInput').value = loggedInUser.email;
+        }
+
+        showSection(currentStep);
+    });
+</script>
+</body>
+</html>

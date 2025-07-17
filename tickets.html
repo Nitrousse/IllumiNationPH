@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ticket Management - IllumiNation PH Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Universal Box-Sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CSS Variables for better theme management - Consistent with adminDashboard.html */
+        :root {
+            /* Colors */
+            --primary-color: #F66B0E; /* Orange */
+            --primary-hover-color: #ff9f0a; /* Custom hover orange for buttons */
+            --secondary-color: #112B3C; /* Dark Blue */
+            --text-color: #374151; /* Main body text color */
+            --heading-color: #1a2a40; /* Darker heading color */
+            --background-color: #f4f6ff; /* Light background for the page */
+            --card-bg: #ffffff; /* White background for cards/sections */
+            --light-gray-bg: #f9fafb; /* Lighter background for elements within cards */
+            --border-color: #e2e8f0; /* Light border color */
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --info-color: #0d6efd; /* Blue for info */
+            --warning-color: #ffc107; /* Yellow for warning */
+
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+
+            /* Border Radii */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+
+            /* Shadows */
+            --shadow-light: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter font */
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            transform: scale(1.03);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            flex-grow: 1; /* Allows main content to expand */
+        }
+
+        /* --- Navbar Styles from style-home.css --- */
+      .top-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #112b3c;
+          padding: 0 20px;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          height: 70px;
+          flex-shrink: 0; /* Prevents the container from shrinking */
+      }
+      .logo {
+          margin-left: 20px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: white !important;
+      }
+      .logo img {
+        height: 40px;
+        width: auto;
+        display: block;
+      }
+      .logo-text {
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-left: 8px;
+      }
+      .navbar {
+        display: flex;
+        align-items: stretch;
+        margin-right: 20px;
+        height: 100%;
+      }
+      .navbar a, .dropbtn {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 1.05rem;
+        font-weight: 500;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background-color 0.3s, color 0.3s;
+        white-space: nowrap;
+      }
+      .dropbtn {
+          height: 100%;
+          width: 100%;
+          justify-content: center;
+      }
+      .navbar a:hover, .dropdown:hover .dropbtn {
+        background-color: #f0f0f0;
+        color: #112b3c;
+      }
+      .dropdown {
+          position: relative;
+          display: flex;
+      }
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 200px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          border-radius: 0 0 0.5rem 0.5rem;
+          overflow: hidden;
+          top: 100%;
+          left: 0;
+      }
+      .dropdown-content a {
+          color: black;
+          padding: 12px 20px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+          font-size: 1.05rem;
+          font-weight: 500;
+          line-height: normal;
+      }
+      .dropdown-content a:hover {
+          background-color: #ddd;
+          color: #112b3c;
+      }
+      .dropdown:hover .dropdown-content {
+          display: block;
+      }
+      /* --- End Navbar Styles --- */
+        /* HERO SECTION */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/207541/pexels-photo-207541.jpeg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            margin-bottom: var(--spacing-sm);
+            color: white;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Main Content Section */
+        .section-tickets {
+            background-color: var(--card-bg);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-tickets h2 {
+            font-size: 1.8em;
+            color: var(--heading-color);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        /* Table Styles */
+        .ticket-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+
+        .ticket-table th, .ticket-table td {
+            border: 1px solid var(--border-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .ticket-table th {
+            background-color: var(--light-gray-bg);
+            color: var(--heading-color);
+            font-weight: 600;
+            position: sticky;
+            top: 70px; /* Adjusted for navbar height */
+            z-index: 1;
+        }
+
+        .ticket-table tbody tr:nth-child(even) {
+            background-color: var(--light-gray-bg);
+        }
+
+        .ticket-table tbody tr:hover {
+            background-color: #e6f7ff;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .status-open { background-color: var(--error-color); }
+        .status-in-progress { background-color: var(--info-color); }
+        .status-closed { background-color: var(--success-color); }
+        .status-high-priority { background-color: var(--primary-color); }
+
+        /* Action Buttons within table */
+        .ticket-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+        .ticket-actions button {
+            padding: 7px 16px;
+            font-size: 0.9em;
+            border: 1px solid var(--border-color);
+            background-color: transparent;
+            color: var(--text-color);
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            margin: 0;
+        }
+        .ticket-actions button:hover {
+            background-color: var(--light-gray-bg);
+            color: var(--primary-color);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 8px rgba(246,107,14,0.08);
+        }
+        .ticket-actions button.edit-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        .ticket-actions button.edit-btn:hover {
+            background-color: #0f202f;
+            color: #fff;
+        }
+        .ticket-actions button.delete-btn {
+            background-color: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+        .ticket-actions button.delete-btn:hover {
+            background-color: #c82333;
+            color: #fff;
+        }
+
+        /* Filter/Search Bar */
+        .filter-bar {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .filter-bar input,
+        .filter-bar select {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.9em;
+        }
+        .filter-bar button {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+        }
+        .filter-bar button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-overlay.visible {
+            display: flex;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-md);
+        }
+        .modal-box h3 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .modal-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .modal-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .modal-form select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+        }
+        .modal-btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+        .modal-btn-save {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Footer */
+        .footer2 {
+            color: white;
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: var(--spacing-sm);
+            font-size: 0.9em;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+                height: auto;
+            }
+            .top-container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: var(--spacing-sm);
+                height: auto;
+            }
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            .hero-section h1 {
+                font-size: 2em;
+            }
+            .ticket-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .ticket-table thead, .ticket-table tbody, .ticket-table th, .ticket-table td, .ticket-table tr {
+                display: block;
+            }
+            .ticket-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            .ticket-table tr {
+                border: 1px solid var(--border-color);
+                margin-bottom: var(--spacing-sm);
+                background-color: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                box-shadow: var(--shadow-light);
+            }
+            .ticket-table td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            .ticket-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: var(--spacing-sm);
+                width: 45%;
+                padding-right: var(--spacing-sm);
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 600;
+                color: var(--heading-color);
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar input,
+            .filter-bar select,
+            .filter-bar button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-container">
+    <div class="logo">
+        <a href="Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="IllumiNation PH Logo" />
+            <span class="logo-text">IllumiNation PH</span>
+        </a>
+    </div>
+     <nav class="navbar">
+        <a href="adminDashboard.html">Dashboard</a>
+        <a href="tickets.html">Tickets</a>
+        <a href="admin-reports.html">Reports</a>
+        <div class="dropdown">
+            <!-- This will be dynamically updated by app.js -->
+        </div>
+</nav>
+    </header>
+
+    <div class="hero-section">
+        <h1>Ticket Management</h1>
+        <p>View, track, and manage all support tickets and issues.</p>
+    </div>
+
+    <div class="container">
+        <section class="section-tickets">
+            <h2>All Support Tickets</h2>
+
+            <div class="filter-bar">
+                <input type="text" id="searchTickets" placeholder="Search by ID, subject, or assigned to...">
+                <select id="filterStatus">
+                    <option value="">All Statuses</option>
+                    <option value="open">Open</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="closed">Closed</option>
+                </select>
+                <select id="filterAssigned">
+                    <option value="">All Assignees</option>
+                    <!-- Assignees will be dynamically populated -->
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <table class="ticket-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Submitted By</th>
+                            <th>Assigned To</th>
+                            <th>Created Date</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tickets-tbody">
+                        <!-- Tickets will be dynamically loaded here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button style="background-color: var(--secondary-color); color: white; border: none; padding: 10px 15px; border-radius: var(--border-radius-sm);">Load More Tickets</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Ticket Modal -->
+    <div id="editTicketModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Edit Ticket #<span id="modalTicketId"></span></h3>
+            <form id="editTicketForm" class="modal-form">
+                <input type="hidden" id="editingTicketId">
+                <div class="form-group">
+                    <label for="modalStatus">Status</label>
+                    <select id="modalStatus">
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modalAssignedTo">Assign To</label>
+                    <select id="modalAssignedTo">
+                        <!-- Admin users will be populated here -->
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+                    <button type="submit" class="modal-btn modal-btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer2">
+        <p>© 2025 IllumiNation PH. All rights reserved. | Contact: info@illuminatioph.com</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Authenticate Page ---
+            const currentUser = Session.authenticate('admin');
+            if (!currentUser) return;
+
+            const tableBody = document.getElementById('tickets-tbody');
+            const searchInput = document.getElementById('searchTickets');
+            const filterStatus = document.getElementById('filterStatus');
+            const filterAssigned = document.getElementById('filterAssigned');
+            
+            // --- Modal Elements ---
+            const editModal = document.getElementById('editTicketModal');
+            const modalTicketIdSpan = document.getElementById('modalTicketId');
+            const editingTicketIdInput = document.getElementById('editingTicketId');
+            const modalStatusSelect = document.getElementById('modalStatus');
+            const modalAssignedToSelect = document.getElementById('modalAssignedTo');
+            const editTicketForm = document.getElementById('editTicketForm');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+            let allTickets = DB.get('tickets') || [];
+            let allAdmins = [];
+
+            function populateAdminSelects() {
+                allAdmins = (DB.get('users') || []).filter(u => u.role === 'admin');
+                
+                // For filter dropdown
+                filterAssigned.innerHTML = '<option value="">All Assignees</option>';
+                allAdmins.forEach(admin => {
+                    const option = document.createElement('option');
+                    option.value = admin.username.toLowerCase();
+                    option.textContent = admin.username;
+                    filterAssigned.appendChild(option);
+                });
+
+                // For modal dropdown
+                modalAssignedToSelect.innerHTML = '';
+                allAdmins.forEach(admin => {
+                    const option = document.createElement('option');
+                    option.value = admin.username;
+                    option.textContent = admin.username;
+                    modalAssignedToSelect.appendChild(option);
+                });
+            }
+
+            function renderTickets(ticketsToRender) {
+                tableBody.innerHTML = '';
+                if (ticketsToRender.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 20px;">No tickets found.</td></tr>';
+                    return;
+                }
+
+                ticketsToRender.forEach(ticket => {
+                    const statusClass = `status-${ticket.status.toLowerCase().replace(/\s/g, '-')}`;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td data-label="ID">#${ticket.id}</td>
+                        <td data-label="Subject">${ticket.subject}</td>
+                        <td data-label="Status"><span class="status-badge ${statusClass}">${ticket.status}</span></td>
+                        <td data-label="Submitted By">${ticket.submittedBy}</td>
+                        <td data-label="Assigned To">${ticket.assignedTo}</td>
+                        <td data-label="Created Date">${ticket.submittedDate}</td>
+                        <td data-label="Last Updated">${ticket.lastUpdated}</td>
+                        <td data-label="Actions" class="ticket-actions">
+                            <button class="view-btn" data-ticket-id="${ticket.id}">View</button>
+                            <button class="edit-btn" data-ticket-id="${ticket.id}">Edit</button>
+                            <button class="delete-btn" data-ticket-id="${ticket.id}">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            function applyFilters() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const statusFilter = filterStatus.value;
+                const assignedFilter = filterAssigned.value;
+
+                let filteredTickets = allTickets;
+
+                if (statusFilter) {
+                    filteredTickets = filteredTickets.filter(ticket => ticket.status.toLowerCase().replace(/\s/g, '-') === statusFilter);
+                }
+
+                if (assignedFilter) {
+                    filteredTickets = filteredTickets.filter(ticket => ticket.assignedTo.toLowerCase() === assignedFilter);
+                }
+
+                if (searchTerm) {
+                    filteredTickets = filteredTickets.filter(ticket => 
+                        ticket.id.toString().includes(searchTerm) ||
+                        ticket.subject.toLowerCase().includes(searchTerm) ||
+                        ticket.assignedTo.toLowerCase().includes(searchTerm) ||
+                        ticket.submittedBy.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                renderTickets(filteredTickets);
+            }
+
+            function openEditModal(ticketId) {
+                const ticket = allTickets.find(t => t.id.toString() === ticketId.toString());
+                if(ticket) {
+                    modalTicketIdSpan.textContent = ticket.id;
+                    editingTicketIdInput.value = ticket.id;
+                    modalStatusSelect.value = ticket.status;
+                    modalAssignedToSelect.value = ticket.assignedTo;
+                    editModal.classList.add('visible');
+                }
+            }
+
+            function closeEditModal() {
+                editModal.classList.remove('visible');
+            }
+
+            function handleDeleteTicket(ticketId) {
+                if (confirm(`Are you sure you want to delete ticket #${ticketId}? This action cannot be undone.`)) {
+                    allTickets = allTickets.filter(t => t.id.toString() !== ticketId.toString());
+                    DB.set('tickets', allTickets);
+                    applyFilters(); // Re-render the table
+                }
+            }
+
+            // --- Event Listeners ---
+            searchInput.addEventListener('keyup', applyFilters);
+            filterStatus.addEventListener('change', applyFilters);
+            filterAssigned.addEventListener('change', applyFilters);
+
+            tableBody.addEventListener('click', function(event) {
+                const target = event.target;
+                const ticketId = target.dataset.ticketId;
+
+                if (target.classList.contains('view-btn')) {
+                    sessionStorage.setItem('viewTicketId', ticketId);
+                    window.location.href = '/ticket-details.html';
+                } else if (target.classList.contains('edit-btn')) {
+                    openEditModal(ticketId);
+                } else if (target.classList.contains('delete-btn')) {
+                    handleDeleteTicket(ticketId);
+                }
+            });
+
+            // Modal event listeners
+            modalCancelBtn.addEventListener('click', closeEditModal);
+            editModal.addEventListener('click', (e) => {
+                if (e.target === editModal) {
+                    closeEditModal();
+                }
+            });
+
+            editTicketForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const ticketIdToUpdate = editingTicketIdInput.value;
+                const newStatus = modalStatusSelect.value;
+                const newAssignee = modalAssignedToSelect.value;
+
+                const ticketIndex = allTickets.findIndex(t => t.id.toString() === ticketIdToUpdate);
+                if (ticketIndex > -1) {
+                    allTickets[ticketIndex].status = newStatus;
+                    allTickets[ticketIndex].assignedTo = newAssignee;
+                    allTickets[ticketIndex].lastUpdated = new Date().toISOString().split('T')[0];
+                    DB.set('tickets', allTickets);
+                    applyFilters(); // Re-render table
+                    closeEditModal();
+                } else {
+                    alert('Error: Could not find ticket to update.');
+                }
+            });
+
+            // --- Initial Load ---
+            populateAdminSelects();
+            renderTickets(allTickets);
+        });
+    </script>
+</body>
+</html>
