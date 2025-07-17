@@ -342,50 +342,82 @@
 
   <script src="/app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const signupForm = document.querySelector('.signup-form');
-
-        signupForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-
-            if (!username || !email || !password) {
-                alert('Please fill out all fields.');
-                return;
+document.addEventListener('DOMContentLoaded', function() {
+    const DB = {
+        get: (key) => {
+            const data = localStorage.getItem(key);
+            try {
+                return data ? JSON.parse(data) : null;
+            } catch (e) {
+                console.error(`Error parsing localStorage item "${key}":`, e);
+                return null;
             }
-
-            const users = DB.get('users') || [];
-            const userExists = users.some(user => user.username.toLowerCase() === username.toLowerCase() || user.email.toLowerCase() === email.toLowerCase());
-
-            if (userExists) {
-                alert('A user with this username or email already exists.');
-                return;
+        },
+        set: (key, value) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (e) {
+                console.error(`Error setting localStorage item "${key}":`, e);
             }
+        },
+        remove: (key) => {
+            localStorage.removeItem(key);
+        }
+    };
 
-            // Create a new user profile
-            const newUser = {
-                username: username,
-                email: email,
-                password: password, // In a real app, this should be hashed!
-                role: 'user',
-                profilePic: `https://placehold.co/150x150/F66B0E/FFFFFF?text=${username.charAt(0).toUpperCase()}`,
-                bio: '',
-                location: '',
-                donations: [],
-                volunteerHours: 0,
-                reports: []
-            };
+    // --- USER SIGNUP ---
+    function handleSignup(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-            users.push(newUser);
-            DB.set('users', users);
+        if (!username || !email || !password) {
+            alert('Please fill out all fields.');
+            return;
+        }
 
-            alert('User account created successfully! Please log in.');
-            window.location.href = 'Login.html';
-        });
-    });
-  </script>
+        // Get users array from localStorage, or start new
+        const users = DB.get('users') || [];
+
+        // Check for duplicate user/email
+        const userExists = users.some(user =>
+            user.username.toLowerCase() === username.toLowerCase() ||
+            user.email.toLowerCase() === email.toLowerCase()
+        );
+
+        if (userExists) {
+            alert('A user with this username or email already exists.');
+            return;
+        }
+
+        // Add new user object
+        const newUser = {
+            username,
+            email,
+            password, // NOTE: In production, hash this!
+            role: 'user',
+            profilePic: '',
+            bio: '',
+            location: '',
+            donations: [],
+            volunteerHours: 0,
+            reports: []
+        };
+
+        users.push(newUser);
+        DB.set('users', users);
+
+        alert('User account created successfully! Please log in.');
+        window.location.href = 'Login.html';
+    }
+
+    // --- Attach handler to form ---
+    const signupForm = document.querySelector('.signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('submit', handleSignup);
+    }
+});
+</script>
 </body>
 </html>
