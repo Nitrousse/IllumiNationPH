@@ -39,7 +39,6 @@ const DB = {
 const Seed = {
     init: () => {
         if (!DB.get('users')) {
-            console.log("Seeding initial data into localStorage...");
             DB.set('users', [
                 {
                     username: 'admin',
@@ -68,26 +67,26 @@ const Seed = {
         }
         if (!DB.get('tickets')) {
             DB.set('tickets', [
-                 { id: 1, subject: "Cannot log in to my account", status: "Open", submittedBy: "juan_delacruz", assignedTo: "Admin", submittedDate: "2025-07-01", lastUpdated: "2025-07-03" },
-                 { id: 2, subject: "Donation receipt not received", status: "In Progress", submittedBy: "guest_user", assignedTo: "Admin", submittedDate: "2025-06-28", lastUpdated: "2025-07-02" },
-                 { id: 3, subject: "Website is slow on mobile", status: "Closed", submittedBy: "juan_delacruz", assignedTo: "Admin", submittedDate: "2025-06-20", lastUpdated: "2025-06-25" }
+                { id: 1, subject: "Cannot log in to my account", status: "Open", submittedBy: "juan_delacruz", assignedTo: "Admin", submittedDate: "2025-07-01", lastUpdated: "2025-07-03" },
+                { id: 2, subject: "Donation receipt not received", status: "In Progress", submittedBy: "guest_user", assignedTo: "Admin", submittedDate: "2025-06-28", lastUpdated: "2025-07-02" },
+                { id: 3, subject: "Website is slow on mobile", status: "Closed", submittedBy: "juan_delacruz", assignedTo: "Admin", submittedDate: "2025-06-20", lastUpdated: "2025-06-25" }
             ]);
         }
         if (!DB.get('volunteerTickets')) {
             DB.set('volunteerTickets', [
-                 { id: 'V001', subject: "Application for Solar Panel Installation", status: "In Progress", submittedBy: "juan_delacruz", submittedDate: "2025-07-05", lastUpdated: "2025-07-06" },
-                 { id: 'V002', subject: "Community Outreach Program Sign-up", status: "Closed", submittedBy: "juan_delacruz", submittedDate: "2025-05-10", lastUpdated: "2025-05-20" }
+                { id: 'V001', subject: "Application for Solar Panel Installation", status: "In Progress", submittedBy: "juan_delacruz", submittedDate: "2025-07-05", lastUpdated: "2025-07-06" },
+                { id: 'V002', subject: "Community Outreach Program Sign-up", status: "Closed", submittedBy: "juan_delacruz", submittedDate: "2025-05-10", lastUpdated: "2025-05-20" }
             ]);
         }
         if (!DB.get('donations')) {
             DB.set('donations', [
                 { amount: 500, method: 'GCash', name: 'Juan Dela Cruz', email: 'juan.delacruz@email.com', date: '2025-06-15' },
                 { amount: 1000, method: 'GCash', name: 'Maria Santos', email: 'maria.santos@email.com', date: '2025-06-20' },
-                 { amount: 250, method: 'GCash', name: 'Juan Dela Cruz', email: 'juan.delacruz@email.com', date: '2025-07-01' }
+                { amount: 250, method: 'GCash', name: 'Juan Dela Cruz', email: 'juan.delacruz@email.com', date: '2025-07-01' }
             ]);
         }
         if (!DB.get('reports')) {
-             DB.set('reports', [
+            DB.set('reports', [
                 {
                     id: 'R987654',
                     region: 'BARMM – Bangsamoro Autonomous Region in Muslim Mindanao',
@@ -163,57 +162,59 @@ const Session = {
             'adminSignup.html',
             'PrivacyPolicy.html'
         ];
-        
         const currentPath = window.location.pathname;
         const isPublicPage = publicPages.some(page => currentPath.endsWith(page));
-
         if (!isPublicPage && !Session.getCurrentUser()) {
             alert('You must be logged in to view this page. Redirecting to login.');
             window.location.href = 'Login.html';
         }
     },
 
+    // Robust navbar dropdown management
     init: () => {
         const currentUser = DB.get('currentUser');
         const navbar = document.querySelector('.navbar');
-
         if (navbar) {
-             const loginDropdownContainer = navbar.querySelector('.dropdown:last-of-type');
-            
-            if (currentUser) {
-                if (loginDropdownContainer) {
-                    const dashboardLink = currentUser.role === 'admin' 
-                        ? 'adminDashboard.html' 
-                        : 'userDashboard.html';
+            // Always ensure a dropdown for login/profile is present
+            let loginDropdownContainer = navbar.querySelector('.dropdown.user-dropdown');
+            if (!loginDropdownContainer) {
+                loginDropdownContainer = document.createElement('div');
+                loginDropdownContainer.className = 'dropdown user-dropdown';
+                navbar.appendChild(loginDropdownContainer);
+            }
 
-                    loginDropdownContainer.innerHTML = `
-                        <button class="dropbtn">${currentUser.username}</button>
-                        <div class="dropdown-content">
-                            <a href="${dashboardLink}">Dashboard</a>
-                            <a href="#" id="logoutButton">Logout</a>
-                        </div>
-                    `;
+            if (currentUser) {
+                const dashboardLink = currentUser.role === 'admin'
+                    ? 'adminDashboard.html'
+                    : 'userDashboard.html';
+                loginDropdownContainer.innerHTML = `
+                    <button class="dropbtn">${currentUser.username}</button>
+                    <div class="dropdown-content">
+                        <a href="${dashboardLink}">Dashboard</a>
+                        <a href="#" id="logoutButton">Logout</a>
+                    </div>
+                `;
+                // Re-attach logout handler every time
+                setTimeout(() => {
                     const logoutButton = document.getElementById('logoutButton');
-                    if(logoutButton) {
-                       logoutButton.addEventListener('click', Session.logout);
+                    if (logoutButton) {
+                        logoutButton.addEventListener('click', Session.logout);
                     }
-                }
+                }, 0);
             } else {
-                 if (loginDropdownContainer) {
-                    loginDropdownContainer.innerHTML = `
-                        <button class="dropbtn">Login</button>
-                        <div class="dropdown-content">
-                          <a href="Login.html">Login</a>
-                          <a href="signup.html">Signup</a>
-                        </div>
-                    `;
-                 }
+                loginDropdownContainer.innerHTML = `
+                    <button class="dropbtn">Login</button>
+                    <div class="dropdown-content">
+                        <a href="Login.html">Login</a>
+                        <a href="signup.html">Signup</a>
+                    </div>
+                `;
             }
         }
     },
 
     logout: (e) => {
-        if(e) e.preventDefault();
+        if (e) e.preventDefault();
         DB.remove('currentUser');
         alert('You have been logged out.');
         window.location.href = 'Login.html';
