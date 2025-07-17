@@ -155,13 +155,13 @@ const Seed = {
 const Session = {
     protectPage: () => {
         const publicPages = [
-            '/',
-            '/index.html',
-            '/HOMEPAGE/Draft_Home.html',
-            '/ADMIN_SIGNUP/Login.html',
-            '/ADMIN_SIGNUP/signup.html',
-            '/ADMIN_SIGNUP/adminSignup.html',
-            '/REPORT_ELECTRICITY/PrivacyPolicy.html'
+            'FAQ.html',
+            'index.html',
+            'Draft_Home.html',
+            'Login.html',
+            'signup.html',
+            'adminSignup.html',
+            'PrivacyPolicy.html'
         ];
         
         const currentPath = window.location.pathname;
@@ -169,7 +169,7 @@ const Session = {
 
         if (!isPublicPage && !Session.getCurrentUser()) {
             alert('You must be logged in to view this page. Redirecting to login.');
-            window.location.href = '/ADMIN_SIGNUP/Login.html';
+            window.location.href = 'Login.html';
         }
     },
 
@@ -183,8 +183,8 @@ const Session = {
             if (currentUser) {
                 if (loginDropdownContainer) {
                     const dashboardLink = currentUser.role === 'admin' 
-                        ? '/DASHBOARD/Admin_Dashboard/adminDashboard.html' 
-                        : '/DASHBOARD/User_Dashboard/userDashboard.html';
+                        ? 'adminDashboard.html' 
+                        : 'userDashboard.html';
 
                     loginDropdownContainer.innerHTML = `
                         <button class="dropbtn">${currentUser.username}</button>
@@ -203,8 +203,8 @@ const Session = {
                     loginDropdownContainer.innerHTML = `
                         <button class="dropbtn">Login</button>
                         <div class="dropdown-content">
-                          <a href="/ADMIN_SIGNUP/Login.html">Login</a>
-                          <a href="/ADMIN_SIGNUP/signup.html">Signup</a>
+                          <a href="Login.html">Login</a>
+                          <a href="signup.html">Signup</a>
                         </div>
                     `;
                  }
@@ -216,7 +216,7 @@ const Session = {
         if(e) e.preventDefault();
         DB.remove('currentUser');
         alert('You have been logged out.');
-        window.location.href = '/ADMIN_SIGNUP/Login.html';
+        window.location.href = 'Login.html';
     },
 
     getCurrentUser: () => {
@@ -227,12 +227,12 @@ const Session = {
         const currentUser = Session.getCurrentUser();
         if (!currentUser) {
             alert('You must be logged in to view this page.');
-            window.location.href = '/ADMIN_SIGNUP/Login.html';
+            window.location.href = 'Login.html';
             return null;
         }
         if (requiredRole && currentUser.role !== requiredRole) {
             alert(`Access Denied. You must be a${requiredRole === 'admin' ? 'n' : ''} ${requiredRole} to view this page.`);
-            const redirectUrl = currentUser.role === 'admin' ? '/DASHBOARD/Admin_Dashboard/adminDashboard.html' : '/DASHBOARD/User_Dashboard/userDashboard.html';
+            const redirectUrl = currentUser.role === 'admin' ? 'adminDashboard.html' : 'userDashboard.html';
             window.location.href = redirectUrl;
             return null;
         }
