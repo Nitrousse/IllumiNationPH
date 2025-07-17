@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Electricity Access Reports - IllumiNation PH Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #F66B0E;
+            --secondary-color: #112B3C;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --heading-color: #1a2a40;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .top-container { display: flex; justify-content: space-between; align-items: center; background-color: var(--secondary-color); padding: 0 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: 70px; }
+        .logo a { display: flex; align-items: center; gap: 10px; color: white !important; text-decoration: none; }
+        .logo img { height: 40px; width: auto; display: block; }
+        .logo-text { color: white; font-weight: 700; font-size: 1.5rem; margin-left: 8px; }
+        .navbar { display: flex; align-items: stretch; margin-right: 20px; height: 100%; }
+        .navbar a, .dropbtn { display: flex; align-items: center; padding: 0 20px; color: white; text-decoration: none; font-size: 1.05rem; font-weight: 500; background-color: transparent; border: none; cursor: pointer; font-family: inherit; transition: background-color 0.3s, color 0.3s; white-space: nowrap; }
+        .navbar a:hover, .dropdown:hover .dropbtn { background-color: #f0f0f0; color: var(--secondary-color); }
+        .dropdown { position: relative; display: flex; }
+        .dropbtn { height: 100%; width: 100%; justify-content: center; }
+        .dropdown-content { display: none; position: absolute; background-color: #f1f1f1; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 0 0 0.5rem 0.5rem; overflow: hidden; top: 100%; left: 0; }
+        .dropdown-content a { color: black; padding: 12px 20px; text-decoration: none; display: block; text-align: left; font-size: 1.05rem; font-weight: 500; line-height: normal; }
+        .dropdown-content a:hover { background-color: #ddd; color: var(--secondary-color); }
+        .dropdown:hover .dropdown-content { display: block; }
+        .hero-section { background: linear-gradient(rgba(17, 43, 60, 0.8), rgba(17, 43, 60, 0.8)), url('https://images.pexels.com/photos/207541/pexels-photo-207541.jpeg') no-repeat center center/cover; }
+        .styled-reports-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .styled-reports-table th, .styled-reports-table td { 
+            padding: 1rem 1.25rem; 
+            border-bottom: 1px solid #e2e8f0; 
+            text-align: left; 
+            vertical-align: top; /* This is the key fix */
+        }
+        .styled-reports-table th { 
+            background-color: #f9fafb; 
+            color: #1a2a40; 
+            font-weight: 600; 
+            font-size: 0.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            position: sticky; 
+            top: 0; /* Changed from 70px to 0 */
+            z-index: 10; 
+        }
+        .styled-reports-table tbody tr:hover { background-color: #fff7f2; }
+        .status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-transform: capitalize; color: white; white-space: nowrap; }
+        .status-no-access { background-color: var(--error-color); }
+        .status-intermittent-access { background-color: var(--warning-color); color: var(--heading-color); }
+        .status-has-access { background-color: var(--success-color); }
+        .view-btn { background-color: var(--secondary-color); color: white; padding: 6px 12px; border: none; border-radius: 4px; font-size: 0.8rem; transition: background-color 0.2s; cursor: pointer; }
+        .view-btn:hover { background-color: #0f202f; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="top-container">
+        <div class="logo">
+            <a href="Draft_Home.html">
+                <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="IllumiNation PH Logo" />
+                <span class="logo-text">IllumiNation PH</span>
+            </a>
+        </div>
+        <nav class="navbar">
+            <a href="adminDashboard.html">Dashboard</a>
+            <a href="tickets.html">Tickets</a>
+            <a href="admin-reports.html" class="font-bold border-b-2 border-orange-400">Reports</a>
+            <div class="dropdown">
+                <!-- This will be dynamically updated by app.js -->
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero-section py-24 text-white text-center">
+        <h1 class="text-5xl font-bold mb-4">Electricity Access Reports</h1>
+        <p class="text-lg max-w-3xl mx-auto">View and manage all user-submitted electricity access reports.</p>
+    </div>
+
+    <div class="w-full py-12">
+        <section class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">All Reports</h2>
+            <div class="bg-white rounded-lg shadow-md mx-4 sm:mx-6 lg:mx-8 p-6 overflow-x-auto">
+                <table id="reportsTable" class="styled-reports-table">
+                    <thead>
+                        <tr>
+                            <th class="whitespace-nowrap">Date</th>
+                            <th class="whitespace-nowrap">Location</th>
+                            <th class="whitespace-nowrap">Reporter</th>
+                            <th class="whitespace-nowrap">Households</th>
+                            <th class="whitespace-nowrap">Status</th>
+                            <th class="whitespace-nowrap">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Reports will be dynamically loaded here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="loadMoreContainer" class="text-center mt-8">
+                <button id="loadMoreBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Load More Reports
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-orange-500 text-white text-center p-4">
+        © 2025 IllumiNation PH. All rights reserved. &nbsp; &nbsp;Contact us: info@illuminatioph.com
+    </footer>
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = (typeof Session !== 'undefined' && typeof Session.authenticate === 'function')
+                ? Session.authenticate('admin')
+                : null;
+        const allReports = (typeof DB !== 'undefined' && typeof DB.get === 'function') ? DB.get('reports') || [] : [];
+        const tbody = document.querySelector('#reportsTable tbody');
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        const REPORTS_PER_PAGE = 5;
+        let displayedReportsCount = 0;
+
+        function renderReports(reportsToRender) {
+            reportsToRender.forEach((report, idx) => {
+                const statusClass = `status-${report.status.toLowerCase().replace(/\s+/g, '-')}`;
+                // Validate and format the observationDate
+                let formattedDate = 'N/A';
+                if (report.observationDate) {
+                    const dateObj = new Date(report.observationDate);
+                    if (!isNaN(dateObj)) {
+                        formattedDate = dateObj.toLocaleDateString();
+                    }
+                }
+                // Fallback for missing or non-unique id
+                const reportId = (report.id !== undefined && report.id !== null && report.id !== '') ? report.id : `report-${displayedReportsCount + idx}`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td data-label="Date" class="whitespace-nowrap">${formattedDate}</td>
+                    <td data-label="Location">
+                        <div class="font-medium text-gray-800">${report.barangay ?? 'N/A'}, ${report.cityMunicipality ?? 'N/A'}</div>
+                        <div class="text-sm text-gray-500">
+                            ${(report.province ? report.province : '')}${(report.province && report.region ? ', ' : '')}${(report.region ? report.region : '')}
+                        </div>
+                    </td>
+                    <td data-label="Reporter">
+                        <div class="font-medium text-gray-800">${report.isAnonymous ? 'Anonymous' : (report.reporterName ?? 'N/A')}</div>
+                        <div class="text-sm text-gray-500">${report.isAnonymous ? '' : (report.reporterEmail ?? 'N/A')}</div>
+                    </td>
+                    <td data-label="Households" class="text-center font-medium whitespace-nowrap">${report.households || 'N/A'}</td>
+                    <td data-label="Status" class="whitespace-nowrap">
+                        <span class="status-badge ${statusClass}">${report.status}</span>
+                    </td>
+                    <td data-label="Actions" class="whitespace-nowrap">
+                        <button class="view-btn" data-report-id="${reportId}">View</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadMoreReports() {
+            const reportsToRender = allReports.slice(displayedReportsCount, displayedReportsCount + REPORTS_PER_PAGE);
+            renderReports(reportsToRender);
+            displayedReportsCount += reportsToRender.length;
+
+            if (displayedReportsCount >= allReports.length) {
+                loadMoreContainer.classList.add('hidden');
+            } else {
+                loadMoreContainer.classList.remove('hidden');
+            }
+        }
+
+        // Initial load check
+        if (allReports.length === 0) {
+            const thCount = document.querySelectorAll('#reportsTable thead th').length;
+            tbody.innerHTML = `<tr><td colspan="${thCount}" class="text-center py-8">No reports have been submitted yet.</td></tr>`;
+            loadMoreContainer.classList.add('hidden');
+        } else {
+            tbody.innerHTML = ''; // Clear placeholder
+            loadMoreReports();
+        }
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', loadMoreReports);
+        }
+
+        tbody.addEventListener('click', function(event) {
+            if (event.target.classList.contains('view-btn')) {
+                const reportId = event.target.dataset.reportId;
+                sessionStorage.setItem('viewReportId', reportId);
+                window.location.href = '/DASHBOARD/Admin_Dashboard/report-details.html';
+            }
+        });
+        // <-- Add this closing brace to end the DOMContentLoaded function
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - IllumiNation PH</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif; /* CORRECT: Font is Arial */
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* --- Header/Navbar Styles (Copied from style-home.css) --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #112b3c;
+            padding: 0 20px; /* Use padding for horizontal spacing only */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px; /* Set a fixed height for the header */
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch; /* This makes nav items fill the height */
+          margin-right: 20px;
+          height: 100%; /* Navbar takes full height of its container */
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem; /* CORRECT: Font size is 1.05rem */
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit; /* CORRECT: Inherits font from body */
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: #112b3c;
+        }
+        .dropdown {
+            position: relative;
+            display: flex; /* Ensures dropdown behaves as a flex item */
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%; /* Positions dropdown below the parent */
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #112b3c;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* --- End of Copied Styles --- */
+
+
+        /* --- FAQ Page Specific Styles --- */
+        .faq-hero {
+            background-color: #112B3C;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .faq-hero h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .faq-hero p {
+            font-size: 1.2em;
+            color: #bdc3c7;
+            margin: 0;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px 40px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            color: #F66B0E;
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 1.6em;
+            line-height: 1;
+            color: #F66B0E;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding-top 0.4s ease-out;
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .faq-item.active .faq-answer {
+             padding-top: 25px;
+        }
+
+        /* --- "Need More Help" Section --- */
+        .help-section {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #ffffff;
+            margin: -30px auto 50px auto; /* Negative top margin to connect with the FAQ container */
+            max-width: 900px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .help-section h2 {
+            font-size: 1.8em;
+            color: #112B3C;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .help-section p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .btn-submit {
+            display: inline-block;
+            background-color: #F66B0E;
+            color: white;
+            padding: 12px 28px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #d85c0a; /* Darker orange */
+            transform: translateY(-2px);
+        }
+
+
+        /* --- Footer Styles --- */
+        .container-FOOTER1 {
+            background-color: #205375;
+            padding: 20px;
+        }
+
+        .Footertxt {
+            color: white;
+            margin-left: 40px;
+            text-decoration: none;
+        }
+        
+        .container-FOOTER1 p {
+           color: white;
+        }
+
+        .footer2 {
+            color: white;
+            background-color: #F66B0E;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="top-container">
+      <div class="logo">
+        <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+        <span class="logo-text">IllumiNation PH</span>
+      </div>
+      <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">Login</button>
+        <div class="dropdown-content">
+          <a href="Login.html">Login</a>
+          <a href="signup.html">Signup</a>
+        </div>
+      </div>
+    </nav>
+    </header>
+
+    <main>
+        <section class="faq-hero">
+            <h1>Frequently Asked Questions</h1>
+            <p>Your guide to understanding our mission and how you can help.</p>
+        </section>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">What is the main goal of IllumiNation PH?</div>
+                <div class="faq-answer">
+                    <p>IllumiNation PH is an organization committed to bringing light and electricity to underserved communities across the Philippines. Our ultimate goal is to empower these communities, fostering better educational opportunities, sustainable community development, and environmental conservation through clean energy.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How can I help or get involved?</div>
+                <div class="faq-answer">
+                    <p>There are several impactful ways to get involved! You can make a financial contribution on our 'Donate' page or sign up for hands-on work through our 'Volunteer' page. Simply spreading the word about our cause also makes a huge difference.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Where does my donation go?</div>
+                <div class="faq-answer">
+                    <p>100% of your donation goes directly toward our core programs. This includes funding educational initiatives, supporting the development of sustainable communities, and aiding our environmental conservation efforts in the areas we serve.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What is the purpose of the Interactive Map?</div>
+                <div class="faq-answer">
+                    <p>The 'Interactive Map' is a feature on our website that visually showcases our impact. It allows you to explore the locations of our current and completed projects, see which communities we are actively supporting, and find information about upcoming events and activities.</p>
+                </div>
+            </div>
+            
+             <div class="faq-item">
+                <div class="faq-question">Are there specific upcoming activities I can join?</div>
+                <div class="faq-answer">
+                    <p>Yes! We have several activities planned. On our homepage, you can see cards for upcoming events, including their date and location. For more details on how to join, please visit the 'Volunteer' section of our website.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Who are the people behind this organization?</div>
+                <div class="faq-answer">
+                    <p>Our organization is driven by a dedicated group of professionals, including a Project Manager, Developer, Quality Analyst, and a Data Management Lead. You can learn more about the passionate individuals on our team in the "Meet Our Team" section on the homepage.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="help-section">
+            <h2>Need more help?</h2>
+            <p>Submit a ticket for further assistance.</p>
+            <a href="/FAQ_PAGE/userSubmitTicket.html" class="btn-submit">Submit a Ticket</a>
+        </section>
+        
+    </main>
+
+    <footer>
+        <div class="footer2">
+            © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+    
+    <script>
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other active items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-answer').style.maxHeight = '0px';
+                    }
+                });
+     
+                // Toggle the clicked item
+                if (isActive) {
+                    item.classList.remove('active');
+                    answer.style.maxHeight = '0px';
+                } else {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
