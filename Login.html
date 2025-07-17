@@ -305,61 +305,69 @@
 
   <script src="app.js"></script>
   <script>
-    function openTab(tabName) {
-      var i, tabcontent, tabbuttons;
-      tabcontent = document.getElementsByClassName("tab-content");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tabbuttons = document.getElementsByClassName("tab-button");
-      for (i = 0; i < tabbuttons.length; i++) {
-        tabbuttons[i].classList.remove("active");
-      }
-      document.getElementById(tabName).style.display = "block";
-      document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add("active");
-    }
-    // Set the initial active tab on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        openTab('user-login');
-    });
-
     document.addEventListener('DOMContentLoaded', function() {
-        const userLoginForm = document.querySelector('#user-login .login-form');
-        const adminLoginForm = document.querySelector('#admin-login .login-form');
+      // Tab switching (uses data attributes)
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      function showTab(tabName) {
+        tabContents.forEach(tab => {
+          tab.classList.remove('active');
+          tab.style.display = 'none';
+        });
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        document.getElementById(tabName).style.display = 'block';
+        document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
+      }
+      // Initial tab
+      showTab('user-login');
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          showTab(btn.getAttribute('data-tab'));
+        });
+      });
 
-        const handleLogin = (event, roleToMatch) => {
-            event.preventDefault();
-            const form = event.target;
-            const usernameOrEmail = form.querySelector('input[name="username"]').value.toLowerCase();
-            const password = form.querySelector('input[name="password"]').value;
+      // --- LOGIN LOGIC ---
+      // Make sure DB is loaded
+      if (typeof DB === "undefined") {
+        alert("Critical error: app.js did not load. Check your script tag and file path.");
+        return;
+      }
 
-            const users = DB.get('users') || [];
-            
-            // Find a user that matches username OR email, AND has the correct role.
-            const foundUser = users.find(user => 
-                (user.username.toLowerCase() === usernameOrEmail || user.email.toLowerCase() === usernameOrEmail) && 
-                user.role === roleToMatch
-            );
+      const userLoginForm = document.querySelector('#user-login .login-form');
+      const adminLoginForm = document.querySelector('#admin-login .login-form');
 
-            if (foundUser && foundUser.password === password) {
-                // SUCCESS
-                DB.set('currentUser', foundUser); 
-                alert(`Login successful! Welcome, ${foundUser.username}.`);
-                
-                // Redirect to the correct dashboard
-                if (foundUser.role === 'admin') {
-                    window.location.href = 'adminDashboard.html';
-                } else {
-                    window.location.href = 'userDashboard.html';
-                }
-            } else {
-                // FAILURE
-                alert('Invalid credentials or incorrect role selected. Please check your username, password, and the selected tab (User/Admin).');
-            }
-        };
+      function handleLogin(event, roleToMatch) {
+        event.preventDefault();
+        const form = event.target;
+        const usernameOrEmail = form.querySelector('input[name="username"]').value.trim().toLowerCase();
+        const password = form.querySelector('input[name="password"]').value;
 
-        userLoginForm.addEventListener('submit', (e) => handleLogin(e, 'user'));
-        adminLoginForm.addEventListener('submit', (e) => handleLogin(e, 'admin'));
+        // Defensive: always treat users as array
+        let users = DB.get('users');
+        if (!Array.isArray(users)) users = [];
+
+        // Find user by username or email, and role
+        const foundUser = users.find(user =>
+          (
+            (user.username && user.username.toLowerCase() === usernameOrEmail) ||
+            (user.email && user.email.toLowerCase() === usernameOrEmail)
+          ) &&
+          user.role === roleToMatch
+        );
+
+        if (foundUser && foundUser.password === password) {
+          DB.set('currentUser', foundUser);
+          alert(`Login successful! Welcome, ${foundUser.username}.`);
+          // Redirect to homepage after login
+          window.location.replace("Draft_Home.html");
+        } else {
+          alert('Invalid credentials or incorrect role selected. Please check your username, password, and the selected tab (User/Admin).');
+        }
+      }
+
+      userLoginForm.addEventListener('submit', function(e) { handleLogin(e, 'user'); });
+      adminLoginForm.addEventListener('submit', function(e) { handleLogin(e, 'admin'); });
     });
   </script>
 </body>
