@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IllumiNation PH - Admin Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Universal Box-Sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CSS Variables for better theme management */
+        :root {
+            --primary-color: #F66B0E; /* Orange */
+            --primary-hover-color: #ff9f0a; /* Custom hover orange for buttons */
+            --secondary-color: #112B3C; /* Dark Blue */
+            --text-color: #374151; /* Main body text color */
+            --heading-color: #1a2a44; /* Headings color */
+            --light-gray-bg: #f3f4f6; /* Background color for page */
+            --card-bg: #FFFFFF; /* White background for cards/boxes */
+            --border-color: #e0e0e0; /* Border color for cards/boxes */
+            --semi-transparent-light-gray: rgba(217,217,217,0.5); /* For hero buttons */
+
+            /* Shadows */
+            --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-deep: 0 8px 12px rgba(0,0,0,0.1);
+
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+
+            /* Border Radii */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-gray-bg);
+            color: var(--text-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- Navbar Styles from style-home.css --- */
+      .top-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #112b3c;
+          padding: 0 20px;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          height: 70px;
+          flex-shrink: 0; /* Prevents the container from shrinking */
+      }
+      .logo {
+          margin-left: 20px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: white !important;
+      }
+      .logo img {
+        height: 40px;
+        width: auto;
+        display: block;
+      }
+      .logo-text {
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-left: 8px;
+      }
+      .navbar {
+        display: flex;
+        align-items: stretch;
+        margin-right: 20px;
+        height: 100%;
+      }
+      .navbar a, .dropbtn {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 1.05rem;
+        font-weight: 500;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background-color 0.3s, color 0.3s;
+        white-space: nowrap;
+      }
+      .dropbtn {
+          height: 100%;
+          width: 100%;
+          justify-content: center;
+      }
+      .navbar a:hover, .dropdown:hover .dropbtn {
+        background-color: #f0f0f0;
+        color: #112b3c;
+      }
+      .dropdown {
+          position: relative;
+          display: flex;
+      }
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 200px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          border-radius: 0 0 0.5rem 0.5rem;
+          overflow: hidden;
+          top: 100%;
+          left: 0;
+      }
+      .dropdown-content a {
+          color: black;
+          padding: 12px 20px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+          font-size: 1.05rem;
+          font-weight: 500;
+          line-height: normal;
+      }
+      .dropdown-content a:hover {
+          background-color: #ddd;
+          color: #112b3c;
+      }
+      .dropdown:hover .dropdown-content {
+          display: block;
+      }
+      /* --- End Navbar Styles --- */
+        /* HERO SECTION */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            flex-direction: column; /* Added for vertical alignment of content */
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 400px;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 400px;
+            background: var(--secondary-color);
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            text-align: center;
+            padding: var(--spacing-lg) var(--spacing-md);
+            color: white;
+        }
+
+        /* Profile Picture Styles for Admin Dashboard */
+        .profile-picture-container {
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white; /* Changed to white border */
+            box-shadow: var(--shadow-medium);
+            cursor: pointer; /* Added cursor pointer to indicate clickability */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .hero-content h1 {
+            font-size: 40px;
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+        }
+
+        .hero-content p {
+            font-size: 15px;
+            margin-bottom: var(--spacing-lg);
+            text-transform: uppercase;
+        }
+
+        .button {
+            width: 250px;
+            height: 50px;
+            padding: 8px 20px;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: var(--border-radius-md);
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        #admin, #user {
+            width: 120px;
+            height: 40px;
+            background: var(--semi-transparent-light-gray);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 13px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #admin:hover, #user:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        /* DASHBOARD BODY */
+        .section {
+            padding: var(--spacing-lg) var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            color: var(--heading-color);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .key-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap; 
+            gap: var(--spacing-md);
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            padding: var(--spacing-md);
+            flex: 1 1 calc(25% - var(--spacing-md) * 3 / 4); 
+            min-width: 180px; 
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            font-size: 1em;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-box strong {
+            font-size: 1.8em; 
+            display: block;
+            margin-top: var(--spacing-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .donation-stats-section {
+            padding-top: 0px;
+            padding-bottom: var(--spacing-lg);
+        }
+
+        .stats-grid {
+            margin-top: var(--spacing-lg);
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: var(--spacing-md);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .stats-cards-container {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .stat-card-content .label {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+        }
+
+        .stat-card-content .value {
+            font-size: 1.6rem;
+            line-height: 1.75rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            min-width: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .stat-card-content .change {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 600;
+            color: #16a34a;
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        .chart-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Added for absolute button positioning */
+        }
+
+        .chart-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            /* Remove justify-content: space-between; */
+            position: relative;
+        }
+        .chart-header h4 {
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+            color: var(--heading-color);
+            align-self: flex-start;
+        }
+        .edit-allocation-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+        }
+        .edit-allocation-btn:hover {
+            background-color: #0f202f;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 18rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .recent-activity {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
+            gap: var(--spacing-lg);
+            padding: 0 var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .recent-activity-title {
+            margin: 0;
+            flex-shrink: 0;
+            font-size: 2em;
+            color: var(--heading-color);
+            white-space: nowrap;
+            text-align: center;
+            width: 100%;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .activity-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            flex-grow: 1;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .activity-box {
+            background: var(--card-bg);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            text-align: left;
+            font-size: 0.9em;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .activity-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .activity-box .placeholder {
+            background: var(--light-gray-bg);
+            min-width: 80px;
+            height: 80px;
+            margin-bottom: 0;
+            border-radius: var(--border-radius-sm);
+            flex-shrink: 0;
+        }
+
+        .activity-box .activity-content {
+            flex-grow: 1;
+        }
+
+        .activity-box .activity-content h3 {
+            margin: 0 0 var(--spacing-xs) 0;
+            font-size: 1em;
+            color: var(--heading-color);
+        }
+
+        .activity-box .activity-content p {
+            margin: 0;
+            font-size: 0.85em;
+            line-height: 1.4;
+            color: var(--text-color);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            gap: var(--spacing-xl);
+            padding: 0 var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .quick-actions-title {
+            margin-top: 0;
+            margin-bottom: var(--spacing-md);
+            font-size: 2em;
+            color: var(--heading-color);
+            white-space: nowrap;
+            text-align: center;
+            width: 100%;
+        }
+
+        .action-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px 60px;
+            max-width: 500px;
+            flex-shrink: 0;
+            justify-items: center;
+            width: 100%;
+        }
+
+        .action-btn {
+            text-align: center;
+            padding: var(--spacing-sm);
+            word-wrap: break-word;
+            white-space: normal;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            border-radius: var(--border-radius-md);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            background-color: var(--light-gray-bg);
+        }
+
+        .action-icon-wrapper {
+            height: 60px;
+            width: 60px;
+            margin-bottom: var(--spacing-sm);
+            border-radius: 50%;
+            background-color: var(--light-gray-bg);
+            padding: var(--spacing-sm);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+
+        .action-btn:hover .action-icon-wrapper {
+            transform: scale(1.1);
+            background-color: var(--primary-color);
+        }
+
+        .action-icon-wrapper img {
+            height: 100%;
+            width: 100%;
+            filter: grayscale(50%);
+            transition: filter 0.2s ease-in-out;
+        }
+
+        .action-btn:hover .action-icon-wrapper img {
+            filter: grayscale(0%) invert(100%);
+        }
+
+        .action-btn p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-color);
+            transition: color 0.2s ease-in-out;
+        }
+
+        .action-btn:hover p {
+            color: var(--heading-color);
+        }
+
+        @media (min-width: 768px) {
+            .quick-actions {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            .quick-actions-title {
+                width: auto;
+                text-align: left;
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-right: var(--spacing-xl);
+            }
+            .action-items-container {
+                justify-items: start;
+            }
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: var(--spacing-xl) 0;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .container-FOOTER1 {
+            background-color: var(--secondary-color);
+            padding: var(--spacing-md);
+        }
+
+        .Footertxt {
+            color: white;
+            margin-left: var(--spacing-lg);
+            text-decoration: none;
+        }
+
+        .footer2 {
+            color: white;
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: var(--spacing-sm);
+        }
+
+        h1.Footertxt{
+            font-size: 36px;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            gap: var(--spacing-md);
+            max-width: 1200px;
+            margin: var(--spacing-lg) auto;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            flex-shrink: 0;
+            width: 280px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            padding: var(--spacing-md);
+            position: sticky;
+            top: calc(40px + var(--spacing-md));
+            align-self: flex-start;
+            max-height: calc(100vh - 40px - var(--spacing-md) * 2);
+            overflow-y: auto;
+        }
+
+        .main-content-area {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .sidebar-section h3 {
+            font-size: 1.2em;
+            color: var(--heading-color);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .ticket-summary-card {
+            background-color: var(--light-gray-bg);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .ticket-summary-card .ticket-label {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .ticket-summary-card .ticket-value {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .ticket-summary-card .ticket-value.high-priority {
+            color: var(--primary-color);
+        }
+
+        .ticket-summary-card .ticket-value.resolved {
+            color: #16a34a;
+        }
+
+        .sidebar-action-btn {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-top: var(--spacing-sm);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-action-btn:hover {
+            background-color: var(--primary-hover-color);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .sidebar-action-btn.secondary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+
+        .sidebar-action-btn.secondary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .quick-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quick-links-list li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .quick-links-list a {
+            display: block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .quick-links-list a:hover {
+            background-color: var(--light-gray-bg);
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                flex-direction: column;
+                margin: var(--spacing-md) auto;
+                gap: var(--spacing-md);
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+                order: -1;
+            }
+
+            .main-content-area {
+                padding: 0;
+            }
+
+            .section {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+                height: auto;
+                margin-right: 0;
+                width: 100%;
+            }
+            .top-container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: var(--spacing-sm);
+                height: auto;
+            }
+            .logo {
+                margin-left: 0;
+            }
+            .navbar a {
+                width: 100%;
+                text-align: left;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 2fr 1fr;
+                align-items: start;
+            }
+            .stats-cards-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .stat-card-content {
+                text-align: left;
+                align-items: flex-start;
+                height: auto;
+            }
+            .stat-card-content .label {
+                margin-bottom: 0.5rem;
+            }
+            .stat-card-content .value {
+                margin-bottom: 0.5rem;
+            }
+
+            .recent-activity {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            .recent-activity-title {
+                width: auto;
+                text-align: left;
+                margin-bottom: 0;
+            }
+
+            .quick-actions {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            .quick-actions-title {
+                width: auto;
+                text-align: left;
+                margin-top: 0;
+            }
+            .action-items-container {
+                justify-items: start;
+            }
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-overlay.visible {
+            display: flex;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--shadow-deep);
+        }
+        .modal-box h3 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .modal-form .form-group {
+            margin-bottom: 1rem;
+        }
+        .modal-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .modal-form input[type="range"],
+        .modal-form input[type="number"] {
+            width: 100%;
+        }
+        .modal-form .allocation-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-form .allocation-item label {
+            flex-basis: 40%;
+            margin-bottom: 0;
+        }
+        .modal-form .allocation-item input[type="range"] {
+            flex-grow: 1;
+        }
+        .modal-form .allocation-item .percent-display {
+            font-weight: 600;
+            min-width: 50px;
+            text-align: right;
+        }
+        #totalAllocation {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+        }
+        #totalAllocation.invalid {
+            color: var(--error-color);
+            background-color: #f8d7da;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+        }
+        .modal-btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+        .modal-btn-save {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .modal-btn-save:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .edit-allocation-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+        }
+        .edit-allocation-btn:hover {
+            background-color: #0f202f;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-container">
+        <div class="logo">
+            <a href="/HOMEPAGE/Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+                <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="IllumiNation PH Logo" />
+                <span class="logo-text">IllumiNation PH</span>
+            </a>
+        </div>
+       <nav class="navbar">
+            <a href="/DASHBOARD/Admin_Dashboard/adminDashboard.html">Dashboard</a>
+            <a href="/DASHBOARD/Admin_Dashboard/tickets.html">Tickets</a>
+            <a href="/DASHBOARD/Admin_Dashboard/admin-reports.html">Reports</a>
+            <div class="dropdown">
+                <button class="dropbtn">Account</button>
+                <div class="dropdown-content">
+                    <a href="/DASHBOARD/Admin_Dashboard/profile-editor.html"Edit Profile></a>
+                    <a href="#" id="logoutButton">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero-section">
+        <img
+            src="https://images.pexels.com/photos/8853510/pexels-photo-8853510.jpeg"
+            alt="Background Image"
+            class="hero-background"
+        />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <!-- Profile Picture Section for Admin -->
+            <div class="profile-picture-container">
+                <img src="https://placehold.co/120x120/112B3C/FFFFFF?text=Admin" alt="Admin Profile Picture" class="profile-picture" id="admin-profile-picture-img" onclick="window.location.href='/DASHBOARD/Admin_Dashboard/profile-editor.html'">
+            </div>
+            <h1>Welcome, <span id="admin-name">Admin</span></h1>
+            <p>Check out the key metrics and manage your platform</p>
+        </div>
+    </div>
+
+ <main class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Ticket Overview</h3>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Open Tickets</p>
+                    <p class="ticket-value" id="open-tickets-count">0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">In Progress</p>
+                    <p class="ticket-value high-priority" id="inprogress-tickets-count">0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Assigned to Me</p>
+                    <p class="ticket-value" id="assigned-tickets-count">0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Resolved Today</p>
+                    <p class="ticket-value resolved" id="resolved-tickets-count">0</p>
+                </div>
+                <a href="/DASHBOARD/Admin_Dashboard/tickets.html" class="sidebar-action-btn">View All Support Tickets</a>
+                <a href="/DASHBOARD/Admin_Dashboard/admin-volunteer-tickets.html" class="sidebar-action-btn secondary">View all Volunteer Tickets</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Content Management</h3>
+                <a href="/DASHBOARD/Admin_Dashboard/admin-discussions.html" class="sidebar-action-btn">View Discussion Submissions</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Quick Links</h3>
+                <ul class="quick-links-list">
+                    <li><a href="#">Manage Donors</a></li>
+                    <li><a href="#">Manage Volunteers</a></li>
+                    <li><a href="/DASHBOARD/Admin_Dashboard/profile-editor.html">Update Profile</a></li>
+                    <li><a href="#">Audit Logs</a></li>
+                </ul>
+            </div>
+        </aside>
+
+
+
+        <div class="main-content-area">
+            <div class="section">
+                <h2>Key Stats</h2>
+                <div class="key-stats">
+                    <div class="stat-box" id="stat-total-donations">Total Donations<br><strong>$0</strong></div>
+                    <div class="stat-box" id="stat-active-users">Active Users<br><strong>0</strong></div>
+                    <div class="stat-box" id="stat-new-signups">Total Signups<br><strong>0</strong></div>
+                    <div class="stat-box" id="stat-support-tickets">Support Tickets<br><strong>0</strong></div>
+                </div>
+
+                <section class="donation-stats-section">
+                    <div class="stats-grid">
+                        <div class="stats-cards-container">
+                            <div class="info-card">
+                                <div class="stat-card-content">
+                                    <p class="label">Total Donations</p>
+                                    <p class="value" id="card-total-donations">$0</p>
+                                    <p class="change">+0%</p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="stat-card-content">
+                                    <p class="label">Number of Donors</p>
+                                    <p class="value" id="card-donor-count">0</p>
+                                    <p class="change"></p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="stat-card-content">
+                                    <p class="label">Funds Allocated</p>
+                                    <p class="value">$0</p>
+                                    <p class="change"></p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="stat-card-content">
+                                    <p class="label">Funds Remaining</p>
+                                    <p class="value">$0</p>
+                                    <p class="change"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card chart-card">
+                            <div class="chart-header">
+                                <h4>Donation Allocation</h4>
+                                <!-- Button removed from here -->
+                            </div>
+                            <p class="subtitle">Amount</p>
+                            <div class="chart-wrapper">
+                                <canvas id="donationPieChart"></canvas>
+                            </div>
+                            <button id="editAllocationBtn" class="edit-allocation-btn" style="position:static; margin-top:1.5rem; align-self:center;">Edit</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <hr>
+
+            <div class="section">
+                <div class="recent-activity">
+                    <h2 class="recent-activity-title">Recent Activity</h2>
+                    <div class="activity-boxes" id="activity-boxes-container">
+                        <!-- Dynamic content will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="quick-actions">
+                    <div class="action-items-container">
+                        <div class="action-btn">
+                            <div class="action-icon-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8H11V7h2v2z' fill='%23333'/%3E%3C/svg%3E" alt="Make a New Donation"/>
+                            </div>
+                            <p>Make a New Donation</p>
+                        </div>
+                        <div class="action-btn">
+                            <div class="action-icon-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12zM7 9h10v2H7zm0 4h7v2H7z' fill='%23333'/%3E%3C/svg%3E" alt="Submit a New Report"/>
+                            </div>
+                            <p>Submit a New Report</p>
+                        </div>
+                        <div class="action-btn" onclick="window.location.href='/DASHBOARD/Admin_Dashboard/profile-editor.html'">
+                            <div class="action-icon-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%23333'/%3E%3C/svg%3E" alt="Update Profile"/>
+                            </div>
+                            <p>Update Profile</p>
+                        </div>
+                        <div class="action-btn">
+                            <div class="action-icon-wrapper">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z' fill='%23333'/%3E%3C/svg%3E" alt="View Volunteer Opportunities"/>
+                            </div>
+                            <p>View Volunteer Opportunities</p>
+                        </div>
+                    </div>
+                    <h2 class="quick-actions-title">Quick Actions</h2>
+                </div>
+            </div>
+
+            <hr>
+        </div>
+    </main>
+
+    <hr>
+    <section class="section">
+        <h2>User Growth Trends</h2>
+        <div class="info-card chart-card">
+            <h4>New User Sign-ups Over Time</h4>
+            <p class="subtitle">Monthly Trends</p>
+            <div class="chart-wrapper">
+                <canvas id="userGrowthChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+<section class="section">
+        <h2>Donation Trends</h2>
+        <div class="info-card chart-card">
+            <h4>Total Donations Over Time</h4>
+            <p class="subtitle">Monthly Cumulative Amount (USD)</p>
+            <div class="chart-wrapper">
+                <canvas id="donationTrendChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+    
+    <!-- Edit Allocation Modal -->
+    <div id="editAllocationModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Edit Donation Allocation</h3>
+            <form id="editAllocationForm" class="modal-form">
+                <div id="allocationInputsContainer">
+                    <!-- Inputs will be generated by JS -->
+                </div>
+                <div id="totalAllocation" class="valid">Total: 100%</div>
+                <div class="modal-buttons">
+                    <button type="button" id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+                    <button type="submit" id="modalSaveBtn" class="modal-btn modal-btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Authenticate and Personalize Page ---
+            const currentUser = Session.authenticate('admin');
+            if (!currentUser) return; // Stop execution if not an authenticated admin
+
+            const adminNameElement = document.getElementById('admin-name');
+            if (adminNameElement) {
+                adminNameElement.textContent = currentUser.name || currentUser.username;
+            }
+
+            const profilePicElement = document.getElementById('admin-profile-picture-img');
+            if (profilePicElement) {
+                profilePicElement.src = currentUser.profilePic || 'https://placehold.co/120x120/112B3C/FFFFFF?text=Admin';
+                profilePicElement.alt = `${currentUser.username}'s Profile Picture`;
+            }
+
+            // --- Load Data and Update Dashboard ---
+            const allUsers = DB.get('users') || [];
+            const allTickets = DB.get('tickets') || [];
+            const allDonations = DB.get('donations') || []; 
+
+            // --- Calculate and Display Key Stats ---
+            const totalDonations = allDonations.reduce((sum, donation) => sum + (donation.amount || 0), 0);
+            const activeUsers = allUsers.filter(user => user.role === 'user').length;
+            const totalSignups = allUsers.length;
+            const totalTickets = allTickets.length;
+
+            document.querySelector('#stat-total-donations strong').textContent = `$${totalDonations.toLocaleString()}`;
+            document.querySelector('#stat-active-users strong').textContent = activeUsers;
+            document.querySelector('#stat-new-signups strong').textContent = totalSignups;
+            document.querySelector('#stat-support-tickets strong').textContent = totalTickets;
+
+            // --- Calculate and Display Sidebar Ticket Overview ---
+            const openTickets = allTickets.filter(t => t.status === 'Open').length;
+            const inProgressTickets = allTickets.filter(t => t.status === 'In Progress').length;
+            const assignedToMe = allTickets.filter(t => t.assignedTo.toLowerCase() === currentUser.username.toLowerCase()).length;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const resolvedToday = allTickets.filter(t => t.status === 'Closed' && t.lastUpdated === today).length;
+
+
+            document.getElementById('open-tickets-count').textContent = openTickets;
+            document.getElementById('inprogress-tickets-count').textContent = inProgressTickets;
+            document.getElementById('assigned-tickets-count').textContent = assignedToMe;
+            document.getElementById('resolved-tickets-count').textContent = resolvedToday;
+
+
+            // --- Update Donation Stats Section ---
+            document.getElementById('card-total-donations').textContent = `$${totalDonations.toLocaleString()}`;
+            const donorEmails = [...new Set(allDonations.map(d => d.email))];
+            document.getElementById('card-donor-count').textContent = donorEmails.length;
+            
+            // --- Update Recent Activity ---
+            const activityContainer = document.getElementById('activity-boxes-container');
+            activityContainer.innerHTML = ''; // Clear static content
+            const recentUsers = allUsers.slice(-3).reverse(); // Get last 3 users
+            
+            if(recentUsers.length > 0) {
+                recentUsers.forEach(user => {
+                    const activityBox = document.createElement('div');
+                    activityBox.className = 'activity-box';
+                    activityBox.innerHTML = `
+                        <div class="placeholder" style="background-image: url('${user.profilePic}'); background-size: cover; background-position: center;"></div>
+                        <div class="activity-content">
+                            <h3>New ${user.role} signed up</h3>
+                            <p><b>${user.username}</b> (${user.email}) joined recently.</p>
+                        </div>
+                    `;
+                    activityContainer.appendChild(activityBox);
+                });
+            } else {
+                activityContainer.innerHTML = '<p>No recent user sign-ups.</p>';
+            }
+
+
+            // --- Chart.js Logic ---
+            const pieCtx = document.getElementById('donationPieChart').getContext('2d');
+            let donationPieChart; // Declare chart variable to be accessible in functions
+
+            function renderDonationChart(allocationData) {
+                if (donationPieChart) {
+                    donationPieChart.destroy(); // Destroy existing chart before creating a new one
+                }
+                donationPieChart = new Chart(pieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: allocationData.labels,
+                        datasets: [{
+                            label: 'Donation Allocation',
+                            data: allocationData.data,
+                            backgroundColor: ['#F66B0E', '#112B3C', '#FFD700', '#6B7280', '#D9905A'],
+                            borderColor: '#f3f4f6',
+                            borderWidth: 3,
+                            hoverOffset: 12
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'right', labels: { color: '#0F172A', font: { family: 'Inter' } } } }
+                    }
+                });
+            }
+            
+            // --- Allocation Modal Logic ---
+            const editAllocationBtn = document.getElementById('editAllocationBtn');
+            const editAllocationModal = document.getElementById('editAllocationModal');
+            const allocationInputsContainer = document.getElementById('allocationInputsContainer');
+            const totalAllocationDisplay = document.getElementById('totalAllocation');
+            const modalSaveBtn = document.getElementById('modalSaveBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const editAllocationForm = document.getElementById('editAllocationForm');
+
+            function openAllocationModal() {
+                const allocationData = DB.get('donationAllocation');
+                allocationInputsContainer.innerHTML = '';
+                allocationData.labels.forEach((label, index) => {
+                    const value = allocationData.data[index];
+                    const itemHtml = `
+                        <div class="allocation-item">
+                            <label for="alloc-${index}">${label}</label>
+                            <input type="range" id="alloc-range-${index}" min="0" max="100" value="${value}" data-index="${index}">
+                            <span class="percent-display">${value}%</span>
+                        </div>
+                    `;
+                    allocationInputsContainer.innerHTML += itemHtml;
+                });
+                updateTotalAllocation();
+                editAllocationModal.classList.add('visible');
+            }
+
+            function closeAllocationModal() {
+                editAllocationModal.classList.remove('visible');
+            }
+
+            function updateTotalAllocation() {
+                const inputs = allocationInputsContainer.querySelectorAll('input[type="range"]');
+                let total = 0;
+                inputs.forEach(input => {
+                    total += parseInt(input.value, 10);
+                });
+                totalAllocationDisplay.textContent = `Total: ${total}%`;
+                if (total === 100) {
+                    totalAllocationDisplay.style.color = 'green';
+                    modalSaveBtn.disabled = false;
+                } else {
+                    totalAllocationDisplay.style.color = 'red';
+                    modalSaveBtn.disabled = true;
+                }
+            }
+            
+            allocationInputsContainer.addEventListener('input', (e) => {
+                if(e.target.type === 'range') {
+                    const percentDisplay = e.target.nextElementSibling;
+                    percentDisplay.textContent = `${e.target.value}%`;
+                    updateTotalAllocation();
+                }
+            });
+
+            editAllocationBtn.addEventListener('click', openAllocationModal);
+            modalCancelBtn.addEventListener('click', closeAllocationModal);
+            editAllocationModal.addEventListener('click', (e) => {
+                if(e.target === editAllocationModal) closeAllocationModal();
+            });
+
+            editAllocationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newAllocationData = {
+                    labels: [],
+                    data: []
+                };
+                const items = allocationInputsContainer.querySelectorAll('.allocation-item');
+                items.forEach(item => {
+                    newAllocationData.labels.push(item.querySelector('label').textContent);
+                    newAllocationData.data.push(parseInt(item.querySelector('input[type="range"]').value, 10));
+                });
+
+                DB.set('donationAllocation', newAllocationData);
+                renderDonationChart(newAllocationData);
+                closeAllocationModal();
+                alert('Donation allocation updated successfully!');
+            });
+
+
+            // --- Dynamic User Growth Chart ---
+            const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+            // This is a simplified example. A real app would process timestamps.
+            const userGrowthData = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                data: [2, 5, 8, 10, 15, 18, totalSignups] // Show current total as the last point
+            };
+            const userGrowthChart = new Chart(userGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: userGrowthData.labels,
+                    datasets: [{
+                        label: 'New Sign-ups',
+                        data: userGrowthData.data,
+                        borderColor: '#F66B0E',
+                        backgroundColor: 'rgba(246, 107, 14, 0.2)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // --- Dynamic Donation Trend Chart ---
+            const donationTrendCtx = document.getElementById('donationTrendChart').getContext('2d');
+             // This is a simplified example. A real app would process timestamps.
+            const donationTrendData = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                data: [1000, 1200, 1500, 1300, 1800, 2000, totalDonations] // Show current total as the last point
+            };
+            const donationTrendChart = new Chart(donationTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: donationTrendData.labels,
+                    datasets: [{
+                        label: 'Total Donations',
+                        data: donationTrendData.data,
+                        borderColor: '#34D399',
+                        backgroundColor: 'rgba(52, 211, 153, 0.2)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            // --- Initial Chart Render ---
+            renderDonationChart(DB.get('donationAllocation'));
+        });
+    </script>
+
+</body>
+</html>

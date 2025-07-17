@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Map - IllumiNation PH</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+  <link rel="stylesheet" href="InteractiveMapDesign.css" />
+</head>
+<body>
+
+  <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="/HOMEPAGE/Draft_Home.html">Go to Home</a>
+          <a href="/DASHBOARD/User_Dashboard/userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="/INTERACTIVE_MAP/InteractiveMap.html">View Map</a>
+          <a href="/REPORT_ELECTRICITY/ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="/DONATION/Donation.html">Donate Now</a>
+          <a href="/DONATION_TRANSPPARENCY/Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="/VOLUNTEER/Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="/VOLUNTEER/VOLUNTEER_SIGNUP-DONE/volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="/FAQ_PAGE/FAQ.html">Help</a>
+      <a href="/DISCUSSION/Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">Login</button>
+        <div class="dropdown-content">
+          <a href="/ADMIN_SIGNUP/Login.html">Login</a>
+          <a href="/ADMIN_SIGNUP/signup.html">Signup</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="main-container">
+
+    <div class="left-column">
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+      <div class="report-section">
+        <h2>Report Electricity Access Status</h2>
+        <p>Help us keep electricity data up to date by submitting recent updates from your region.</p>
+        <button class="report-button" onclick="window.location.href='/REPORT_ELECTRICITY/ReportElectAccess.html'">Submit Report</button>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="discover-section">
+        <h2>Discover Areas in Need</h2>
+        <p>Click on the map pins or select a location from the dropdown to learn more about each area and how you can help.</p>
+        <div class="filter-container">
+          <label for="location-filter">Go to Area:</label>
+          <select id="location-filter">
+            <option value="all">-- Select a Location --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="area-info-box" id="area-info-box">
+         <h3>Area Name</h3>
+         <p>Brief description of the region and electricity situation.</p>
+      </div>
+
+      <div class="ngo-section">
+        <h3>National Electrification Efforts</h3>
+        <p class="ngo-section-intro">Information on government and NGO efforts to achieve 100% electrification across the Philippines.</p>
+        
+        <details class="info-dropdown">
+          <summary>National Overview</summary>
+          <div class="info-dropdown-content">
+            <p>An estimated 1.8 to 3.6 million households remain without power, primarily in Geographically Isolated and Disadvantaged Areas (GIDAs). The National Electrification Administration (NEA) leads the effort through its Sitio Electrification Program (SEP).</p>
+            <p><strong>2025 Budget:</strong> The NEA has a budget of ₱3.6 billion for this purpose.</p>
+          </div>
+        </details>
+
+        <details class="info-dropdown">
+          <summary>Efforts by Island Group</summary>
+          <div class="info-dropdown-content">
+            <h4>Mindanao (₱2.5 billion budget)</h4>
+            <p>Mindanao is the top priority. Key focus areas include:</p>
+            <ul>
+              <li><strong>BARMM:</strong> Lowest electrification rate (Lanao del Sur, Maguindanao, Sulu, Tawi-Tawi).</li>
+              <li><strong>Other Regions:</strong> Northern Mindanao, Davao Region, Soccsksargen, and Caraga.</li>
+            </ul>
+
+            <h4>Luzon (₱701.2 million budget)</h4>
+            <p>Efforts target mountainous and remote islands. Key focus areas include:</p>
+            <ul>
+              <li><strong>CAR & Cagayan Valley:</strong> NGOs like SIBAT are active with micro-hydro projects.</li>
+              <li><strong>MIMAROPA & Bicol:</strong> Groups like ICSC provide solar solutions in Palawan, Quezon, etc.</li>
+            </ul>
+
+            <h4>Visayas (₱462.6 million budget)</h4>
+            <p>Focus on interior mountains and smaller islands. Key areas include:</p>
+            <ul>
+              <li><strong>Western & Central Visayas:</strong> Antique, Negros Occidental, and Siquijor.</li>
+              <li><strong>Eastern Visayas:</strong> Samar and Leyte, focusing on resilient energy systems.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="info-dropdown">
+          <summary>Role of LGUs & NGOs</summary>
+          <div class="info-dropdown-content">
+            <p><strong>LGUs (Local Government Units):</strong> Crucial for identifying communities, coordinating with electric co-ops, and facilitating projects.</p>
+            <p><strong>NGOs (Non-Governmental Organizations):</strong> Specialize in deploying off-grid renewable energy. Groups like SIBAT, ICSC, and Project Liwanag empower communities with their own solar or micro-hydro systems, complementing government efforts.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer2">© 2025 IllumiNation PH. All rights reserved. Contact us: info@illuminatioph.com</div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+  
+  <script src="IntMap.js"></script>
+
+</body>
+</html>

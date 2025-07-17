@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Details - IllumiNation PH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        html, body {
+            height: 100%;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            line-height: 1.6;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+
+        /* --- NAVBAR STYLES (Copied from Discussion.html for consistency) --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #112b3c;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px;
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch;
+          margin-right: 20px;
+          height: 100%;
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem;
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: #112b3c;
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #112b3c;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Main Content Area */
+        .story-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05);
+        }
+
+        .story-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .story-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #112b3c;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-meta {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-content p {
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .story-content h4 {
+            font-size: 1.5rem;
+            color: #112b3c;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        /* Like and Comment Section Styles */
+        .story-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #9ca3af;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .story-actions svg {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .story-actions svg:hover {
+            color: #4b5563;
+        }
+        .story-actions .like-icon.liked {
+            fill: #F66B0E;
+            color: #F66B0E;
+        }
+
+        /* Comment Section */
+        .comment-section {
+            display: none; /* Hidden by default */
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .comment-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+        }
+        .submit-comment-btn {
+            padding: 0.5rem 1rem;
+            background: #112b3c;
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+        }
+        .submit-comment-btn:hover {
+            background: #205375;
+        }
+        .comments-list {
+            margin-top: 1rem;
+        }
+        .user-comment {
+            background-color: #f3f4f6;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 2.5rem;
+            padding: 0.8rem 1.8rem;
+            background-color: #F66B0E;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #e05e0a;
+        }
+
+        /* Footer Styles (Copied from Discussion.html for consistency) */
+        footer { color: #fff; margin-top: 4rem; }
+        .container-FOOTER1 { background-color: #205375; padding: 20px; }
+        .Footertxt { color: white; margin-left: 40px; text-decoration: none; }
+        .footer2 { color: white; background-color: #F66B0E; text-align: center; padding: 10px; }
+    </style>
+</head>
+<body>
+
+    <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="/HOMEPAGE/Draft_Home.html">Go to Home</a>
+          <a href="/DASHBOARD/User_Dashboard/userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="/INTERACTIVE_MAP/InteractiveMap.html">View Map</a>
+          <a href="/REPORT_ELECTRICITY/ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="/DONATION/Donation.html">Donate Now</a>
+          <a href="/DONATION_TRANSPPARENCY/Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="/VOLUNTEER/Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="/VOLUNTEER/VOLUNTEER_SIGNUP-DONE/volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="/FAQ_PAGE/FAQ.html">Help</a>
+      <a href="/DISCUSSION/Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <!-- Dynamic Nav -->
+      </div>
+    </nav>
+  </header>
+
+    <main>
+        <div id="story-container" class="story-container">
+            <!-- Dynamic Story Content will be injected here -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storyContainer = document.getElementById('story-container');
+            const storyId = sessionStorage.getItem('viewStoryId');
+
+            if (!storyId) {
+                storyContainer.innerHTML = '<h1>Error: Story not found.</h1><p>Please go back to the discussion page and select a story to view.</p>';
+                return;
+            }
+
+            const allStories = DB.get('stories') || [];
+            const story = allStories.find(s => s.id === storyId);
+
+            if (!story) {
+                storyContainer.innerHTML = '<h1>Error: Story not found.</h1><p>The selected story could not be loaded.</p>';
+                return;
+            }
+
+            function renderStory() {
+                const commentsHTML = (story.comments || []).map(comment => `<p class="user-comment">${comment}</p>`).join('');
+                storyContainer.innerHTML = `
+                    <div class="story-header">
+                        <h1 class="story-title">${story.title}</h1>
+                        <p class="story-meta">By ${story.author} | Tags: ${story.tags.join(', ')}</p>
+                    </div>
+                    <div class="story-content">
+                        <p>${story.content.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <div class="story-actions">
+                        <svg class="like-icon ${story.liked ? 'liked' : ''}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${story.liked ? '#F66B0E' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a2 2 0 0 1 3 1.12Z"/></svg>
+                        <span class="like-count">${story.likes || 0}</span>
+                        <svg class="comment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <div class="comment-section">
+                        <div class="comments-list">${commentsHTML}</div>
+                        <textarea class="comment-input" placeholder="Add a comment..." rows="2"></textarea>
+                        <button class="submit-comment-btn">Comment</button>
+                    </div>
+                    <a href="/DISCUSSION/Discussion.html" class="back-button">Back to Discussions</a>
+                `;
+                attachActionListeners();
+            }
+
+            function attachActionListeners() {
+                const likeIcon = storyContainer.querySelector('.like-icon');
+                const commentIcon = storyContainer.querySelector('.comment-icon');
+                const submitCommentBtn = storyContainer.querySelector('.submit-comment-btn');
+
+                if (likeIcon) {
+                    likeIcon.addEventListener('click', () => {
+                        const storyIndex = allStories.findIndex(s => s.id === storyId);
+                        if(storyIndex > -1){
+                            allStories[storyIndex].liked = !allStories[storyIndex].liked;
+                            allStories[storyIndex].likes = (allStories[storyIndex].likes || 0) + (allStories[storyIndex].liked ? 1 : -1);
+                            DB.set('stories', allStories);
+                            renderStory();
+                        }
+                    });
+                }
+
+                if (commentIcon) {
+                    commentIcon.addEventListener('click', () => {
+                        const commentSection = storyContainer.querySelector('.comment-section');
+                        commentSection.style.display = commentSection.style.display === 'block' ? 'none' : 'block';
+                    });
+                }
+
+                if (submitCommentBtn) {
+                    submitCommentBtn.addEventListener('click', () => {
+                        const currentUser = Session.getCurrentUser();
+                        if (!currentUser) {
+                            alert("Please log in to comment.");
+                            return;
+                        }
+                        const textarea = storyContainer.querySelector('.comment-input');
+                        if (textarea.value.trim()) {
+                            const storyIndex = allStories.findIndex(s => s.id === storyId);
+                             if(storyIndex > -1){
+                                if(!allStories[storyIndex].comments) allStories[storyIndex].comments = [];
+                                allStories[storyIndex].comments.push(`${currentUser.username}: ${textarea.value.trim()}`);
+                                DB.set('stories', allStories);
+                                textarea.value = '';
+                                renderStory();
+                                setTimeout(() => {
+                                    const newCommentSection = document.querySelector('.comment-section');
+                                    if (newCommentSection) newCommentSection.style.display = 'block';
+                                }, 0);
+                            }
+                        }
+                    });
+                }
+            }
+
+            renderStory();
+        });
+    </script>
+
+</body>
+</html>

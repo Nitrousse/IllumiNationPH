@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IllumiNation PH - User Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Universal Box-Sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CSS Variables for better theme management - Consolidated from DonationDesign.css and Design.css */
+        :root {
+            /* Colors */
+            --primary-color: #F66B0E; /* Orange */
+            --primary-hover-color: #ff9f0a; /* Custom hover orange for buttons */
+            --secondary-color: #112B3C; /* Dark Blue */
+            --text-color: #374151; /* Main body text color */
+            --heading-color: #1a2a44; /* Headings color */
+            --light-gray-bg: #f3f4f6; /* Background color for page */
+            --card-bg: #FFFFFF; /* White background for cards/boxes */
+            --border-color: #e0e0e0; /* Border color for cards/boxes */
+            --semi-transparent-light-gray: rgba(217,217,217,0.5); /* For hero buttons */
+
+            /* Shadows */
+            --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-deep: 0 8px 12px rgba(0,0,0,0.1);
+
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+
+            /* Border Radii */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: Arial, sans-serif; /* Updated font family */
+            line-height: 1.6;
+            background-color: var(--light-gray-bg);
+            color: var(--text-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px;
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch;
+          margin-right: 20px;
+          height: 100%;
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem; /* Font size is correct */
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit; /* Inherits from body */
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: var(--secondary-color);
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem; /* Font size is correct */
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: var(--secondary-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 450px; /* Increased height for profile picture */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--secondary-color);
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: var(--spacing-lg) var(--spacing-md);
+            color: white;
+        }
+
+        /* Profile Picture Styles */
+        .profile-picture-container {
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white; /* Changed to white border */
+            box-shadow: var(--shadow-medium);
+            cursor: pointer; /* Added cursor pointer to indicate clickability */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .hero-content h1 {
+            font-size: 40px;
+            margin-bottom: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+            text-transform: uppercase;
+        }
+
+        .hero-content p {
+            font-size: 15px;
+            margin-bottom: var(--spacing-lg);
+            text-transform: uppercase;
+        }
+
+        .button {
+            width: 250px;
+            height: 50px;
+            padding: 8px 20px;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: var(--border-radius-md);
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        #admin, #user {
+            width: 120px;
+            height: 40px;
+            background: var(--semi-transparent-light-gray);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 13px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #admin:hover, #user:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        /* DASHBOARD BODY */
+        .section {
+            padding: var(--spacing-lg) var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* General h2 style for the section - now correctly centers h2 titles */
+        .section h2 {
+            font-size: 2em;
+            color: var(--heading-color);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* KEY STATS (Original Section - Refined to match card design) */
+        .key-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: var(--spacing-md); /* Space between stat boxes */
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            padding: var(--spacing-md);
+            flex: 1 1 calc(25% - var(--spacing-md) * 3 / 4); /* Adjust width for 4 boxes with gap */
+            min-width: 180px; /* Minimum width to prevent shrinking too much */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            font-size: 1em;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .stat-box strong {
+            font-size: 1.8em; /* Slightly larger for prominence */
+            display: block;
+            margin-top: var(--spacing-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* --- Styles for Donation Statistics Section (Integrated) --- */
+        .donation-stats-section {
+            padding-top: 0px;
+            padding-bottom: var(--spacing-lg);
+        }
+
+        .stats-grid {
+            margin-top: var(--spacing-lg);
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: var(--spacing-md);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .stats-cards-container {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .stat-card-content .label {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #64748b; /* Specific grey from original */
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+        }
+
+        .stat-card-content .value {
+            font-size: 1.6rem;
+            line-height: 1.75rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            min-width: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .stat-card-content .change {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 600;
+            color: #16a34a; /* green color for positive change */
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        .chart-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-card h4 {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+            color: var(--heading-color);
+            align-self: flex-start;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .chart-card .subtitle {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #64748b; /* Specific grey from original */
+            align-self: flex-start;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 18rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* RECENT ACTIVITY */
+        .recent-activity {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-xl);
+            gap: var(--spacing-lg);
+            padding: 0 var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .recent-activity-title {
+            margin: 0;
+            flex-shrink: 0;
+            font-size: 2em;
+            color: var(--heading-color);
+            white-space: nowrap;
+            text-align: center;
+            width: 100%;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .activity-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            flex-grow: 1;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .activity-box {
+            background: var(--card-bg);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            text-align: left;
+            font-size: 0.9em;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .activity-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .activity-box .placeholder {
+            background: var(--light-gray-bg);
+            min-width: 80px;
+            height: 80px;
+            margin-bottom: 0;
+            border-radius: var(--border-radius-sm);
+            flex-shrink: 0;
+        }
+
+        .activity-box .activity-content {
+            flex-grow: 1;
+        }
+
+        .activity-box .activity-content h3 {
+            margin: 0 0 var(--spacing-xs) 0;
+            font-size: 1em;
+            color: var(--heading-color);
+        }
+
+        .activity-box .activity-content p {
+            margin: 0;
+            font-size: 0.85em;
+            line-height: 1.4;
+            color: var(--text-color);
+        }
+
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: flex;
+            flex-direction: column; /* Changed to column for title to be on top on smaller screens */
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            gap: var(--spacing-xl);
+            padding: 0 var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .quick-actions-title {
+            margin-top: 0; /* Ensures no extra top margin */
+            margin-bottom: var(--spacing-md); /* Adds space below the title on smaller screens */
+            font-size: 2em;
+            color: var(--heading-color);
+            white-space: nowrap;
+            text-align: center;
+            width: 100%; /* Ensures title takes full width on smaller screens */
+        }
+
+        .action-items-container { /* New container for the action buttons */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns, equal width */
+            gap: 40px 60px; /* Row gap and column gap */
+            max-width: 500px; /* Adjust as needed */
+            flex-shrink: 0; /* Prevent from shrinking */
+            justify-items: center; /* Center grid items horizontally for mobile */
+            width: 100%; /* Ensure it takes full width when wrapped */
+        }
+
+        .action-btn {
+            text-align: center;
+            padding: var(--spacing-sm);
+            word-wrap: break-word;
+            white-space: normal;
+            cursor: pointer;
+            /* Added background-color to transition for hover effect */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            border-radius: var(--border-radius-md); /* Added border-radius for the button itself */
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: var(--shadow-medium);
+            background-color: var(--light-gray-bg); /* Subtle background change on hover */
+        }
+
+        /* NEW: Styles for the icon wrapper */
+        .action-icon-wrapper {
+            height: 60px;
+            width: 60px;
+            margin-bottom: var(--spacing-sm);
+            border-radius: 50%; /* Makes it circular */
+            background-color: var(--light-gray-bg);
+            padding: var(--spacing-sm);
+            box-shadow: var(--shadow-light);
+            display: flex; /* To center the SVG inside */
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+
+        .action-btn:hover .action-icon-wrapper {
+            transform: scale(1.1); /* Slightly enlarge icon wrapper on hover */
+            background-color: var(--primary-color); /* Change background to primary color on hover */
+        }
+
+        .action-icon-wrapper img {
+            height: 100%;
+            width: 100%;
+            filter: grayscale(50%);
+            transition: filter 0.2s ease-in-out;
+        }
+
+        .action-btn:hover .action-icon-wrapper img {
+            filter: grayscale(0%) invert(100%);
+        }
+
+        .action-btn p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-color);
+            transition: color 0.2s ease-in-out;
+        }
+
+        .action-btn:hover p {
+            color: var(--heading-color);
+        }
+
+        /* Horizontal Rule (HR) Styling */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: var(--spacing-xl) 0;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* FOOTER */
+        .container-FOOTER1 {
+            background-color: var(--secondary-color);
+            padding: var(--spacing-md);
+        }
+
+        .Footertxt {
+            color: white;
+            margin-left: var(--spacing-lg);
+            text-decoration: none;
+        }
+
+        .footer2 {
+            color: white;
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: var(--spacing-sm);
+        }
+
+        h1.Footertxt{
+            font-size: 36px;
+        }
+
+        /* Dashboard Layout (for Sidebar) */
+        .dashboard-layout {
+            display: flex;
+            gap: var(--spacing-md); /* Space between sidebar and main content */
+            max-width: 1200px; /* Max width for the entire dashboard content */
+            margin: var(--spacing-lg) auto; /* Center the dashboard layout */
+            align-items: flex-start; /* Align items to the top */
+        }
+
+        .sidebar {
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+            width: 280px; /* Fixed width for the sidebar */
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+            padding: var(--spacing-md);
+            position: sticky; /* Make sidebar sticky */
+            top: calc(40px + var(--spacing-md)); /* Adjust based on navbar height + some margin */
+            align-self: flex-start; /* Ensure it sticks to the top of its flex container */
+            max-height: calc(100vh - 40px - var(--spacing-md) * 2); /* Limit height to viewport */
+            overflow-y: auto; /* Enable scrolling if content overflows */
+        }
+
+        .main-content-area {
+            flex-grow: 1; /* Main content takes remaining space */
+            min-width: 0; /* Allow content to shrink if necessary */
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .sidebar-section h3 {
+            font-size: 1.2em;
+            color: var(--heading-color);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* User Profile Specific Styles */
+        .user-profile-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+        .profile-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: default; /* Not directly interactive like buttons, so no pointer */
+        }
+        .profile-card:hover {
+            transform: translateY(-3px); /* Slight lift */
+            box-shadow: var(--shadow-medium); /* Slightly increased shadow */
+        }
+        .profile-card h3 {
+            font-size: 1.25rem;
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .profile-detail {
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+        .profile-detail strong {
+            color: var(--heading-color);
+        }
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .badge {
+            background-color: #e0f2fe; /* Light blue */
+            color: #0c4a6e; /* Darker blue */
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .badge svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Sidebar Buttons */
+        .sidebar-action-btn {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-top: var(--spacing-sm);
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-action-btn:hover {
+            background-color: var(--secondary-color);
+            transform: none; /* Override general button hover scale */
+            box-shadow: none; /* Override general button hover shadow */
+            color: white;
+        }
+
+        .sidebar-action-btn.secondary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+        }
+
+        .sidebar-action-btn.secondary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        /* Quick Links List */
+        .quick-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quick-links-list li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .quick-links-list a {
+            display: block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .quick-links-list a:hover {
+            background-color: var(--light-gray-bg);
+            color: var(--primary-color);
+        }
+
+
+        /* Responsive adjustments for sidebar */
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                flex-direction: column; /* Stack sidebar and main content */
+                margin: var(--spacing-md) auto;
+                gap: var(--spacing-md);
+            }
+
+            .sidebar {
+                width: 100%; /* Full width sidebar on small screens */
+                position: static; /* Remove sticky behavior */
+                max-height: none; /* Remove max height constraint */
+                order: -1; /* Place sidebar above main content */
+            }
+
+            .main-content-area {
+                padding: 0; /* Remove extra padding if any */
+            }
+
+            /* Adjust section padding for mobile to avoid double padding */
+            .section {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            /* Stats Grid Alignment and sizing */
+            .stats-grid {
+                grid-template-columns: 2fr 1fr; /* 2/3 for cards, 1/3 for chart */
+                align-items: start; /* Align items to the top of their grid area */
+            }
+            .stats-cards-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns within this container */
+            }
+            .stat-card-content {
+                text-align: left; /* Revert to left align for larger screens */
+                align-items: flex-start; /* Align items to the start on larger screens */
+                height: auto; /* Reset height for better flow on larger screens */
+            }
+            .stat-card-content .label {
+                margin-bottom: 0.5rem;
+            }
+            .stat-card-content .value {
+                margin-bottom: 0.5rem;
+            }
+
+            /* Recent Activity & Quick Actions Desktop Alignment */
+            .recent-activity {
+                flex-direction: row; /* Desktop: row direction */
+                justify-content: center; /* Center the whole section */
+                align-items: center; /* Vertically center the title with the block of activity boxes */
+                flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+            }
+            .recent-activity-title {
+                width: auto; /* Revert to auto width on larger screens */
+                text-align: left; /* Revert to left align on larger screens */
+                margin-bottom: 0; /* Remove extra margin */
+            }
+
+            .quick-actions {
+                flex-direction: row; /* Desktop: Buttons then Title */
+                justify-content: center; /* Center the whole section */
+                align-items: center; /* Vertically center the title with buttons */
+                flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+            }
+            .quick-actions-title {
+                width: auto; /* Revert to auto width on larger screens */
+                text-align: left; /* Revert to left align on larger screens */
+                margin-top: 0; /* Remove extra margin */
+            }
+            .action-items-container {
+                justify-items: start; /* Align grid items to start on larger screens */
+            }
+
+            /* User Profile Responsive */
+            .user-profile-grid {
+                grid-template-columns: 1fr 1fr; /* Two columns for profile and history */
+            }
+            .profile-card h3 {
+                text-align: left; /* Align title left on desktop */
+            }
+            .badges-container {
+                justify-content: flex-start; /* Align badges to start on desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-container">
+      <div class="logo">
+        <a href="../../HOMEPAGE/Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+          <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+          <span class="logo-text">IllumiNation PH</span>
+        </a>
+      </div>
+      <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="../../HOMEPAGE/Draft_Home.html">Go to Home</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="../../INTERACTIVE_MAP/InteractiveMap.html">View Map</a>
+          <a href="../../REPORT_ELECTRICITY/ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="../../DONATION/Donation.html">Donate Now</a>
+          <a href="../../DONATION_TRANSPPARENCY/Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="../../VOLUNTEER/Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="../../VOLUNTEER/VOLUNTEER_SIGNUP-DONE/volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="../../FAQ_PAGE/FAQ.html">Help</a>
+      <a href="../../DISCUSSION/Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <!-- This will be dynamically updated by app.js -->
+      </div>
+    </nav>
+    </header>
+
+    <div class="hero-section">
+        <img
+            src="https://images.pexels.com/photos/8853510/pexels-photo-8853510.jpeg"
+            alt="Background Image"
+            class="hero-background"
+        />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <!-- Profile Picture Section -->
+            <div class="profile-picture-container">
+                <img src="https://placehold.co/120x120/F66B0E/FFFFFF?text=User" alt="Profile Picture" class="profile-picture" id="profile-picture-img" onclick="window.location.href='/DASHBOARD/User_Dashboard/profile_editor.html'">
+            </div>
+
+            <h1>Welcome, <span id="user-first-name">User</span></h1>
+            <p>Your personal dashboard for IllumiNation PH</p>
+            <div class="button-group">
+                <a href="/INTERACTIVE_MAP/InteractiveMap.html"><button class="button"><strong>Explore Map</strong></button></a>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <main class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Your Activity Summary</h3>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Total Donations</p>
+                    <p class="ticket-value" id="user-total-donations">$0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Volunteering Hours</p>
+                    <p class="ticket-value" id="user-volunteer-hours">0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Reports Submitted</p>
+                    <p class="ticket-value" id="user-reports-submitted">0</p>
+                </div>
+                <div class="ticket-summary-card">
+                    <p class="ticket-label">Badges Earned</p>
+                    <p class="ticket-value resolved" id="user-badges-earned">0</p>
+                </div>
+                <a href="/DASHBOARD/User_Dashboard/userVolunteerTicket.html" class="sidebar-action-btn">View My Volunteering Tickets</a>
+                <a href="/DASHBOARD/User_Dashboard/userTicket.html" class="sidebar-action-btn secondary">View My Support Tickets</a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Quick Links</h3>
+                <ul class="quick-links-list">
+                    <li><a href="/DONATION/Donation.html">Make a New Donation</a></li>
+                    <li><a href="/REPORT_ELECTRICITY/ReportElectAccess.html">Submit a New Report</a></li>
+                    <li><a href="/VOLUNTEER/Draft_Volunteer.html">Find Volunteer Opportunities</a></li>
+                    <li><a href="/DASHBOARD/User_Dashboard/profile_editor.html">Update My Profile</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <div class="main-content-area">
+            <div class="section">
+                <h2>Your Overview</h2>
+                <div class="key-stats">
+                    <div class="stat-box" id="overview-donations">Total Donations Made<br><strong>$0</strong></div>
+                    <div class="stat-box" id="overview-hours">Volunteering Hours<br><strong>0</strong></div>
+                    <div class="stat-box" id="overview-reports">Reports Submitted<br><strong>0</strong></div>
+                    <div class="stat-box" id="overview-badges">Badges Earned<br><strong>0</strong></div>
+                </div>
+
+                <section class="donation-stats-section">
+                    <h2 class="section-title">Your Donation Summary</h2>
+                    <div class="stats-grid">
+                        <div class="stats-cards-container" id="user-donation-cards">
+                           <!-- Donation cards will be dynamically inserted here -->
+                        </div>
+
+                        <div class="info-card chart-card">
+                            <h4>Overall Donation Allocation</h4>
+                            <p class="subtitle">How your donations contribute to projects</p>
+                            <div class="chart-wrapper">
+                                <canvas id="donationPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <hr>
+
+            <div class="section">
+                <h2 class="recent-activity-title">Your Profile & History</h2>
+                <div class="user-profile-grid">
+                    <div class="profile-card" id="user-profile-card">
+                        <!-- User profile details will be dynamically inserted here -->
+                    </div>
+
+                    <div class="profile-card">
+                        <h3>Your Volunteering History</h3>
+                        <div class="activity-boxes" id="user-volunteer-history">
+                           <!-- Volunteering history will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+          <div class="section">
+            <div class="quick-actions">
+                <div class="action-items-container">
+                    <div class="action-btn" onclick="window.location.href='/DONATION/Donation.html'">
+                        <div class="action-icon-wrapper">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8H11V7h2v2z' fill='%23333'/%3E%3C/svg%3E" alt="Make a New Donation"/>
+                        </div>
+                        <p>Make a New Donation</p>
+                    </div>
+                    <div class="action-btn" onclick="window.location.href='/REPORT_ELECTRICITY/ReportElectAccess.html'">
+                        <div class="action-icon-wrapper">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12zM7 9h10v2H7zm0 4h7v2H7z' fill='%23333'/%3E%3C/svg%3E" alt="Submit a New Report"/>
+                        </div>
+                        <p>Submit a New Report</p>
+                    </div>
+                    <div class="action-btn" onclick="window.location.href='/DASHBOARD/User_Dashboard/profile_editor.html'">
+                        <div class="action-icon-wrapper">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%23333'/%3E%3C/svg%3E" alt="Update Profile"/>
+                        </div>
+                        <a>Update Profile</a>
+                    </div>
+                    <div class="action-btn" onclick="window.location.href='/VOLUNTEER/Draft_Volunteer.html'">
+                        <div class="action-icon-wrapper">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z' fill='%23333'/%3E%3C/svg%3E" alt="View Volunteer Opportunities"/>
+        
+                        </div>
+                        <p>View Volunteer Opportunities</p>
+                    </div>
+                </div>
+                <h2 class="quick-actions-title">Quick Actions</h2>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Authenticate and Personalize Page ---
+            const currentUser = Session.authenticate('user');
+            if (!currentUser) return; // Stop execution if not authenticated user
+
+            // Personalize the dashboard
+            document.getElementById('user-first-name').textContent = currentUser.username;
+            document.getElementById('profile-picture-img').src = currentUser.profilePic || 'https://placehold.co/120x120/F66B0E/FFFFFF?text=User';
+            document.getElementById('profile-picture-img').alt = `${currentUser.username}'s Profile Picture`;
+
+            // --- Calculate and Display User-Specific Stats ---
+            const userTotalDonations = currentUser.donations.reduce((sum, d) => sum + d.amount, 0);
+            const userReportsCount = currentUser.reports.length;
+            const userVolunteerHours = currentUser.volunteerHours || 0;
+            const badgesEarned = (userTotalDonations > 0 ? 1 : 0) + (userReportsCount > 0 ? 1 : 0) + (userVolunteerHours > 0 ? 1 : 0);
+
+            // Update sidebar
+            document.getElementById('user-total-donations').textContent = `$${userTotalDonations.toLocaleString()}`;
+            document.getElementById('user-volunteer-hours').textContent = userVolunteerHours;
+            document.getElementById('user-reports-submitted').textContent = userReportsCount;
+            document.getElementById('user-badges-earned').textContent = badgesEarned;
+
+            // Update overview boxes
+            document.querySelector('#overview-donations strong').textContent = `$${userTotalDonations.toLocaleString()}`;
+            document.querySelector('#overview-hours strong').textContent = userVolunteerHours;
+            document.querySelector('#overview-reports strong').textContent = userReportsCount;
+            document.querySelector('#overview-badges strong').textContent = badgesEarned;
+
+            // --- Populate Donation Summary Cards ---
+            const donationCardsContainer = document.getElementById('user-donation-cards');
+            donationCardsContainer.innerHTML = `
+                <div class="info-card">
+                    <div class="stat-card-content">
+                        <p class="label">Your Total Donations</p>
+                        <p class="value">$${userTotalDonations.toLocaleString()}</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="stat-card-content">
+                        <p class="label">Last Donation Date</p>
+                        <p class="value">${currentUser.donations.length > 0 ? currentUser.donations[currentUser.donations.length - 1].date : 'N/A'}</p>
+                    </div>
+                </div>
+            `;
+
+            // --- Populate Profile Card ---
+            const profileCard = document.getElementById('user-profile-card');
+            let badgesHTML = '';
+            if (userTotalDonations > 0) badgesHTML += '<span class="badge">First Donor</span>';
+            if (userReportsCount > 0) badgesHTML += '<span class="badge">Report Champion</span>';
+            if (userVolunteerHours > 0) badgesHTML += '<span class="badge">Volunteer Star</span>';
+
+            profileCard.innerHTML = `
+                <h3>Your Profile</h3>
+                <p class="profile-detail"><strong>Bio:</strong> ${currentUser.bio || 'No bio set.'}</p>
+                <p class="profile-detail"><strong>Location:</strong> ${currentUser.location || 'Not specified.'}</p>
+                <p class="profile-detail"><strong>Achievements/Badges:</strong></p>
+                <div class="badges-container">${badgesHTML || 'No badges yet.'}</div>
+            `;
+            
+            // --- Populate Volunteer History ---
+            const volunteerHistoryContainer = document.getElementById('user-volunteer-history');
+            volunteerHistoryContainer.innerHTML = `
+                 <div class="activity-box">
+                    <div class="placeholder" style="background-image: url('https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); background-size: cover; background-position: center;"></div>
+                    <div class="activity-content">
+                        <h3>Coastal Clean-up Drive</h3>
+                        <p>Participated in the annual coastal clean-up at Boracay. (May 15, 2025)</p>
+                    </div>
+                </div>
+            `;
+            if(userVolunteerHours <= 0) {
+                 volunteerHistoryContainer.innerHTML = '<p>No volunteering history yet. <a href="/VOLUNTEER/Draft_Volunteer.html">Find opportunities!</a></p>';
+            }
+
+
+            // --- Chart.js Logic (remains mostly static for this example) ---
+            const ctx = document.getElementById('donationPieChart').getContext('2d');
+            const donationPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Solar Panels', 'Education', 'Community Hubs'],
+                    datasets: [{
+                        label: 'Donation Allocation',
+                        data: [50, 30, 20],
+                        backgroundColor: ['#F66B0E', '#112B3C', '#FFD700'],
+                        borderColor: '#f3f4f6',
+                        borderWidth: 3,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#0F172A', font: { family: 'Arial' } } }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+</html>

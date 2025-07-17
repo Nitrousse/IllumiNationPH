@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ticket Details - IllumiNation PH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #F66B0E;
+            --secondary-color: #112B3C;
+            --text-color: #374151;
+            --heading-color: #1a2a40;
+            --background-color: #f4f6ff;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --info-color: #0d6efd;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --border-radius-lg: 12px;
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+            text-decoration: none;
+        }
+        .logo img { height: 40px; }
+        .logo-text { color: white; font-weight: 700; font-size: 1.5rem; margin-left: 8px; }
+        .navbar { display: flex; align-items: stretch; height: 100%; }
+        .navbar a { display: flex; align-items: center; padding: 0 20px; color: white; text-decoration: none; font-size: 1.05rem; }
+        main {
+            padding: var(--spacing-lg) var(--spacing-md);
+            flex-grow: 1;
+        }
+        .details-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        .details-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .details-header h1 {
+            font-size: 2em;
+            color: var(--heading-color);
+            margin: 0;
+        }
+        .details-header p {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .detail-item {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        .detail-item strong {
+            display: block;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+        .detail-item span, .detail-item div {
+            font-size: 1em;
+            word-wrap: break-word;
+        }
+        .full-width-item {
+            grid-column: 1 / -1;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: white;
+        }
+        .status-open { background-color: var(--error-color); }
+        .status-in-progress { background-color: var(--info-color); }
+        .status-closed { background-color: var(--success-color); }
+        .back-button {
+            display: inline-block;
+            margin-top: var(--spacing-lg);
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #0f202f;
+        }
+        .footer2 {
+            color: white;
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: 8px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="top-container">
+        <div class="logo">
+            <a href="Draft_Home.html">
+                <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="IllumiNation PH Logo" />
+                <span class="logo-text">IllumiNation PH</span>
+            </a>
+        </div>
+        <nav class="navbar">
+            <a href="userDashboard.html">Dashboard</a>
+            <a href="tickets.html">Tickets</a>
+        </nav>
+    </header>
+
+    <main>
+        <div id="details-container" class="details-container">
+            <!-- Ticket details will be dynamically injected here -->
+            <div class="details-header">
+                <h1>Loading Ticket...</h1>
+                <p>Please wait while we fetch the details.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer2">
+        <p>© 2025 IllumiNation PH. All rights reserved. | Contact: info@illuminatioph.com</p>
+    </footer>
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Authenticate user to ensure they are logged in
+            const currentUser = Session.getCurrentUser();
+            if (!currentUser) {
+                alert('You must be logged in to view this page.');
+                window.location.href = 'Login.html';
+                return;
+            }
+
+            const ticketId = sessionStorage.getItem('viewTicketId');
+            const detailsContainer = document.getElementById('details-container');
+
+            if (!ticketId) {
+                detailsContainer.innerHTML = `
+                    <div class="details-header">
+                        <h1>Error</h1>
+                        <p>No ticket ID found. Please go back and select a ticket to view.</p>
+                    </div>
+                    <a href="javascript:history.back()" class="back-button">Go Back</a>
+                `;
+                return;
+            }
+
+            // Search for the ticket in all possible ticket arrays
+            const allSupportTickets = DB.get('tickets') || [];
+            const allVolunteerTickets = DB.get('volunteerTickets') || [];
+            const allTickets = [...allSupportTickets, ...allVolunteerTickets];
+
+            const ticket = allTickets.find(t => t.id.toString() === ticketId.toString());
+
+            if (!ticket) {
+                detailsContainer.innerHTML = `
+                    <div class="details-header">
+                        <h1>Ticket Not Found</h1>
+                        <p>The ticket with ID #${ticketId} could not be found.</p>
+                    </div>
+                    <a href="javascript:history.back()" class="back-button">Go Back</a>
+                `;
+                return;
+            }
+
+            // Dynamically build and inject the ticket details
+            const statusClass = `status-${ticket.status.toLowerCase().replace(/\s/g, '-')}`;
+            
+            let detailsHtml = `
+                <div class="details-header">
+                    <h1>${ticket.subject}</h1>
+                    <p>Ticket ID: #${ticket.id}</p>
+                </div>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <strong>Status</strong>
+                        <span><span class="status-badge ${statusClass}">${ticket.status}</span></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Submitted By</strong>
+                        <span>${ticket.submittedBy || 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Submitted Date</strong>
+                        <span>${ticket.submittedDate || 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Last Updated</strong>
+                        <span>${ticket.lastUpdated || 'N/A'}</span>
+                    </div>
+            `;
+
+            // Add fields specific to support tickets
+            if (ticket.category) {
+                detailsHtml += `<div class="detail-item"><strong>Category</strong><span>${ticket.category}</span></div>`;
+            }
+            if (ticket.assignedTo) {
+                detailsHtml += `<div class="detail-item"><strong>Assigned To</strong><span>${ticket.assignedTo}</span></div>`;
+            }
+             if (ticket.fullName) {
+                detailsHtml += `<div class="detail-item"><strong>Full Name</strong><span>${ticket.fullName}</span></div>`;
+            }
+            if (ticket.email) {
+                detailsHtml += `<div class="detail-item"><strong>Email</strong><span>${ticket.email}</span></div>`;
+            }
+            if (ticket.description) {
+                detailsHtml += `<div class="detail-item full-width-item"><strong>Description</strong><div>${ticket.description}</div></div>`;
+            }
+
+            // Add fields specific to volunteer applications
+            if (ticket.phone) {
+                detailsHtml += `<div class="detail-item"><strong>Phone</strong><span>${ticket.phone}</span></div>`;
+            }
+            if (ticket.dob) {
+                detailsHtml += `<div class="detail-item"><strong>Date of Birth</strong><span>${ticket.dob}</span></div>`;
+            }
+            if (ticket.address) {
+                detailsHtml += `<div class="detail-item full-width-item"><strong>Address</strong><span>${ticket.address}</span></div>`;
+            }
+            if (ticket.availability) {
+                detailsHtml += `<div class="detail-item full-width-item"><strong>General Availability</strong><div>${ticket.availability}</div></div>`;
+            }
+            if (ticket.availabilityDates) {
+                detailsHtml += `<div class="detail-item"><strong>Specific Dates</strong><span>${ticket.availabilityDates}</span></div>`;
+            }
+            if (ticket.preferredHours) {
+                detailsHtml += `<div class="detail-item"><strong>Preferred Hours</strong><span>${ticket.preferredHours}</span></div>`;
+            }
+            if (ticket.skills && ticket.skills.length > 0) {
+                detailsHtml += `<div class="detail-item full-width-item"><strong>Skills</strong><span>${ticket.skills.join(', ')}</span></div>`;
+            }
+            if (ticket.interests) {
+                detailsHtml += `<div class="detail-item full-width-item"><strong>Other Skills/Interests</strong><div>${ticket.interests}</div></div>`;
+            }
+
+
+            detailsHtml += `</div><a href="javascript:history.back()" class="back-button">Go Back</a>`;
+            detailsContainer.innerHTML = detailsHtml;
+        });
+    </script>
+</body>
+</html>

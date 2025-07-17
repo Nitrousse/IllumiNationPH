@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IllumiNation PH - Edit Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Universal Box-Sizing */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", sans-serif; /* Using Inter font as per instructions */
+        }
+
+        /* CSS Variables for better theme management - Consolidated from DonationDesign.css and Design.css */
+        :root {
+            /* Colors */
+            --primary-color: #F66B0E; /* Orange - Corrected */
+            --primary-hover-color: #ff9f0a; /* Custom hover orange for buttons */
+            --secondary-color: #112B3C; /* Dark Blue */
+            --text-color: #374151; /* Main body text color */
+            --heading-color: #1a2a44; /* Headings color */
+            --light-gray-bg: #f3f4f6; /* Background color for page */
+            --card-bg: #FFFFFF; /* White background for cards/boxes */
+            --border-color: #e0e0e0; /* Border color for cards/boxes */
+            --semi-transparent-light-gray: rgba(217,217,217,0.5); /* For hero buttons */
+
+            /* Shadows */
+            --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-deep: 0 8px 12px rgba(0,0,0,0.1);
+
+            /* Spacing */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 40px;
+            --spacing-xl: 60px;
+
+            /* Border Radii */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: var(--light-gray-bg);
+            color: var(--text-color);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        /* --- NAVBAR STYLES (Copied from Dashboard for consistency) --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px;
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch;
+          margin-right: 20px;
+          height: 100%;
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem; /* Font size is correct */
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit; /* Inherits from body */
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: var(--secondary-color);
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem; /* Font size is correct */
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: var(--secondary-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* --- EDIT PROFILE PAGE SPECIFIC STYLES --- */
+        .edit-profile-container {
+            max-width: 800px;
+            margin: var(--spacing-lg) auto;
+            padding: var(--spacing-md);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-medium);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .edit-profile-container h2 {
+            font-size: 2em;
+            color: var(--heading-color);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+            width: 100%;
+        }
+
+        .profile-picture-edit-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            width: 100%;
+        }
+
+        .profile-picture-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .upload-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background-color: var(--primary-hover-color);
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--light-gray-bg);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .save-button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            max-width: 250px;
+            margin-top: var(--spacing-md);
+        }
+
+        .save-button:hover {
+            background-color: #0d212f; /* Darker secondary color on hover */
+        }
+
+        /* FOOTER (Copied from Dashboard for consistency) */
+        .footer2 {
+            color: white;
+            background-color: var(--primary-color);
+            text-align: center;
+            padding: var(--spacing-sm);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .edit-profile-container {
+                margin: var(--spacing-md) auto;
+                padding: var(--spacing-sm);
+            }
+            .edit-profile-container h2 {
+                font-size: 1.5em;
+            }
+            .save-button {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-container">
+      <div class="logo">
+        <a href="../../HOMEPAGE/Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+            <span class="logo-text">IllumiNation PH</span>
+        </a>
+      </div>
+      <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="../../HOMEPAGE/Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="../../INTERACTIVE_MAP/InteractiveMap.html">View Map</a>
+          <a href="../../REPORT_ELECTRICITY/ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="../../DONATION/Donation.html">Donate Now</a>
+          <a href="../../DONATION_TRANSPPARENCY/Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="../../VOLUNTEER/Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="../../VOLUNTEER/VOLUNTEER_SIGNUP-DONE/volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Help</button>
+        <div class="dropdown-content">
+          <a href="../../FAQ_PAGE/FAQ.html">Help</a>
+          <a href="../../FAQ_PAGE/userSubmitTicket.html">Submit Ticket</a>
+        </div>
+      </div>
+      <a href="../../DISCUSSION/Discussion.html">Discussion</a>
+      <div class="dropdown">
+          <!-- This will be dynamically updated by app.js -->
+      </div>
+    </nav>
+    </header>
+
+    <main class="edit-profile-container">
+        <h2>Edit Your Profile</h2>
+
+        <div class="profile-picture-edit-section">
+            <img src="https://placehold.co/150x150/F66B0E/FFFFFF?text=User" alt="Profile Picture" class="profile-picture-preview" id="edit-profile-picture-img">
+            <input type="file" id="profile-pic-upload-input" accept="image/*" style="display: none;">
+            <button class="upload-button" id="change-profile-pic-btn">Change Profile Picture</button>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" value="Guest User" placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio (Optional)</label>
+            <textarea id="bio" placeholder="Tell us a little about yourself..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location (Optional)</label>
+            <input type="text" id="location" placeholder="e.g., Metro Manila, Philippines">
+        </div>
+
+        <button class="save-button" id="save-profile-changes-btn">Save Changes</button>
+    </main>
+
+    <footer>
+        <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+
+    <script src="/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Authenticate and Get Elements ---
+            const currentUser = Session.authenticate('user');
+            if (!currentUser) return; // Stop if not authenticated user
+
+            const editProfilePicImg = document.getElementById('edit-profile-picture-img');
+            const profilePicUploadInput = document.getElementById('profile-pic-upload-input');
+            const changeProfilePicBtn = document.getElementById('change-profile-pic-btn');
+            const usernameInput = document.getElementById('username');
+            const bioTextarea = document.getElementById('bio');
+            const locationInput = document.getElementById('location');
+            const saveProfileChangesBtn = document.getElementById('save-profile-changes-btn');
+
+            // --- Load User Data into Form ---
+            function loadProfileData() {
+                if (currentUser) {
+                    editProfilePicImg.src = currentUser.profilePic || 'https://placehold.co/150x150/F66B0E/FFFFFF?text=User';
+                    usernameInput.value = currentUser.username || '';
+                    bioTextarea.value = currentUser.bio || '';
+                    locationInput.value = currentUser.location || '';
+                }
+            }
+            
+            loadProfileData();
+
+            // --- Event Listeners ---
+            changeProfilePicBtn.addEventListener('click', () => {
+                profilePicUploadInput.click();
+            });
+
+            profilePicUploadInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        editProfilePicImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            saveProfileChangesBtn.addEventListener('click', () => {
+                // Get all users from the database
+                const allUsers = DB.get('users') || [];
+                
+                // Find the index of the current user in the array
+                const userIndex = allUsers.findIndex(user => user.email === currentUser.email);
+
+                if (userIndex === -1) {
+                    alert('Error: Could not find your user profile to update.');
+                    return;
+                }
+
+                // Create the updated user object
+                const updatedProfileData = {
+                    ...allUsers[userIndex], // Copy existing data
+                    profilePic: editProfilePicImg.src,
+                    username: usernameInput.value.trim(),
+                    bio: bioTextarea.value.trim(),
+                    location: locationInput.value.trim()
+                };
+
+                // Update the user in the main array
+                allUsers[userIndex] = updatedProfileData;
+
+                // Save the entire updated array back to localStorage
+                DB.set('users', allUsers);
+
+                // IMPORTANT: Also update the 'currentUser' session object
+                DB.set('currentUser', updatedProfileData);
+
+                alert('Profile changes saved successfully!');
+                window.location.href = 'userDashboard.html';
+            });
+        });
+    </script>
+
+</body>
+</html>
