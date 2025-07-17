@@ -6,9 +6,7 @@
   <title>Login - IllumiNation PH</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-      html, body {
-        height: 100%;
-      }
+      html, body { height: 100%; }
       body {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -21,10 +19,7 @@
       body::before {
         content: '';
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         background-image: url('https://images.pexels.com/photos/918986/pexels-photo-918986.jpeg');
         background-size: cover;
         background-position: center;
@@ -34,10 +29,7 @@
       body::after {
         content: '';
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(17, 43, 60, 0.7);
         z-index: -1;
         pointer-events: none;
@@ -61,11 +53,7 @@
           gap: 10px;
           color: white !important;
       }
-      .logo img {
-        height: 40px;
-        width: auto;
-        display: block;
-      }
+      .logo img { height: 40px; width: auto; display: block; }
       .logo-text {
         color: white;
         font-weight: 700;
@@ -92,17 +80,14 @@
           text-align: center;
           margin-bottom: 40px;
       }
-      .hero-content h1 {
-          font-size: 2.5rem;
-          margin-bottom: 10px;
-      }
+      .hero-content h1 { font-size: 2.5rem; margin-bottom: 10px; }
       .hero-content p {
           font-size: 1.1rem;
           margin-bottom: 30px;
           max-width: 600px;
       }
       .login-container {
-          max-width: 500px; /* Adjusted for a single login form */
+          max-width: 500px;
           width: 100%;
           background: transparent;
           padding: 0;
@@ -127,20 +112,9 @@
           font-weight: 500;
           color: #333;
       }
-      .tab-button.active {
-          background: #F66B0E;
-          color: white;
-      }
-      .tab-content {
-          display: none;
-          padding: 30px;
-          background: white;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-      .tab-content.active {
-          display: block;
-      }
+      .tab-button.active { background: #F66B0E; color: white; }
+      .tab-content { display: none; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+      .tab-content.active { display: block; }
       .tab-content h2 {
         text-align: center;
         font-size: 1.8rem;
@@ -170,9 +144,7 @@
         transition: background 0.3s;
         cursor: pointer;
       }
-      .login-form .button:hover {
-          background: #e05a00;
-      }
+      .login-form .button:hover { background: #e05a00; }
       .form-footer {
         text-align: center;
         margin-top: 15px;
@@ -195,12 +167,8 @@
           flex: 1;
           border-bottom: 1px solid #ddd;
       }
-      .divider:not(:empty)::before {
-          margin-right: .25em;
-      }
-      .divider:not(:empty)::after {
-          margin-left: .25em;
-      }
+      .divider:not(:empty)::before { margin-right: .25em; }
+      .divider:not(:empty)::after { margin-left: .25em; }
       .social-login-buttons {
           display: flex;
           flex-direction: column;
@@ -220,21 +188,11 @@
           transition: background-color 0.3s;
           cursor: pointer;
       }
-      .social-btn:hover {
-          background-color: #f7f7f7;
-      }
+      .social-btn:hover { background-color: #f7f7f7; }
       .social-btn .fa-google { color: #DB4437; }
       .social-btn .fa-facebook-f { color: #4267B2; }
-      footer {
-        color: #fff;
-        flex-shrink: 0;
-      }
-      .footer2 {
-        color: white;
-        background-color: transparent;
-        text-align: center;
-        padding: 10px;
-      }
+      footer { color: #fff; flex-shrink: 0; }
+      .footer2 { color: white; background-color: transparent; text-align: center; padding: 10px; }
   </style>
 </head>
 <body>
@@ -257,21 +215,21 @@
     </div>
     <div class="login-container">
       <div class="tabs">
-        <button class="tab-button active" onclick="openTab('user-login')">User Login</button>
-        <button class="tab-button" onclick="openTab('admin-login')">Admin Login</button>
+        <button class="tab-button active" type="button" data-tab="user-login">User Login</button>
+        <button class="tab-button" type="button" data-tab="admin-login">Admin Login</button>
       </div>
 
       <div id="user-login" class="tab-content active">
         <h2>User Login</h2>
-        <form class="login-form">
+        <form class="login-form" autocomplete="on">
           <input type="text" id="user-username" name="username" placeholder="Username or Email" required>
           <input type="password" id="user-password" name="password" placeholder="Password" required>
           <button type="submit" class="button">Login</button>
         </form>
         <div class="divider">OR</div>
         <div class="social-login-buttons">
-          <button class="social-btn"><i class="fab fa-google"></i> Continue with Google</button>
-          <button class="social-btn"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+          <button class="social-btn" type="button"><i class="fab fa-google"></i> Continue with Google</button>
+          <button class="social-btn" type="button"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
         </div>
         <div class="form-footer">
           <p>Don't have an account? <a href="signup.html">Sign up now</a></p>
@@ -280,17 +238,17 @@
 
       <div id="admin-login" class="tab-content">
         <h2>Admin Login</h2>
-        <form class="login-form">
+        <form class="login-form" autocomplete="on">
           <input type="text" id="admin-username" name="username" placeholder="Admin Username or Email" required>
           <input type="password" id="admin-password" name="password" placeholder="Password" required>
           <button type="submit" class="button">Login</button>
         </form>
         <div class="divider">OR</div>
         <div class="social-login-buttons">
-          <button class="social-btn"><i class="fab fa-google"></i> Continue with Google</button>
-          <button class="social-btn"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+          <button class="social-btn" type="button"><i class="fab fa-google"></i> Continue with Google</button>
+          <button class="social-btn" type="button"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
         </div>
-         <div class="form-footer">
+        <div class="form-footer">
           <p>Need to create an admin account? <a href="adminSignup.html">Register here</a></p>
         </div>
       </div>
@@ -305,61 +263,66 @@
 
   <script src="/app.js"></script>
   <script>
-    function openTab(tabName) {
-      var i, tabcontent, tabbuttons;
-      tabcontent = document.getElementsByClassName("tab-content");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tabbuttons = document.getElementsByClassName("tab-button");
-      for (i = 0; i < tabbuttons.length; i++) {
-        tabbuttons[i].classList.remove("active");
-      }
-      document.getElementById(tabName).style.display = "block";
-      document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add("active");
-    }
-    // Set the initial active tab on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        openTab('user-login');
-    });
-
+    // Tab switching (more robust, uses data attributes)
     document.addEventListener('DOMContentLoaded', function() {
-        const userLoginForm = document.querySelector('#user-login .login-form');
-        const adminLoginForm = document.querySelector('#admin-login .login-form');
+      // Set up tab switching
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      function showTab(tabName) {
+        tabContents.forEach(tab => {
+          tab.classList.remove('active');
+          tab.style.display = 'none';
+        });
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        document.getElementById(tabName).style.display = 'block';
+        document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
+      }
+      // Initial tab
+      showTab('user-login');
+      // Tab button listeners
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          showTab(btn.getAttribute('data-tab'));
+        });
+      });
 
-        const handleLogin = (event, roleToMatch) => {
-            event.preventDefault();
-            const form = event.target;
-            const usernameOrEmail = form.querySelector('input[name="username"]').value.toLowerCase();
-            const password = form.querySelector('input[name="password"]').value;
+      // Login logic
+      const userLoginForm = document.querySelector('#user-login .login-form');
+      const adminLoginForm = document.querySelector('#admin-login .login-form');
 
-            const users = DB.get('users') || [];
-            
-            // Find a user that matches username OR email, AND has the correct role.
-            const foundUser = users.find(user => 
-                (user.username.toLowerCase() === usernameOrEmail || user.email.toLowerCase() === usernameOrEmail) && 
-                user.role === roleToMatch
-            );
+      function handleLogin(event, roleToMatch) {
+        event.preventDefault();
+        const form = event.target;
+        const usernameOrEmail = form.querySelector('input[name="username"]').value.trim().toLowerCase();
+        const password = form.querySelector('input[name="password"]').value;
 
-            if (foundUser && foundUser.password === password) {
-                // SUCCESS
-                DB.set('currentUser', foundUser); 
-                alert(`Login successful! Welcome, ${foundUser.username}.`);
-                
-                // Redirect to the correct dashboard
-                if (foundUser.role === 'admin') {
-                    window.location.href = 'adminDashboard.html';
-                } else {
-                    window.location.href = 'userDashboard.html';
-                }
-            } else {
-                // FAILURE
-                alert('Invalid credentials or incorrect role selected. Please check your username, password, and the selected tab (User/Admin).');
-            }
-        };
+        // Defensive: DB may not be available if app.js fails, so show error
+        if (typeof DB === 'undefined') {
+          alert('App error: DB not initialized. Please reload.');
+          return;
+        }
+        const users = DB.get('users') || [];
+        const foundUser = users.find(user =>
+          (user.username.toLowerCase() === usernameOrEmail || user.email.toLowerCase() === usernameOrEmail)
+          && user.role === roleToMatch
+        );
 
-        userLoginForm.addEventListener('submit', (e) => handleLogin(e, 'user'));
-        adminLoginForm.addEventListener('submit', (e) => handleLogin(e, 'admin'));
+        if (foundUser && foundUser.password === password) {
+          DB.set('currentUser', foundUser);
+          alert(`Login successful! Welcome, ${foundUser.username}.`);
+          if (foundUser.role === 'admin') {
+            window.location.href = 'adminDashboard.html';
+          } else {
+            window.location.href = 'userDashboard.html';
+          }
+        } else {
+          alert('Invalid credentials or incorrect role selected. Please check your username, password, and the selected tab (User/Admin).');
+        }
+      }
+
+      userLoginForm.addEventListener('submit', function(e) { handleLogin(e, 'user'); });
+      adminLoginForm.addEventListener('submit', function(e) { handleLogin(e, 'admin'); });
     });
   </script>
 </body>
