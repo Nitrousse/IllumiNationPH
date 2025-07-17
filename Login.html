@@ -263,7 +263,7 @@
 
   <script src="/app.js"></script>
   <script>
-    // Tab switching (more robust, uses data attributes)
+    // Tab switching (robust, uses data attributes)
     document.addEventListener('DOMContentLoaded', function() {
       // Set up tab switching
       const tabButtons = document.querySelectorAll('.tab-button');
@@ -302,19 +302,26 @@
           alert('App error: DB not initialized. Please reload.');
           return;
         }
-        const users = DB.get('users') || [];
+        // Defensive: Ensure localStorage users is always an array
+        let users = DB.get('users');
+        if (!Array.isArray(users)) users = [];
+
+        // Find user by username/email and role
         const foundUser = users.find(user =>
-          (user.username.toLowerCase() === usernameOrEmail || user.email.toLowerCase() === usernameOrEmail)
+          (
+            user.username && user.username.toLowerCase() === usernameOrEmail ||
+            user.email && user.email.toLowerCase() === usernameOrEmail
+          )
           && user.role === roleToMatch
         );
 
         if (foundUser && foundUser.password === password) {
           DB.set('currentUser', foundUser);
-          alert(`Login successful! Welcome, ${foundUser.username}.`);
+          // Use location.replace to prevent back navigation to login page
           if (foundUser.role === 'admin') {
-            window.location.href = 'adminDashboard.html';
+            window.location.replace('adminDashboard.html');
           } else {
-            window.location.href = 'userDashboard.html';
+            window.location.replace('userDashboard.html');
           }
         } else {
           alert('Invalid credentials or incorrect role selected. Please check your username, password, and the selected tab (User/Admin).');
