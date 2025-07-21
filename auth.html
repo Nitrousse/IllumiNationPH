@@ -158,7 +158,7 @@
 <body>
     <header class="top-container">
         <div class="logo">
-          <a href="Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+          <a href="/HOMEPAGE/Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
             <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
             <span class="logo-text">IllumiNation PH</span>
           </a>
@@ -205,7 +205,7 @@
       </div>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
     <script>
         function toggleForms() {
             document.getElementById('login-form-container').classList.toggle('hidden');
@@ -237,9 +237,9 @@
                     
                     // Redirect based on role
                     if (foundUser.role === 'admin') {
-                        window.location.href = 'adminDashboard.html';
+                        window.location.href = '/DASHBOARD/Admin_Dashboard/adminDashboard.html';
                     } else {
-                        window.location.href = 'userDashboard.html';
+                        window.location.href = '/DASHBOARD/User_Dashboard/userDashboard.html';
                     }
                 } else {
                     // FAILURE
