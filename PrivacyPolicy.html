@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IllumiNation PH - Privacy Policy</title>
+  <style>
+    /* Universal Box-Sizing */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* CSS Variables for better theme management */
+    :root {
+        /* Colors */
+        --primary-color: #F66B0E; /* Orange */
+        --secondary-color: #112B3C; /* Dark Blue */
+        --text-color: #333; /* Darker text for readability */
+        --light-gray: #f9f9f9;
+        --border-color: #ccc;
+
+        /* Spacing */
+        --spacing-sm: 10px;
+        --spacing-md: 20px;
+        --spacing-lg: 40px;
+
+        /* Border Radii */
+        --border-radius-md: 8px;
+    }
+
+    /* Base styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        background-color: #f4f6ff;
+        color: var(--text-color);
+    }
+    a {
+        text-decoration: none;
+        color: var(--primary-color);
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+        /* --- NAVBAR STYLES --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px;
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch;
+          margin-right: 20px;
+          height: 100%;
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem; /* Font size is correct */
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit; /* Inherits from body */
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: var(--secondary-color);
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem; /* Font size is correct */
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: var(--secondary-color);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+    /* Main Content Styles */
+    main.container {
+        padding-top: var(--spacing-lg);
+        padding-bottom: var(--spacing-lg);
+    }
+
+    .policy-content {
+        background-color: #fff;
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .policy-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: var(--spacing-md);
+        font-weight: 700;
+        color: var(--secondary-color);
+        text-align: center;
+    }
+
+    .policy-content h2 {
+        font-size: 1.5rem;
+        margin-top: var(--spacing-lg);
+        margin-bottom: var(--spacing-sm);
+        color: var(--secondary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 5px;
+    }
+    
+    .policy-content p, .policy-content ul {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .policy-content ul {
+        list-style-position: inside;
+        padding-left: 20px;
+    }
+
+    .policy-content li {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .last-updated {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    /* Footer */
+    .footer2 {
+        color: white;
+        background-color: var(--primary-color);
+        text-align: center;
+        padding: var(--spacing-sm);
+        margin-top: var(--spacing-lg);
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .top-container {
+            padding: 15px;
+        }
+        .policy-content h1 {
+            font-size: 2rem;
+        }
+        .policy-content {
+            padding: var(--spacing-md);
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Simplified Header without Navigation -->
+  <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Help</button>
+        <div class="dropdown-content">
+          <a href="FAQ.html">Help</a>
+          <a href="userSubmitTicket.html">Submit Ticket</a>
+        </div>
+      </div>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <button class="dropbtn">Login</button>
+        <div class="dropdown-content">
+          <a href="auth.html">Login</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="policy-content">
+        <h1>Privacy Policy</h1>
+        <p class="last-updated">Last Updated: July 2, 2025</p>
+
+        <p>IllumiNation PH ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services, including the electricity access reporting form.</p>
+
+        <h2>1. Information We Collect</h2>
+        <p>We may collect personal information from you in a variety of ways, including:</p>
+        <ul>
+            <li><strong>Personal Data:</strong> When you voluntarily submit a report, we collect personal information such as your name, email address, and your role (e.g., resident, field worker). You may also provide optional information like your phone number.</li>
+            <li><strong>Report Data:</strong> Information you provide about electricity access, including location details (region, province, city, barangay), GPS coordinates, access status, number of households affected, power sources, and any additional notes or images you upload.</li>
+            <li><strong>Anonymous Submissions:</strong> If you choose to submit a report anonymously, we will not associate your name or email with the report data. However, we still collect the report data itself.</li>
+        </ul>
+
+        <h2>2. How We Use Your Information</h2>
+        <p>We use the information we collect for the following purposes:</p>
+        <ul>
+            <li>To operate and maintain our interactive map and database of electricity access.</li>
+            <li>To verify the information provided in reports. We may contact you via email or phone (if provided) for clarification.</li>
+            <li>To analyze data for research and advocacy purposes to improve electrification efforts in the Philippines.</li>
+            <li>To improve our website and services.</li>
+            <li>To respond to your comments, questions, and provide customer service.</li>
+        </ul>
+
+        <h2>3. Disclosure of Your Information</h2>
+        <p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties. We may share aggregated, anonymized data (which does not identify you personally) with our partners, stakeholders, and the public for research and planning purposes. Your personal contact information will be kept confidential unless we are required by law to disclose it.</p>
+        
+        <h2>4. Data Security</h2>
+        <p>We implement a variety of security measures to maintain the safety of your personal information when you submit a report. We are committed to protecting your data, but no security system is impenetrable, and we cannot guarantee the security of our systems 100%.</p>
+
+        <h2>5. Your Consent</h2>
+        <p>By using our site and submitting information, you consent to our website's privacy policy. You are required to check a box confirming you have read and agree to this policy before submitting a report.</p>
+
+        <h2>6. Changes to Our Privacy Policy</h2>
+        <p>If we decide to change our privacy policy, we will post those changes on this page. We encourage you to review this Privacy Policy periodically to stay informed of updates.</p>
+
+        <h2>7. Contact Us</h2>
+        <p>If you have any questions regarding this privacy policy, you may contact us using the information below:</p>
+        <p>Email: info@illuminationph.com</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+          &nbsp; &nbsp;Contact us: info@illuminationph.com
+    </div>
+  </footer>
+
+</body>
+</html>

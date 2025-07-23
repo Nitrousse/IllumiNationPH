@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IllumiNation PH - Discussion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #112b3c;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 70px;
+        }
+        .logo {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white !important;
+        }
+        .logo img {
+          height: 40px;
+          width: auto;
+          display: block;
+        }
+        .logo-text {
+          color: white;
+          font-weight: 700;
+          font-size: 1.5rem;
+          margin-left: 8px;
+        }
+        .navbar {
+          display: flex;
+          align-items: stretch;
+          margin-right: 20px;
+          height: 100%;
+        }
+        .navbar a, .dropbtn {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          color: white;
+          text-decoration: none;
+          font-size: 1.05rem;
+          font-weight: 500;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+        }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+          background-color: #f0f0f0;
+          color: #112b3c;
+        }
+        .dropdown {
+            position: relative;
+            display: flex;
+        }
+        .dropbtn {
+            height: 100%;
+            width: 100%;
+            justify-content: center;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 0.5rem 0.5rem;
+            overflow: hidden;
+            top: 100%;
+            left: 0;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #112b3c;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        @media (min-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 3fr 1fr;
+            }
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .card {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Card Titles and Descriptions */
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .card-desc {
+            color: #718096;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* --- Carousel Styles --- */
+        .carousel-section {
+            margin-bottom: 3rem;
+        }
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 450px; /* Increased height */
+            object-fit: cover;
+            display: block;
+        }
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(17, 43, 60, 0.85), transparent);
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        .carousel-caption h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        .carousel-caption p {
+            margin: 0;
+            font-size: 1rem;
+            max-width: 80%;
+        }
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .carousel-container:hover .carousel-nav {
+            opacity: 1;
+        }
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            color: #112b3c;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 1rem;
+            transition: background-color 0.2s;
+        }
+        .carousel-nav button:hover {
+            background-color: white;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+        }
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .carousel-dot.active {
+            background-color: white;
+        }
+
+        /* Form Styles */
+        .form-title { font-size: 1.875rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .form-desc { color: #718096; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #112b3c; box-shadow: 0 0 0 2px rgba(17, 43, 60, 0.1); }
+        .form-actions { display: flex; justify-content: flex-end; gap: 1rem; padding-top: 1rem; }
+        .submit-btn { padding: 0.75rem 2rem; background: #112b3c; color: #fff; border: none; border-radius: 0.5rem; transition: background 0.2s; cursor: pointer; }
+        .submit-btn:hover { background: #205375; }
+        
+        /* Poll Styles */
+        .poll-options {
+            flex-grow: 1;
+        }
+        .poll-options label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .poll-thanks {
+            text-align: center;
+            padding: 1rem 0;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #16a34a;
+        }
+
+        /* Highlights Section */
+        .highlights-section {
+            grid-column: 1 / -1; /* Make it span full width */
+            margin-top: 3rem;
+        }
+        .highlights-title { font-size: 2.25rem; font-weight: 900; margin-bottom: 0.5rem; text-align: center; }
+        .highlights-desc { color: #718096; margin-bottom: 3rem; text-align: center; font-size: 1.125rem; }
+        .highlights-grid { 
+            display: grid; 
+            gap: 1.5rem; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        @media (min-width: 1024px) {
+            .highlights-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .highlight-card { 
+            background: #fff; 
+            padding: 1.5rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); 
+            display: flex; 
+            flex-direction: column; 
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            text-decoration: none;
+            color: inherit;
+        }
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .highlight-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .highlight-desc { color: #718096; margin-bottom: 1rem; flex-grow: 1; }
+        .highlight-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .tag { font-size: 0.75rem; font-weight: 600; padding: 0.125rem 0.625rem; border-radius: 9999px; }
+        .tag-orange { background: #ffedd5; color: #9a3412; }
+        .tag-blue { background: #dbeafe; color: #1e40af; }
+        .tag-green { background: #dcfce7; color: #166534; }
+        .tag-yellow { background: #fef9c3; color: #854d0e; }
+        .tag-purple { background: #ede9fe; color: #5b21b6; }
+        .highlight-author { font-size: 0.875rem; color: #6b7280; }
+        .highlight-footer { display: flex; align-items: center; gap: 1rem; color: #9ca3af; margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem; }
+        .highlight-footer svg { cursor: pointer; transition: color 0.2s; }
+        .highlight-footer svg:hover { color: #4b5563; }
+        .like-icon.liked { fill: #F66B0E; color: #F66B0E; }
+
+
+        /* Comment Section */
+        .comment-section { display: none; margin-top: 1rem; }
+        .comment-input { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem; box-sizing: border-box; font-family: 'Inter', sans-serif; resize: vertical; }
+        .submit-comment-btn { padding: 0.5rem 1rem; background: #112b3c; color: #fff; border: none; border-radius: 0.5rem; transition: background 0.2s; cursor: pointer; display: block; margin-left: auto; }
+        .submit-comment-btn:hover { background: #205375; }
+        .comments-list { margin-top: 1rem; }
+        .user-comment { background-color: #f3f4f6; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; margin-bottom: 0.5rem; word-wrap: break-word; }
+        
+        /* Footer Styles */
+        footer { color: #fff; margin-top: 4rem; }
+        .container-FOOTER1 { background-color: #205375; padding: 20px; }
+        .Footertxt { color: white; margin-left: 40px; text-decoration: none; }
+        .footer2 { color: white; background-color: #F66B0E; text-align: center; padding: 10px; }
+
+        /* Story Submission Success Message */
+        .story-success-message {
+            text-align: center;
+            padding: 2rem 0;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #16a34a;
+            display: none; /* Hidden by default */
+        }
+        .story-success-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .story-success-actions .submit-btn {
+            width: auto;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <header class="top-container">
+    <div class="logo">
+      <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+      <span class="logo-text">IllumiNation PH</span>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <!-- Dynamic Nav -->
+      </div>
+    </nav>
+  </header>
+
+    <main class="main-container">
+        
+        <div class="carousel-section">
+             <div class="carousel-container" id="info-carousel">
+                <div class="carousel-slides">
+                    <div class="carousel-slide">
+                        <img src="https://images.pexels.com/photos/6564821/pexels-photo-6564821.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/112b3c/ffffff?text=Community';" alt="A vibrant Filipino community with children playing.">
+                        <div class="carousel-caption">
+                            <h3>IllumiNation PH: Our Mission</h3>
+                            <p>Powering Communities. Illuminating the Nation, one pin at a time. An interactive platform dedicated to mapping unelectrified communities across the Philippines.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.pexels.com/photos/28114803/pexels-photo-28114803.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/F66B0E/ffffff?text=Energy+Poverty';" alt="A single lightbulb glowing in a dark, rural home.">
+                        <div class="carousel-caption">
+                            <h3>The Challenge of Energy Poverty</h3>
+                            <p>As of 2024, nearly 30% of Filipinos still lack access to reliable electricity. This hinders education, safety, and overall development for millions.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.pexels.com/photos/11880479/pexels-photo-11880479.jpeg" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/205375/ffffff?text=Solar+Power';" alt="Solar panels being installed on a rooftop in a sunny, rural area.">
+                        <div class="carousel-caption">
+                            <h3>Our Solution: A Central Hub for Change</h3>
+                            <p>We connect communities in need with donors, volunteers, and organizations, providing sustainable solutions like solar technology to bring light and opportunity.</p>
+                        </div>
+                    </div>
+                     <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?q=80&w=2070&auto=format&fit=crop" onerror="this.onerror=null;this.src='https://placehold.co/1400x450/333333/ffffff?text=Get+Involved';" alt="A diverse group of volunteers working together happily on a community project.">
+                        <div class="carousel-caption">
+                            <h3>Empowering Action Through Information</h3>
+                            <p>Our platform provides the visibility, data, and resources needed for you to make a meaningful contribution towards a brighter, more equitable future for all Filipinos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button id="prevBtn">&lt;</button>
+                    <button id="nextBtn">&gt;</button>
+                </div>
+                <div class="carousel-dots" id="carousel-dots-container"></div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <div class="card" id="story-submission-card">
+                     <!-- Content will be dynamically set based on login status -->
+                </div>
+            </div>
+            <div class="sidebar">
+                 <div class="card">
+                    <h2 class="card-title">Community Poll</h2>
+                    <p class="card-desc">What energy-related topics are most important for your community?</p>
+                    <div id="poll-container">
+                        <div class="poll-options">
+                            <label><input type="radio" name="poll" value="solar-workshops" style="accent-color: #112b3c;"><span>Solar Energy Workshops</span></label>
+                            <label><input type="radio" name="poll" value="energy-livelihood" style="accent-color: #112b3c;"><span>Energy for Livelihood</span></label>
+                            <label><input type="radio" name="poll" value="policy-advocacy" style="accent-color: #112b3c;"><span>Policy and Advocacy</span></label>
+                            <label><input type="radio" name="poll" value="maintenance-training" style="accent-color: #112b3c;"><span>Maintenance Training</span></label>
+                        </div>
+                        <button id="vote-button" class="submit-btn" style="width:100%; margin-top:1rem;">Vote</button>
+                    </div>
+                    <div id="poll-thanks" style="display:none;">
+                        <p class="poll-thanks">Thank you for your vote!</p>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <div class="highlights-section">
+            <h2 class="highlights-title">Discussion Highlights</h2>
+            <p class="highlights-desc">Engage with the most inspiring stories and topics from the IllumiNation PH community.</p>
+            <div class="highlights-grid" id="highlights-grid">
+                <!-- Dynamic stories will be loaded here -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+            &nbsp; &nbsp;Contact us: info@illuminatioph.com
+        </div>
+    </footer>
+    
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = Session.getCurrentUser();
+            const storySubmissionCard = document.getElementById('story-submission-card');
+            const highlightsGrid = document.getElementById('highlights-grid');
+
+            // This function determines whether to show the login prompt or the submission form.
+            function renderStorySubmissionForm() {
+                if (currentUser) {
+                    // If user is logged in, show the form.
+                    storySubmissionCard.innerHTML = `
+                        <h2 class="form-title">Share Your Story</h2>
+                        <p class="form-desc">How has access to energy changed your life or community? Share your experience with us.</p>
+                        <form class="form" id="story-form">
+                            <div class="form-group">
+                                <label for="story-title">Title</label>
+                                <input type="text" id="story-title" placeholder="e.g., How a Solar Lamp Changed My Studies" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="story-content">Content</label>
+                                <textarea id="story-content" rows="8" placeholder="Tell us about the before and after..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="story-tags">Tags (comma-separated)</label>
+                                <input type="text" id="story-tags" placeholder="e.g., Community, Solar, Palawan">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Submit Story</button>
+                            </div>
+                        </form>
+                        <div id="story-success" class="story-success-message">
+                            <p>Thank you for sharing your story! It has been successfully submitted for review.</p>
+                            <div class="story-success-actions">
+                                <button id="submit-another-story-btn" class="submit-btn">Submit Another Story</button>
+                            </div>
+                        </div>
+                    `;
+                    attachStoryFormListeners();
+                } else {
+                    // If user is not logged in, show a prompt to log in.
+                    storySubmissionCard.innerHTML = `
+                        <h2 class="form-title">Join the Discussion</h2>
+                        <p class="form-desc">Please <a href="Login.html" style="text-decoration: underline; color: #F66B0E;">log in</a> to share your story and participate in the community discussion.</p>
+                    `;
+                }
+            }
+
+            // This function handles the submission of a new story.
+            function attachStoryFormListeners() {
+                const storyForm = document.getElementById('story-form');
+                const storySuccess = document.getElementById('story-success');
+                const submitAnotherBtn = document.getElementById('submit-another-story-btn');
+
+                if (storyForm) {
+                    storyForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        const title = document.getElementById('story-title').value.trim();
+                        const content = document.getElementById('story-content').value.trim();
+                        const tagsInput = document.getElementById('story-tags').value.trim();
+                        const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : ["Community Story"];
+
+                        if (!title || !content) {
+                            alert('Please fill out both the title and content.');
+                            return;
+                        }
+
+                        const allStories = DB.get('stories') || [];
+                        const newStory = {
+                            id: `story-${Date.now()}`,
+                            title: title,
+                            content: content,
+                            author: currentUser.username,
+                            tags: tags,
+                            likes: 0,
+                            comments: [],
+                            liked: false,
+                            isFeatured: false // New stories are not featured by default
+                        };
+
+                        allStories.push(newStory);
+                        DB.set('stories', allStories); // Save the new story to localStorage
+
+                        storyForm.style.display = 'none';
+                        storySuccess.style.display = 'block';
+                        renderHighlights(); // Re-render the highlights to show the new story
+                    });
+                }
+                
+                if(submitAnotherBtn) {
+                    submitAnotherBtn.addEventListener('click', () => {
+                        storySuccess.style.display = 'none';
+                        storyForm.style.display = 'flex';
+                        storyForm.reset();
+                    });
+                }
+            }
+
+            // This function renders all stories from localStorage into the highlights grid.
+            function renderHighlights() {
+                const stories = DB.get('stories') || [];
+                const featuredStories = stories.filter(story => story.isFeatured);
+                highlightsGrid.innerHTML = ''; // Clear existing highlights
+
+                if (featuredStories.length === 0) {
+                    highlightsGrid.innerHTML = '<p>No featured stories yet. Check back soon!</p>';
+                    return;
+                }
+
+                featuredStories.forEach(story => {
+                    const card = document.createElement('a'); // Changed to an anchor tag
+                    card.href = `mapayapa-story.html`; // Link to the story page
+                    card.className = 'highlight-card';
+                    card.dataset.storyId = story.id;
+                    
+                    const commentsHTML = (story.comments || []).map(comment => `<p class="user-comment">${comment}</p>`).join('');
+
+                    card.innerHTML = `
+                        <h3 class="highlight-title">${story.title}</h3>
+                        <p class="highlight-desc">${story.content.substring(0, 150)}...</p>
+                        <div style="display:flex;justify-content:space-between;align-items:end;">
+                            <div class="highlight-tags">
+                                ${story.tags.map(tag => `<span class="tag tag-orange">${tag}</span>`).join('')}
+                            </div>
+                            <div class="highlight-author">Author: ${story.author}</div>
+                        </div>
+                        <div class="highlight-footer">
+                            <svg class="like-icon ${story.liked ? 'liked' : ''}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${story.liked ? '#F66B0E' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a2 2 0 0 1 3 1.12Z"/></svg>
+                            <span class="like-count">${story.likes || 0}</span>
+                            <svg class="comment-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <div class="comment-section">
+                            <div class="comments-list">${commentsHTML}</div>
+                            <textarea class="comment-input" placeholder="Add a comment..." rows="2"></textarea>
+                            <button class="submit-comment-btn">Comment</button>
+                        </div>
+                    `;
+                    highlightsGrid.appendChild(card);
+                });
+            }
+
+            // Event delegation for handling clicks on dynamic content (likes, comments, etc.)
+            highlightsGrid.addEventListener('click', (e) => {
+                const storyCard = e.target.closest('.highlight-card');
+                if (!storyCard) return;
+                
+                const storyId = storyCard.dataset.storyId;
+
+                // Prevent navigation if an interactive element inside the card was clicked
+                if (e.target.closest('.like-icon') || e.target.closest('.comment-icon') || e.target.closest('.submit-comment-btn')) {
+                    e.preventDefault();
+                } else {
+                    // If the card itself is clicked, store the ID and allow navigation
+                    sessionStorage.setItem('viewStoryId', storyId);
+                    return;
+                }
+
+
+                const allStories = DB.get('stories');
+                const storyIndex = allStories.findIndex(s => s.id === storyId);
+
+                if (storyIndex > -1) {
+                    // Handle like button click
+                    if (e.target.closest('.like-icon')) {
+                        allStories[storyIndex].liked = !allStories[storyIndex].liked;
+                        allStories[storyIndex].likes = (allStories[storyIndex].likes || 0) + (allStories[storyIndex].liked ? 1 : -1);
+                        DB.set('stories', allStories);
+                        renderHighlights();
+                    }
+
+                    // Handle comment icon click
+                    if (e.target.closest('.comment-icon')) {
+                        const commentSection = storyCard.querySelector('.comment-section');
+                        commentSection.style.display = commentSection.style.display === 'block' ? 'none' : 'block';
+                    }
+
+                    // Handle submit comment button click
+                    if (e.target.classList.contains('submit-comment-btn')) {
+                        if (!currentUser) {
+                            alert("Please log in to comment.");
+                            return;
+                        }
+                        const textarea = storyCard.querySelector('.comment-input');
+                        const commentText = textarea.value.trim();
+                        if (commentText) {
+                            if (!allStories[storyIndex].comments) {
+                                allStories[storyIndex].comments = [];
+                            }
+                            allStories[storyIndex].comments.push(`${currentUser.username}: ${commentText}`);
+                            DB.set('stories', allStories);
+                            textarea.value = '';
+                            renderHighlights();
+                            setTimeout(() => {
+                                const newCard = document.querySelector(`.highlight-card[data-story-id="${storyId}"]`);
+                                if (newCard) {
+                                    newCard.querySelector('.comment-section').style.display = 'block';
+                                }
+                            }, 0);
+                        }
+                    }
+                }
+            });
+
+            // --- Carousel Logic ---
+            const carousel = document.getElementById('info-carousel');
+            if (carousel) {
+                const slides = carousel.querySelector('.carousel-slides');
+                const slideCount = slides.children.length;
+                const dotsContainer = document.getElementById('carousel-dots-container');
+                let currentIndex = 0;
+                let intervalId;
+
+                for (let i = 0; i < slideCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('carousel-dot');
+                    dot.addEventListener('click', () => {
+                        goToSlide(i);
+                        resetInterval();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+                const dots = dotsContainer.children;
+
+                const updateCarousel = () => {
+                    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    Array.from(dots).forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                };
+                
+                const goToSlide = (index) => {
+                    currentIndex = (index + slideCount) % slideCount;
+                    updateCarousel();
+                };
+
+                document.getElementById('nextBtn').addEventListener('click', () => {
+                    goToSlide(currentIndex + 1);
+                    resetInterval();
+                });
+
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    goToSlide(currentIndex - 1);
+                    resetInterval();
+                });
+                
+                const startInterval = () => {
+                    intervalId = setInterval(() => {
+                        goToSlide(currentIndex + 1);
+                    }, 5000);
+                };
+
+                const resetInterval = () => {
+                    clearInterval(intervalId);
+                    startInterval();
+                };
+
+                updateCarousel();
+                startInterval();
+            }
+
+            // --- Poll Logic ---
+            const voteButton = document.getElementById('vote-button');
+            if(voteButton) {
+                const pollContainer = document.getElementById('poll-container');
+                const pollThanks = document.getElementById('poll-thanks');
+                voteButton.addEventListener('click', () => {
+                    const selectedOption = pollContainer.querySelector('input[name="poll"]:checked');
+                    if (selectedOption) {
+                        pollContainer.style.display = 'none';
+                        pollThanks.style.display = 'block';
+                    } else {
+                        alert('Please select an option before voting.');
+                    }
+                });
+            }
+            
+            // Initial render
+            renderStorySubmissionForm();
+            renderHighlights();
+
+        });
+    </script>
+
+</body>
+</html>

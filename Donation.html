@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donation Page - IllumiNation PH</title>
+  <link rel="stylesheet" href="DonationDesign.css" />
+</head>
+<body>
+  <header class="top-container">
+    <div class="logo">
+      <a href="Draft_Home.html" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="https://i.ibb.co/9k9Crw9J/Logo-White.png" alt="Logo" />
+        <span class="logo-text">IllumiNation PH</span>
+      </a>
+    </div>
+    <nav class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn">Home</button>
+        <div class="dropdown-content">
+          <a href="Draft_Home.html">Go to Home</a>
+          <a href="userDashboard.html">Dashboard</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Interactive Map</button>
+        <div class="dropdown-content">
+          <a href="InteractiveMap.html">View Map</a>
+          <a href="ReportElectAccess.html">Report</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Donate</button>
+        <div class="dropdown-content">
+          <a href="Donation.html">Donate Now</a>
+          <a href="Transparency.html">Transparency</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">Volunteer</button>
+        <div class="dropdown-content">
+          <a href="Draft_Volunteer.html">Volunteer Opportunities</a>
+          <a href="volunteer-signup.html">Volunteer Registration</a>
+        </div>
+      </div>
+      <a href="FAQ.html">Help</a>
+      <a href="Discussion.html">Discussion</a>
+      <div class="dropdown">
+        <!-- Dynamically handled by app.js -->
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-section">
+    <img src="https://images.pexels.com/photos/230518/pexels-photo-230518.jpeg" alt="Background Image" class="hero-background">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1>Monetary Donation</h1>
+        <p>Thank you for your willingness to contribute! Every peso helps bring light to a community in need.</p>
+        <button id="heroScrollBtn" class="hero-btn">Support Our Cause</button>
+
+    </div>
+  </section>
+  <div class="container progress-bar-container">
+    <div class="progress-bar" id="donationProgressBar">
+      <div class="progress-step active" data-step="1">
+        <span class="step-circle">1</span>
+        <span class="step-label">Amount</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" data-step="2">
+        <span class="step-circle">2</span>
+        <span class="step-label">Your Info</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" data-step="3">
+        <span class="step-circle">3</span>
+        <span class="step-label">Payment</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" data-step="4">
+        <span class="step-circle">4</span>
+        <span class="step-label">Confirm</span>
+      </div>
+    </div>
+  </div>
+  <main class="container">
+    <section id="donationFormSection" class="donation-form current-step">
+      <div class="form-box">
+        <div id="errorMessage" class="error-message hidden"></div>
+        <h2>Make a Donation</h2>
+        <p>Choose an amount and payment method to support our cause.</p>
+
+        <label for="donationAmountInput">Enter Donation Amount</label>
+        <input type="number" id="donationAmountInput" placeholder="₱0.00" min="1" />
+
+        <label for="paymentMethodSelect">Select Payment Method</label>
+        <select id="paymentMethodSelect">
+          <option value="" disabled selected>-- Select a payment method --</option>
+          <option value="gcash">GCash</option>
+        </select>
+
+        <button id="confirmButton" class="confirm">Confirm Donation</button>
+      </div>
+    </section>
+
+    <section id="donationSummarySection" class="donation-summary hidden">
+      <div class="summary-right">
+        <h3>Donation Details Summary</h3>
+        <p>Please review your donation details below before proceeding.</p>
+      </div>
+      <div class="summary-left">
+        <div class="summary-item">
+          <strong>Donation Amount</strong>
+          <span id="summaryAmount">₱0.00</span>
+        </div>
+        <div class="summary-item">
+          <strong>Payment Method</strong>
+          <span id="summaryMethod">N/A</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="donorInfoSection" class="donor-info hidden">
+      <h2>Provide Your Information</h2>
+      <div class="form-row">
+        <input type="text" id="donorNameInput" placeholder="Enter your full name" />
+        <input type="email" id="donorEmailInput" placeholder="Enter your email" />
+      </div>
+      <input type="text" placeholder="Optional message to our team" />
+      <button id="nextButton" class="btn">Next</button>
+    </section>
+
+    <section id="paymentDetailsSection" class="payment-details hidden">
+      <h2>Payment Details</h2>
+      <div id="paymentFieldsContainer">
+        <div id="gcashFields" class="hidden">
+           <p>Please scan the QR code or send to the number below:</p>
+           <img id="gcashQrCode" src="qrcode.jpeg" alt="GCash QR Code" style="max-width: 200px; margin: 15px auto; display: block;">
+           <p style="font-weight: bold;">GCash Number: 0960-000-0949</p>
+           <input type="tel" placeholder="Your GCash Ref. Number (Optional)" />
+        </div>
+      </div>
+      <button id="donateNowButton" class="btn">Donate Now</button>
+    </section>
+
+    <section id="testimonialsSection" class="testimonials">
+      <h2>Donor Testimonials</h2>
+      <p>See what our generous donors have to say.</p>
+      <div class="testimonial-cards">
+        <div class="card">
+          <p><strong>Sarah M.</strong> ⭐⭐⭐⭐⭐</p>
+          <p>I feel empowered knowing my donation directly contributes to lighting up homes. The transparency of IllumiNation PH is commendable!</p>
+        </div>
+        <div class="card">
+          <p><strong>Jake H.</strong> ⭐⭐⭐⭐⭐</p>
+          <p>A wonderful cause and a great team behind it. It's amazing to see the real-world impact these projects have on communities.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer2"> © 2025 IllumiNation PH. All rights reserved.
+          &nbsp; &nbsp;Contact us: info@illuminatioph.com
+    </div>
+</footer>
+
+  <section id="confirmationModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>Confirm Your Donation</h3>
+      <p>Please review your donation details before confirming.</p>
+      <div id="confirmationSummary" class="summary-view">
+        </div>
+      <div class="modal-buttons">
+        <button id="cancelDonation" class="btn modal-btn-cancel">Cancel</button>
+        <button id="confirmDonationFinal" class="btn modal-btn-confirm">Confirm Donation</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="successMessageSection" class="success-overlay hidden">
+    <div class="success-box">
+      <div class="success-icon">&#10004;</div>
+      <h2>Thank You!</h2>
+      <p>Your generous donation has been successfully processed.</p>
+      <div id="successSummary">
+          </div>
+      <button id="resetDonationButton" class="btn">Make Another Donation</button>
+    </div>
+  </section>
+  
+  <script src="app.js"></script>
+<script>
+    // --- DOM Element References ---
+    const mainSections = {
+        form: document.getElementById('donationFormSection'),
+        summary: document.getElementById('donationSummarySection'),
+        donorInfo: document.getElementById('donorInfoSection'),
+        payment: document.getElementById('paymentDetailsSection'),
+        testimonials: document.getElementById('testimonialsSection'),
+        success: document.getElementById('successMessageSection')
+    };
+
+    const modals = {
+        confirmation: document.getElementById('confirmationModal'),
+    };
+
+    const inputs = {
+        amount: document.getElementById('donationAmountInput'),
+        method: document.getElementById('paymentMethodSelect'),
+        name: document.getElementById('donorNameInput'),
+        email: document.getElementById('donorEmailInput')
+    };
+
+    const buttons = {
+        confirm: document.getElementById('confirmButton'),
+        next: document.getElementById('nextButton'),
+        donate: document.getElementById('donateNowButton'),
+        reset: document.getElementById('resetDonationButton'),
+        cancelDonation: document.getElementById('cancelDonation'),
+        confirmDonationFinal: document.getElementById('confirmDonationFinal')
+    };
+
+    const summarySpans = {
+        amount: document.getElementById('summaryAmount'),
+        method: document.getElementById('summaryMethod')
+    };
+
+    const paymentFields = {
+        gcash: document.getElementById('gcashFields')
+    };
+
+    const errorMessageDiv = document.getElementById('errorMessage');
+    const successSummaryDiv = document.getElementById('successSummary');
+    const confirmationSummaryDiv = document.getElementById('confirmationSummary');
+    const progressBar = document.getElementById('donationProgressBar');
+    const progressSteps = document.querySelectorAll('.progress-step');
+
+    // --- Pre-fill user info if logged in ---
+    const currentUser = Session.getCurrentUser();
+    if (currentUser) {
+        inputs.name.value = currentUser.username;
+        inputs.email.value = currentUser.email;
+    }
+
+    // --- Utility Functions ---
+    function showMessage(message) {
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.classList.remove('hidden');
+    }
+
+    function hideMessage() {
+        errorMessageDiv.classList.add('hidden');
+    }
+
+    function updatePaymentFields(method) {
+        Object.values(paymentFields).forEach(field => field.classList.add('hidden'));
+        if (paymentFields[method]) {
+            paymentFields[method].classList.remove('hidden');
+        }
+    }
+
+    function updateProgressBar(currentStepNumber) {
+        progressSteps.forEach((step, index) => {
+            const stepNum = index + 1;
+            step.classList.remove('active', 'completed');
+            if (stepNum < currentStepNumber) {
+                step.classList.add('completed');
+            } else if (stepNum === currentStepNumber) {
+                step.classList.add('active');
+            }
+        });
+        const totalSteps = progressSteps.length;
+        const progressPercentage = (currentStepNumber - 1) / (totalSteps - 1) * 100;
+        progressBar.style.setProperty('--progress-width', `${progressPercentage}%`);
+    }
+    
+    function resetForm() {
+        mainSections.success.classList.add('hidden');
+        inputs.amount.value = '';
+        inputs.method.value = '';
+        // Don't clear name/email if user is logged in
+        if (!currentUser) {
+            inputs.name.value = '';
+            inputs.email.value = '';
+        }
+
+        Object.values(mainSections).forEach(section => section.classList.add('hidden'));
+        hideMessage();
+
+        mainSections.form.classList.remove('hidden');
+        mainSections.testimonials.classList.remove('hidden');
+        updateProgressBar(1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Event Listeners ---
+    buttons.confirm.addEventListener('click', () => {
+        hideMessage();
+        const amount = parseFloat(inputs.amount.value);
+        const method = inputs.method.value;
+        const methodName = inputs.method.options[inputs.method.selectedIndex].text;
+
+        if (isNaN(amount) || amount <= 0) {
+            showMessage('Please enter a valid donation amount.');
+            return;
+        }
+        if (!method) {
+            showMessage('Please select a payment method.');
+            return;
+        }
+
+        summarySpans.amount.textContent = `₱${amount.toFixed(2)}`;
+        summarySpans.method.textContent = methodName;
+        updatePaymentFields(method);
+
+        mainSections.form.classList.add('hidden');
+        mainSections.summary.classList.remove('hidden');
+        mainSections.donorInfo.classList.remove('hidden');
+        mainSections.testimonials.classList.add('hidden');
+
+        updateProgressBar(2);
+        mainSections.summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    buttons.next.addEventListener('click', () => {
+        const name = inputs.name.value.trim();
+        const email = inputs.email.value.trim();
+
+        if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Please enter your full name and a valid email address.');
+            return;
+        }
+        hideMessage();
+
+        mainSections.summary.classList.add('hidden');
+        mainSections.donorInfo.classList.add('hidden');
+        mainSections.payment.classList.remove('hidden');
+
+        updateProgressBar(3);
+        mainSections.payment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    buttons.donate.addEventListener('click', () => {
+        const name = inputs.name.value.trim();
+        const email = inputs.email.value.trim();
+
+        if (!name || !email) {
+            alert('Please provide your name and email. Go back to the Donor Information section.');
+            mainSections.donorInfo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+
+        confirmationSummaryDiv.innerHTML = `
+            <p><strong>Donor:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Amount:</strong> ${summarySpans.amount.textContent}</p>
+            <p><strong>Method:</strong> ${summarySpans.method.textContent}</p>
+        `;
+
+        modals.confirmation.classList.remove('hidden');
+    });
+
+    buttons.cancelDonation.addEventListener('click', () => {
+        modals.confirmation.classList.add('hidden');
+    });
+
+    buttons.confirmDonationFinal.addEventListener('click', () => {
+        modals.confirmation.classList.add('hidden');
+        Object.values(mainSections).forEach(section => section.classList.add('hidden'));
+
+        const name = inputs.name.value.trim();
+        const email = inputs.email.value.trim();
+        const amount = parseFloat(inputs.amount.value);
+        const method = inputs.method.value;
+
+        // --- SAVE DONATION TO DB ---
+        const newDonation = {
+            amount: amount,
+            method: method,
+            name: name,
+            email: email,
+            date: new Date().toISOString().split('T')[0]
+        };
+        const allDonations = DB.get('donations') || [];
+        allDonations.push(newDonation);
+        DB.set('donations', allDonations);
+
+        // If the donor is a logged-in user, update their profile
+        if (currentUser && currentUser.email.toLowerCase() === email.toLowerCase()) {
+            const allUsers = DB.get('users');
+            const userIndex = allUsers.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                allUsers[userIndex].donations.push({ amount: amount, date: newDonation.date });
+                DB.set('users', allUsers);
+                DB.set('currentUser', allUsers[userIndex]); // Update session
+            }
+        }
+        
+        // --- Show Success Message ---
+        mainSections.success.classList.remove('hidden');
+        successSummaryDiv.innerHTML = `
+            <p><strong>Donor:</strong> ${name}</p>
+            <p><strong>Amount:</strong> ${summarySpans.amount.textContent}</p>
+            <p><strong>Method:</strong> ${summarySpans.method.textContent}</p>
+            <p>A confirmation has been sent to ${email}.</p>
+        `;
+
+        updateProgressBar(4);
+        mainSections.success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    buttons.reset.addEventListener('click', resetForm);
+
+    const heroScrollBtn = document.getElementById('heroScrollBtn');
+    const donationFormSection = document.getElementById('donationFormSection');
+    if (heroScrollBtn && donationFormSection) {
+        heroScrollBtn.addEventListener('click', () => {
+            donationFormSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+    
+    // Initial setup
+    updateProgressBar(1);
+</script>
+</body>
+</html>
